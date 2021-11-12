@@ -174,7 +174,7 @@ async function outputLiveTimes(data){
         rows.forEach((row) => {
           console.log(row.time, row.title, row.link);
           if (row.time != null){
-            client.channels.cache.get('838711689125822477').send({embed: {
+            client.channels.cache.get('908671236895305760').send({embed: {
                 type: "rich",
                 title: "NEXT UPCOMING STREAM",
                 color: '2b7d14',
@@ -190,7 +190,7 @@ async function outputLiveTimes(data){
             }
         });  
             } else {
-                client.channels.cache.get('838711689125822477').send({embed: {
+                client.channels.cache.get('908671236895305760').send({embed: {
                     type: "rich",
                     title: "NEXT UPCOMING STREAM",
                     color: '911c1c',
