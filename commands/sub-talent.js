@@ -4,7 +4,7 @@ module.exports = {
     execute(message, command, args){
       const sqlite = require('sqlite3').verbose();
 
-      let db = new sqlite.Database('./db/sample.db');
+      let db = new sqlite.Database('./db/database.db');
 
       var name = args[0] + " " + args[1];
       args.splice(0,2);

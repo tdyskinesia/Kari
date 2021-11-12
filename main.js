@@ -178,7 +178,7 @@ async function outputLiveTimes(data){
                 type: "rich",
                 title: "NEXT UPCOMING STREAM",
                 color: '2b7d14',
-                description: row.title + "\n" + row.time + "\n" + "In "+(Math.round(Math.abs(new Date()-new Date(row.date)))/3600000)+" Hours",
+                description: row.title + "\n" + row.time + "\n" + "In "+(Math.round(Math.abs(new Date()-new Date(row.date))/3600000))+" Hours",
                 fields: [{
                     name: 'WAITING ROOM',
                     value: "https://www.youtube.com/watch?v="+row.link
@@ -365,17 +365,17 @@ client.on('message', message =>{
         client.commands.get('clear msgs').execute(message, args)
     }
     else if(command === 'bupdate'){
-    console.log("I AM UPDATING STREAM TIMES NOW");
-    var data = [];
+    console.log("I AM UPDATING STREAM TIMES NOW")
+    var data = []
         getYoutubeData(async function(err, data){
             if(err){
-                console.error(err.message);
+                console.error(err.message)
             } else {
                 sleep(2000)
-                console.log("data array "+data);
-                console.log(data[0].channel);
-                console.log(data[2].ytid);
-                console.log('LIVE TIMES OUTPUTTING');
+                console.log("data array "+data)
+                console.log(data[0].channel)
+                console.log(data[2].ytid)
+                console.log('LIVE TIMES OUTPUTTING')
                 let db = new sqlite.Database('./db/database.db');
                 db.run(`
                 CREATE TABLE IF NOT EXISTS messages (
