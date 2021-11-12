@@ -366,7 +366,8 @@ client.on('message', message =>{
     }
     else if(command === 'bupdate'){
     console.log("I AM UPDATING STREAM TIMES NOW");
-        var data = await getYoutubeData();
+
+        var data = getYoutubeData();
                 console.log("data array "+data);
                 console.log(data[0].channel);
                 console.log(data[2].ytid);
