@@ -67,7 +67,7 @@ client.once('ready', async () =>{
     console.log(process.env.B);
     console.log(today.getMinutes());
     console.log(today.getHours());
-    var initialJob = new CronJob('59 * * * * *', function() {
+    var initialJob = new CronJob('0 * * * *', function() {
         console.log("I AM UPDATING STREAM TIMES NOW");
         var data = [];
         getYoutubeData(async function(err, data){
