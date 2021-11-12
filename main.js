@@ -338,33 +338,6 @@ async function getYoutubeData(callback){
 
 }
 
-async function getBoard(){
-    var data = await getYoutubeData();
-    console.log("data array "+data);
-    console.log(data[0].channel);
-    console.log(data[2].ytid);
-    console.log('LIVE TIMES OUTPUTTING');
-    let db = new sqlite.Database('./db/database.db');
-    db.run(`
-    CREATE TABLE IF NOT EXISTS messages (
-        "id" INTEGER PRIMARY KEY,
-        "start_time" TEXT,
-        "video_title" TEXT,
-        "video_link" TEXT,
-        "start_date" TEXT
-    )
-    `);
-    db.close();
-for (var index in data) {
-        await storeLiveTimes(data[index].ytid, data, index);  
-}
-    await outputLiveTimes(data);
-
-
-    console.log('LIVE TIMES OUTPUTTED');
-
-}
-
 client.on('message', message =>{
     if(!message.content.startsWith(prefix) || message.author.bot) return;
     const args = message.content.slice(prefix.length).split(/ +/);
@@ -393,11 +366,37 @@ client.on('message', message =>{
     }
     else if(command === 'bupdate'){
     console.log("I AM UPDATING STREAM TIMES NOW");
-        getBoard();
+        getYoutubeData(async function(err, data){
+            if(err){
+                console.error(err.message);
+            } else {
+                sleep(2000)
+                console.log("data array "+data);
+                console.log(data[0].channel);
+                console.log(data[2].ytid);
+                console.log('LIVE TIMES OUTPUTTING');
+                let db = new sqlite.Database('./db/database.db');
+                db.run(`
+                CREATE TABLE IF NOT EXISTS messages (
+                    "id" INTEGER PRIMARY KEY,
+                    "start_time" TEXT,
+                    "video_title" TEXT,
+                    "video_link" TEXT,
+                    "start_date" TEXT
+                )
+                `);
+                db.close();
+            for (let index = 0; index < data.length; index++) {
+                    await storeLiveTimes(data[index].ytid, data, index);  
             }
-           
+                await outputLiveTimes(data);
+        
+
+                console.log('LIVE TIMES OUTPUTTED');
+            }
+           });
         }
-    
+    }
 });
 
 client.login(process.env.TOKEN);
