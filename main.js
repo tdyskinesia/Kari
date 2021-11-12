@@ -142,7 +142,7 @@ function checkForPosts(){
             console.log(Date.now())
             let now = new Date()
             console.log(now)
-            if(curDate < now){
+            if(curDate.setMinutes(curDate.getMinutes()-15) < now){
                 console.log("SENDING MESSAGE NOW")
                 client.channels.cache.get(data[index].channel).send("HEY <@&" + data[index].role + "> " +data[index].name_out + " IS STREAMING IN 15 MINUTES\nWATCH THEM AT https://www.youtube.com/watch?v="+row.link);
                 toDelete.push(index+1)
