@@ -67,7 +67,7 @@ client.once('ready', async () =>{
     console.log(process.env.B);
     console.log(today.getMinutes());
     console.log(today.getHours());
-    var initialJob = new CronJob('59 * * * * *', function() {
+    var initialJob = new CronJob('0 * * * *', function() {
         console.log("I AM UPDATING STREAM TIMES NOW");
         var data = [];
         getYoutubeData(async function(err, data){
@@ -142,7 +142,7 @@ function checkForPosts(){
             console.log(Date.now())
             let now = new Date()
             console.log(now)
-            if(curDate < now){
+            if(curDate.setMinutes(curDate.getMinutes()-15) < now){
                 console.log("SENDING MESSAGE NOW")
                 client.channels.cache.get(data[index].channel).send("HEY <@&" + data[index].role + "> " +data[index].name_out + " IS STREAMING IN 15 MINUTES\nWATCH THEM AT https://www.youtube.com/watch?v="+row.link);
                 toDelete.push(index+1)
