@@ -316,7 +316,7 @@ async function setStreams(id, index){
             } else { return null };
 }
 
-function getYoutubeData(callback){
+async function getYoutubeData(callback){
     let db = new sqlite.Database('./db/database.db');
 
     let sql = 'SELECT channel_id channel, role_id role, name name_out, youtube_id ytid FROM subs ORDER BY id';
@@ -366,11 +366,7 @@ client.on('message', message =>{
     }
     else if(command === 'bupdate'){
     console.log("I AM UPDATING STREAM TIMES NOW");
-        var data = [];
-        getYoutubeData(async function(err, data){
-            if(err){
-                console.log(err);
-            } else {
+        var data = await getYoutubeData();
                 console.log("data array "+data);
                 console.log(data[0].channel);
                 console.log(data[2].ytid);
@@ -386,7 +382,7 @@ client.on('message', message =>{
                 )
                 `);
                 db.close();
-            for (let index = 0; index < data.length; index++) {
+            for (var index in data) {
                     await storeLiveTimes(data[index].ytid, data, index);  
             }
                 await outputLiveTimes(data);
@@ -394,9 +390,9 @@ client.on('message', message =>{
 
                 console.log('LIVE TIMES OUTPUTTED');
             }
-           });
+           
         }
-    }
+    
 });
 
 client.login(process.env.TOKEN);
