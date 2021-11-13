@@ -93,7 +93,7 @@ client.once('ready', async () =>{
             for (let index = 0; index < data.length; index++) {
                     await storeLiveTimes(data[index].ytid, data, index);  
             }
-                await sleep(2000);
+                await sleep(4000);
                 await outputLiveTimes(data);
         
 
@@ -220,14 +220,24 @@ async function storeLiveTimes(ID, data, i){
     //if date has passed, call setStreams with another index to get next upcoming stream, if exists
     let curDate = new Date(start[0])
     let now = new Date()
-    if(curDate < now){
+    let date = start[0]
+    let time = moment(start[0])
+    if(curDate<now&&start.length>1){
         console.log("YOUTUBE BUGGED")
         vidID = await setStreams(ID, 1)
         start = await getLiveTimes(vidID)
+        date = start[1]
+        time = moment(start[1])
+    } else {
+        db.run(`INSERT INTO messages VALUES(?, ?, ?, ?, ?)`, [i+1, null, null, null, null], function(err) {
+            if (err) {
+              return console.log(err.message);
+            }
+            // get the last insert id
+            console.log(`A row has been inserted with rowid ${this.lastID}`);
+            return this.lastID.toString();
+          });
     }
-    if(start!=null){
-    let date = start[0]
-    let time = moment(start[0])
     var times = [time.tz('America/Los_Angeles').format('ha z'),
     time.tz('America/New_York').format('ha z'),
     time.tz('Asia/Tokyo').format('ha z')];   
@@ -244,22 +254,17 @@ async function storeLiveTimes(ID, data, i){
       });
         //await client.channels.cache.get(data[i].channel).send("<@&" + data[i].role + "> "+"https://www.youtube.com/watch?v="+vidID);
         //await client.channels.cache.get(data[i].channel).send("START TIME: "+times);
-        } 
-    } 
-        
-        
-       if(start==null) {
-            
-            db.run(`INSERT INTO messages VALUES(?, ?, ?, ?, ?)`, [i+1, null, null, null, null], function(err) {
-                if (err) {
-                  return console.log(err.message);
-                }
-                // get the last insert id
-                console.log(`A row has been inserted with rowid ${this.lastID}`);
-                return this.lastID.toString();
-              });
-            //await client.channels.cache.get('905628281859092490').send("No stream upcoming for " + data[i].name);
-        }
+    } else {
+        db.run(`INSERT INTO messages VALUES(?, ?, ?, ?, ?)`, [i+1, null, null, null, null], function(err) {
+            if (err) {
+              return console.log(err.message);
+            }
+            // get the last insert id
+            console.log(`A row has been inserted with rowid ${this.lastID}`);
+            return this.lastID.toString();
+          });
+        //await client.channels.cache.get('905628281859092490').send("No stream upcoming for " + data[i].name);
+    }
         db.close();
 
 }
@@ -356,6 +361,11 @@ async function getMessageData(args){
             })
 
 }
+async function displaySubData(data, message){
+    for(var i in data){
+        await message.channel.send(data[i].name_out + ": " + data[i].ytid + " " + data[i].channel + " " + data[i].role)
+    }
+}
 
 client.on('message', message =>{
     if(!message.content.startsWith(prefix) || message.author.bot) return;
@@ -432,6 +442,17 @@ client.on('message', message =>{
             } else {
                 message.channel.send("You fucked up I think bro.")
             }
+        }
+        else if(command === 'displaysubs'){
+            getYoutubeData(async function(err, data){
+            if(err){
+                console.error(err.message)
+            } else {
+                sleep(2000)
+                console.log("data array "+data)
+                await displaySubData(data, message)
+            }
+            });
         }
     }
 });
