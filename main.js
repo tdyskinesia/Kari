@@ -225,6 +225,7 @@ async function storeLiveTimes(ID, data, i){
         vidID = await setStreams(ID, 1)
         start = await getLiveTimes(vidID)
     }
+    if(start!=null){
     let date = start[0]
     let time = moment(start[0])
     var times = [time.tz('America/Los_Angeles').format('ha z'),
@@ -243,7 +244,11 @@ async function storeLiveTimes(ID, data, i){
       });
         //await client.channels.cache.get(data[i].channel).send("<@&" + data[i].role + "> "+"https://www.youtube.com/watch?v="+vidID);
         //await client.channels.cache.get(data[i].channel).send("START TIME: "+times);
-        } else {
+        } 
+    } 
+        
+        
+       if(start==null) {
             
             db.run(`INSERT INTO messages VALUES(?, ?, ?, ?, ?)`, [i+1, null, null, null, null], function(err) {
                 if (err) {
