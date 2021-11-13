@@ -7,7 +7,7 @@ const {google} = require('googleapis');
 
 const yt = google.youtube({
     version: 'v3',
-    auth: "AIzaSyBPY0_LA0G7jd3o2YH22SVxfLESjxTTvRA"
+    auth: "AIzaSyD9QVW5tVS9IcmMn58mS6AwYfHk6fhBDIU"
 })
 
 const { MessageEmbed } = require('discord.js');
@@ -23,7 +23,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 
-const prefix = '!k';
+const prefix = 'k!';
 
 const fs = require('fs');
 const { id } = require('date-fns/locale');
@@ -67,7 +67,7 @@ client.once('ready', async () =>{
     console.log(process.env.B);
     console.log(today.getMinutes());
     console.log(today.getHours());
-    var initialJob = new CronJob('0 * * * *', function() {
+    var initialJob = new CronJob('0 */3 * * *', function() {
         console.log("I AM UPDATING STREAM TIMES NOW");
         var data = [];
         getYoutubeData(async function(err, data){
@@ -221,6 +221,7 @@ async function storeLiveTimes(ID, data, i){
     let curDate = new Date(start[0])
     let now = new Date()
     if(curDate < now){
+        console.log("YOUTUBE BUGGED")
         vidID = await setStreams(ID, 1)
         start = await getLiveTimes(vidID)
     }
@@ -338,6 +339,19 @@ async function getYoutubeData(callback){
 
 }
 
+async function getMessageData(args){
+    let db = new sqlite.Database('./db/database.db')
+            
+    db.run(`SELECT start_date date FROM messages WHERE video_link = ?`, [args[1]], function(err, row){
+        if(err){
+                    console.error(err.message);
+            }
+            var date = new Date(row.date)
+            return new Date(date.setMinutes(date.getMinutes()+args[0]))
+            })
+
+}
+
 client.on('message', message =>{
     if(!message.content.startsWith(prefix) || message.author.bot) return;
     const args = message.content.slice(prefix.length).split(/ +/);
@@ -396,6 +410,23 @@ client.on('message', message =>{
                 console.log('LIVE TIMES OUTPUTTED');
             }
            });
+        }
+        else if(command === 'timeset'){
+            if(args.length==2){
+            let db = new sqlite.Database('./db/database.db')
+            date = getMessageData(args)
+            let sql = `UPDATE messages
+            SET date = ?
+            WHERE video_link = ?`;
+
+            db.run(sql, [date, args[1]], function(err){
+                if(err){
+                    console.error(err.message);
+                }
+            })
+            } else {
+                message.channel.send("You fucked up I think bro.")
+            }
         }
     }
 });
