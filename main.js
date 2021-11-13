@@ -7,7 +7,7 @@ const {google} = require('googleapis');
 
 const yt = google.youtube({
     version: 'v3',
-    auth: "AIzaSyD9QVW5tVS9IcmMn58mS6AwYfHk6fhBDIU"
+    auth: "AIzaSyDo7SrFpDXx7KBbb9rVFPka608L-Hsv4jM"
 })
 
 const { MessageEmbed } = require('discord.js');
