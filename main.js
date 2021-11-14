@@ -318,9 +318,9 @@ async function setStreams(id){
             }
 
             results.sort(function(a, b) {
-                return new Date(a.data.items[0].liveStreamingDetails.scheduledStartTime).getSeconds() - new Date(b.data.items[0].liveStreamingDetails.scheduledStartTime).getSeconds();
+                return new Date(a.data.items[0].liveStreamingDetails.scheduledStartTime) - new Date(b.data.items[0].liveStreamingDetails.scheduledStartTime);
               });
-            console.log(results) 
+            for (var i in results){console.log(results[i].data.items[0].liveStreamingDetails.scheduledStartTime) }
             now = new Date()
             for (var index in results){
                 if(new Date(results[index].data.items[0].liveStreamingDetails.scheduledStartTime) > now){
