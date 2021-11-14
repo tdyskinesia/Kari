@@ -415,6 +415,7 @@ client.on('message', message =>{
             for (let index = 0; index < data.length; index++) {
                     await storeLiveTimes(data[index].ytid, data, index);  
             }
+                await sleep(5000);
                 await outputLiveTimes(data);
         
 
