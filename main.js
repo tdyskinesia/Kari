@@ -318,7 +318,7 @@ async function setStreams(id){
             }
 
             results.sort(function(a, b) {
-                return a.data.items[0].liveStreamingDetails.scheduledStartTime - b.data.items[0].liveStreamingDetails.scheduledStartTime;
+                return new Date(a.data.items[0].liveStreamingDetails.scheduledStartTime).getSeconds() - new Date(b.data.items[0].liveStreamingDetails.scheduledStartTime).getSeconds();
               });
             console.log(results) 
             now = new Date()
