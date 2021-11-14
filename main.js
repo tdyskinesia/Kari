@@ -226,8 +226,10 @@ async function storeLiveTimes(ID, data, i){
         console.log("YOUTUBE BUGGED")
         vidID = await setStreams(ID, 1)
         start = await getLiveTimes(vidID)
+        if (start!=null){
         date = start[0]
         time = moment(start[0])
+        }
     } 
     
     var times = [time.tz('America/Los_Angeles').format('ha z'),
@@ -246,7 +248,8 @@ async function storeLiveTimes(ID, data, i){
       });
         //await client.channels.cache.get(data[i].channel).send("<@&" + data[i].role + "> "+"https://www.youtube.com/watch?v="+vidID);
         //await client.channels.cache.get(data[i].channel).send("START TIME: "+times);
-    } else {
+    }
+    if(start==null){
         db.run(`INSERT INTO messages VALUES(?, ?, ?, ?, ?)`, [i+1, null, null, null, null], function(err) {
             if (err) {
               return console.log(err.message);
@@ -256,6 +259,7 @@ async function storeLiveTimes(ID, data, i){
             return this.lastID.toString();
           });
         //await client.channels.cache.get('905628281859092490').send("No stream upcoming for " + data[i].name);
+        
     }
         db.close();
 
