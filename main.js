@@ -211,26 +211,13 @@ async function outputLiveTimes(data){
 
 async function storeLiveTimes(ID, data, i){
 
-    var vidID = await setStreams(ID, 0)
-    var start = await getLiveTimes(vidID)
+    var start = await setStreams(ID)
+    //var start = await getLiveTimes(vidID)
     let db = new sqlite.Database('./db/database.db')
     if(start!=null){
     console.log("START TIME "+start[0])
-    //db insert schedule message for time
-    //if date has passed, call setStreams with another index to get next upcoming stream, if exists
-    let curDate = new Date(start[0])
-    let now = new Date()
     let date = start[0]
     let time = moment(start[0])
-    if(curDate<now){
-        console.log("YOUTUBE BUGGED")
-        vidID = await setStreams(ID, 1)
-        start = await getLiveTimes(vidID)
-        if (start!=null){
-        date = start[0]
-        time = moment(start[0])
-        }
-    } 
     
     var times = [time.tz('America/Los_Angeles').format('ha z'),
     time.tz('America/New_York').format('ha z'),
@@ -238,7 +225,7 @@ async function storeLiveTimes(ID, data, i){
     times.join("  ");
     console.log(times);
 
-    db.run(`INSERT INTO messages VALUES(?, ?, ?, ?, ?)`, [i+1, times, start[1], vidID, date], function(err) {
+    db.run(`INSERT INTO messages VALUES(?, ?, ?, ?, ?)`, [i+1, times, start[1], start[2], date], function(err) {
         if (err) {
           return console.log(err.message);
         }
@@ -248,8 +235,7 @@ async function storeLiveTimes(ID, data, i){
       });
         //await client.channels.cache.get(data[i].channel).send("<@&" + data[i].role + "> "+"https://www.youtube.com/watch?v="+vidID);
         //await client.channels.cache.get(data[i].channel).send("START TIME: "+times);
-    }
-    if(start==null){
+    } else {
         db.run(`INSERT INTO messages VALUES(?, ?, ?, ?, ?)`, [i+1, null, null, null, null], function(err) {
             if (err) {
               return console.log(err.message);
@@ -280,7 +266,7 @@ async function makeNoUpcomingEmbed(data, i){
                 .setAuthor(data[i].name)
                 .setDescription("NO UPCOMING STREAM");
 }
-
+//unused
 async function getLiveTimes(link, index){
     console.log("entered second loop");
     console.log("LINK: "+link);
@@ -301,9 +287,11 @@ async function getLiveTimes(link, index){
 
 }
 
-async function setStreams(id, index){
-        var c = 0;
-        var startTime = "";
+async function setStreams(id){
+        var c = 0
+        var startTime = ""
+        var dateArray = []
+        var results = []
         var response = await yt.search.list({
             "part": [
                 "id"
@@ -315,12 +303,32 @@ async function setStreams(id, index){
             "video"
             ]
             });
+            if(response.data.items[0]!=null){
             console.log("Response", response);
-            //for(var i in response.data.items) 
-            //{c++}
-            if(response.data.items[index]!=null&&response.data.items.length>=index+1){
-                return response.data.items[response.data.items.length-(index+1)].id.videoId;
-            } else { return null };
+            for(var i in response.data.items){
+                results.push(await yt.videos.list({
+                    "part": [
+                    "liveStreamingDetails, snippet"
+                ],
+                "id": [
+                    response.data.items[i].id.videoId
+                ] 
+                }))
+                console.log(results[i])
+            }
+
+            results.sort(function(a, b) {
+                return a.data.items[0].liveStreamingDetails.scheduledStartTime - b.data.items[0].liveStreamingDetails.scheduledStartTime;
+              });
+            console.log(results) 
+            now = new Date()
+            for (var index in results){
+                if(new Date(results[index].data.items[0].liveStreamingDetails.scheduledStartTime) > now){
+                    return([results[index].data.items[0].liveStreamingDetails.scheduledStartTime, results[index].data.items[0].snippet.title, results[index].data.items[0].id, results[index].data.items[0].snippet.thumbnails.default.url])
+                }
+            } 
+        } else {return null}
+            
 }
 
 async function getYoutubeData(callback){
@@ -357,6 +365,7 @@ async function getMessageData(args){
             })
 
 }
+
 async function displaySubData(data, message){
     for(var i in data){
         await message.channel.send(data[i].name_out + ": " + data[i].ytid + " " + data[i].channel + " " + data[i].role)
