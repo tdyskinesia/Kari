@@ -222,22 +222,14 @@ async function storeLiveTimes(ID, data, i){
     let now = new Date()
     let date = start[0]
     let time = moment(start[0])
-    if(curDate<now&&start.length>1){
+    if(curDate<now){
         console.log("YOUTUBE BUGGED")
         vidID = await setStreams(ID, 1)
         start = await getLiveTimes(vidID)
-        date = start[1]
-        time = moment(start[1])
-    } else {
-        db.run(`INSERT INTO messages VALUES(?, ?, ?, ?, ?)`, [i+1, null, null, null, null], function(err) {
-            if (err) {
-              return console.log(err.message);
-            }
-            // get the last insert id
-            console.log(`A row has been inserted with rowid ${this.lastID}`);
-            return this.lastID.toString();
-          });
-    }
+        date = start[0]
+        time = moment(start[0])
+    } 
+    
     var times = [time.tz('America/Los_Angeles').format('ha z'),
     time.tz('America/New_York').format('ha z'),
     time.tz('Asia/Tokyo').format('ha z')];   
@@ -285,7 +277,7 @@ async function makeNoUpcomingEmbed(data, i){
                 .setDescription("NO UPCOMING STREAM");
 }
 
-async function getLiveTimes(link){
+async function getLiveTimes(link, index){
     console.log("entered second loop");
     console.log("LINK: "+link);
     if(link!=null){
@@ -322,7 +314,7 @@ async function setStreams(id, index){
             console.log("Response", response);
             //for(var i in response.data.items) 
             //{c++}
-            if(response.data.items[index]!=null){
+            if(response.data.items[index]!=null&&response.data.items.length>=index+1){
                 return response.data.items[response.data.items.length-(index+1)].id.videoId;
             } else { return null };
 }
