@@ -354,11 +354,11 @@ async function getYoutubeData(callback){
 async function getMessageData(args){
     let db = new sqlite.Database('./db/database.db')
             
-    db.run(`SELECT start_date date FROM messages WHERE video_link = ?`, [args[1]], function(err, row){
+    db.get(`SELECT start_date date FROM messages WHERE id = ?`, [args[1]], function(err, row){
         if(err){
                     console.error(err.message);
             }
-            var date = new Date(row.date)
+            let date = new Date(row.date)
             return new Date(date.setMinutes(date.getMinutes()+args[0]))
             })
 
@@ -436,7 +436,7 @@ client.on('message', message =>{
             if(args.length==2){
             let db = new sqlite.Database('./db/database.db')
             date = getMessageData(args)
-            let sql = `UPDATE messages SET start_date = ? WHERE video_link = ?`;
+            let sql = `UPDATE messages SET start_date = ? WHERE id = ?`;
 
             db.run(sql, [date, args[1]], function(err){
                 if(err){
