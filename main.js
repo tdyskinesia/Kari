@@ -430,7 +430,9 @@ client.on('message', message =>{
             }
            });
         }
-        else if(command === 'timeset'){
+    } 
+    if (message.member.permissions.has("MENTION_EVERYONE")){
+        if(command === 'timeset'){
             if(args.length==2){
             let db = new sqlite.Database('./db/database.db')
             date = getMessageData(args)
@@ -458,7 +460,29 @@ client.on('message', message =>{
             }
             });
         }
+        else if (command === 'displaymsgs'){
+            getYoutubeData(async function(err, data){
+                if(err){
+                    console.error(err.message)
+                } else {
+                    let db = new sqlite.Database('./db/database.db');
+                    let sql = 'SELECT id rowID, start_time time, video_title title, video_link link, start_date date FROM messages ORDER BY id';
+                    db.all(sql, [], (err, rows) => {
+                        if (err) {
+                          throw err;
+                        }
+                        rows.forEach((row) => {
+                            console.log("Outputting row " + row.rowID)
+                            message.channel.send(row.rowID + " " + data[row.rowID-1].name_out + ": " + row.title + " " + row.time + " " + row.date + "<https://www.youtube.com/watch?v=" + row.link+">")
+
+                        });
+                    });
+
+                }
+            });
+        }
     }
+    
 });
 
 client.login(process.env.TOKEN);
