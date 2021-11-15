@@ -114,7 +114,6 @@ function sleep(ms) {
   }
 
 function checkForPosts(){
-    var index = 0
     var toDelete = []
     console.log("CHECKING FOR MESSAGES NOW")
     getYoutubeData(async function(err, data){
@@ -122,7 +121,7 @@ function checkForPosts(){
             console.log(err);
         } else {
             let db = new sqlite.Database('./db/database.db');
-            let sql = 'SELECT start_time time, video_title title, video_link link, start_date date FROM messages ORDER BY id';   
+            let sql = 'SELECT id rowID, start_time time, video_title title, video_link link, start_date date FROM messages ORDER BY id';   
     db.all(sql, [], (err, rows) => {
         if (err) {
           throw err;
@@ -144,11 +143,10 @@ function checkForPosts(){
             console.log(now)
             if(curDate.setMinutes(curDate.getMinutes()-15) < now){
                 console.log("SENDING MESSAGE NOW")
-                client.channels.cache.get(data[index].channel).send("HEY <@&" + data[index].role + "> " +data[index].name_out + " IS STREAMING IN 15 MINUTES\nWATCH THEM AT https://www.youtube.com/watch?v="+row.link);
-                toDelete.push(index+1)
+                client.channels.cache.get(data[row.rowID-1].channel).send("HEY <@&" + data[row.rowID-1].role + "> " +data[row.rowID-1].name_out + " IS STREAMING IN 15 MINUTES\nWATCH THEM AT https://www.youtube.com/watch?v="+row.link);
+                toDelete.push(row.rowID)
             }
         }
-            index++;
         });
         console.log(toDelete)
     for(var i in toDelete){
