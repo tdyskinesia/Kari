@@ -356,10 +356,9 @@ async function getMessageData(args){
             
     db.get(`SELECT start_date date FROM messages WHERE id = ?`, [args[1]], function(err, row){
         if(err){
-                    console.error(err.message);
+                return console.error(err.message);
             }
-            let date = new Date(row.date)
-            return new Date(date.setMinutes(date.getMinutes()+args[0]))
+            return row;
             })
 
 }
@@ -435,9 +434,11 @@ client.on('message', message =>{
         if(command === 'timeset'){
             if(args.length==2){
             let db = new sqlite.Database('./db/database.db')
-            date = getMessageData(args)
+            
+            let row = getMessageData(args)
+            let date = new Date(new Date(row.date).setMinutes(new Date(row.date).getMinutes()+args[0]))
             let sql = `UPDATE messages SET start_date = ? WHERE id = ?`;
-
+            
             db.run(sql, [date, args[1]], function(err){
                 if(err){
                     console.error(err.message);
