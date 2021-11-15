@@ -7,7 +7,7 @@ const {google} = require('googleapis');
 
 const yt = google.youtube({
     version: 'v3',
-    auth: "AIzaSyDgRAgUtiUmPxF-az5HpTpLU6TnhxokU_4"
+    auth: "AIzaSyBPY0_LA0G7jd3o2YH22SVxfLESjxTTvRA"
 })
 
 const { MessageEmbed } = require('discord.js');
@@ -436,9 +436,7 @@ client.on('message', message =>{
             if(args.length==2){
             let db = new sqlite.Database('./db/database.db')
             date = getMessageData(args)
-            let sql = `UPDATE messages
-            SET date = ?
-            WHERE video_link = ?`;
+            let sql = `UPDATE messages SET start_date = ? WHERE video_link = ?`;
 
             db.run(sql, [date, args[1]], function(err){
                 if(err){
@@ -465,6 +463,7 @@ client.on('message', message =>{
                 if(err){
                     console.error(err.message)
                 } else {
+                    sleep(2000)
                     let db = new sqlite.Database('./db/database.db');
                     let sql = 'SELECT id rowID, start_time time, video_title title, video_link link, start_date date FROM messages ORDER BY id';
                     db.all(sql, [], (err, rows) => {
@@ -472,8 +471,10 @@ client.on('message', message =>{
                           throw err;
                         }
                         rows.forEach((row) => {
+                            if (row.time!=null){
                             console.log("Outputting row " + row.rowID)
                             message.channel.send(row.rowID + " " + data[row.rowID-1].name_out + ": " + row.title + " " + row.time + " " + row.date + "<https://www.youtube.com/watch?v=" + row.link+">")
+                            }
 
                         });
                     });
