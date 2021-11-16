@@ -515,11 +515,14 @@ client.on('message', message =>{
         if(command === 'seticon'){
             var image = message.attachments
             var link = image.first().url
+            if(image.first().size>256,000){
             if(message.member.roles.cache.has(args[0])){
                 const role = message.guild.roles.cache.get(args[0])
                 role.setIcon(link)
-                message.channel.send(image.first().url)
                 message.channel.send("Role Icon Set")
+            }else{
+                message.channel.send("Image file size error (over 256kb)")
+            }
         } else {
             message.channel.send("You do not have that role ID")
         }
