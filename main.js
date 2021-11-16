@@ -524,6 +524,7 @@ client.on('message', message =>{
         if(command === 'seticon'){
             var image = message.attachments
             var link = image.first().url
+            
             if(image.first().size<256,000){
             if(message.member.roles.cache.has(args[0])){
                 const role = message.guild.roles.cache.get(args[0])
