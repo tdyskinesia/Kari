@@ -7,7 +7,7 @@ const {google} = require('googleapis');
 
 const yt = google.youtube({
     version: 'v3',
-    auth: "AIzaSyDo7SrFpDXx7KBbb9rVFPka608L-Hsv4jM"
+    auth: "AIzaSyBPY0_LA0G7jd3o2YH22SVxfLESjxTTvRA"
 })
 
 const { MessageEmbed } = require('discord.js');
@@ -191,7 +191,7 @@ async function outputLiveTimes(data){
           console.log(row.time, row.title, row.link)
 
           if (row.time != null){
-            channel.send({embeds: {
+            channel.send({embeds: [{
                 type: "rich",
                 title: "NEXT UPCOMING STREAM",
                 color: '2b7d14',
@@ -204,10 +204,10 @@ async function outputLiveTimes(data){
                     name: data[index].name_out,
                     url: "https://www.youtube.com/channel/" + data[index].ytid
                 }
-            }
+            }]
         });  
             } else {
-                channel.send({embeds: {
+                channel.send({embeds: [{
                     type: "rich",
                     title: "NEXT UPCOMING STREAM",
                     color: '911c1c',
@@ -216,7 +216,7 @@ async function outputLiveTimes(data){
                         name: data[index].name_out,
                         url: "https://www.youtube.com/channel/" + data[index].ytid
                     }
-                }
+                }]
             });
             }
             index++;
