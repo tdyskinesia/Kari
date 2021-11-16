@@ -355,7 +355,7 @@ async function getMessageData(callback){
     let db = new sqlite.Database('./db/database.db')
             
     var curArray = [];
-    
+    let sql = 'SELECT start_date date FROM messages ORDER BY id'
     db.all(sql, [], (err, rows) =>{
         if(err){
             console.error(err.message);
