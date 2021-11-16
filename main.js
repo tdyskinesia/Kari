@@ -76,7 +76,6 @@ client.once('ready', async () =>{
     console.log(process.env.B);
     console.log(today.getMinutes());
     console.log(today.getHours());
-    client.user.setStatus('Aria', {type: 'WATCHING'});
     var initialJob = new CronJob('0 */3 * * *', function() {
         console.log("I AM UPDATING STREAM TIMES NOW");
         var data = [];
