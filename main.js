@@ -351,15 +351,23 @@ async function getYoutubeData(callback){
 
 }
 
-async function getMessageData(args){
+async function getMessageData(callback){
     let db = new sqlite.Database('./db/database.db')
             
-    db.get(`SELECT start_date date FROM messages WHERE id = ?`, [args[1]], function(err, row){
+    var curArray = [];
+    
+    db.all(sql, [], (err, rows) =>{
         if(err){
-                return console.error(err.message);
-            }
-            return row;
-            })
+            console.error(err.message);
+            return callback(err);
+        }
+        rows.forEach((row)=> {
+            curArray.push(row);
+            console.log(curArray);
+        })
+        db.close();
+        callback(null, curArray);
+    })
 
 }
 
@@ -433,10 +441,14 @@ client.on('message', message =>{
     if (message.member.permissions.has("MENTION_EVERYONE")){
         if(command === 'timeset'){
             if(args.length==2){
+            getYoutubeData(async function(err, row){
+            if(err){
+                console.error(err.message)
+            } else {
+            
             let db = new sqlite.Database('./db/database.db')
             
-            let row = getMessageData(args)
-            let date = new Date(new Date(row.date).setMinutes(new Date(row.date).getMinutes()+args[0]))
+            let date = new Date(new Date(row[parseInt(args[1])-1].date).setMinutes(new Date(row[parseInt(args[1])-1].date).getMinutes()+args[0]))
             let sql = `UPDATE messages SET start_date = ? WHERE id = ?`;
             
             db.run(sql, [date, args[1]], function(err){
@@ -444,10 +456,13 @@ client.on('message', message =>{
                     console.error(err.message);
                 }
             })
+            }
+        });
             } else {
                 message.channel.send("You fucked up I think bro.")
             }
         }
+        
         else if(command === 'displaysubs'){
             getYoutubeData(async function(err, data){
             if(err){
