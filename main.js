@@ -542,7 +542,9 @@ client.on('message', message =>{
         message.delete()
     }
     else if(command === 'help'){
-        message.channel.send(`Kari Commands
+        message.channel.send(`
+        Kari Commands
+
         Mod Commands
         k!setup <talent name> <YouTube channel ID> <live channel id> <role id>
         - subs talent to automatic updates
@@ -557,6 +559,7 @@ client.on('message', message =>{
         k!displaymsgs - displays current upcoming notifications for streams and their rowID for timeset
         Booster Commands
         k!seticon <role id> - changes role icon for your copa role id (find role id by right clicking your role if you have developer enabled)
+        
         General Commands
         k!help - displays this
         k!deeznuts - what do you think this does?`)
