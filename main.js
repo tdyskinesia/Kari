@@ -22,7 +22,14 @@ const Discord = require('discord.js');
 
 const { Client, Intents } = require('discord.js');
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS],
+presence: {
+    status: 'online',
+    activity: {
+        name: 'Aria',
+        type: 'WATCHING',
+    }
+} });
 
 
 const prefix = 'k!';
@@ -61,6 +68,7 @@ for(const file of commandFiles){
 
     client.commands.set(command.name, command);
 }
+
 
 client.once('ready', async () =>{
     console.log('Online');
