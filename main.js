@@ -521,10 +521,10 @@ client.on('message', message =>{
                 role.setIcon(link)
                 message.channel.send("Role Icon Set")
             }else{
-                message.channel.send("Image file size error (over 256kb)")
+                message.channel.send("You do not have that role ID")
             }
         } else {
-            message.channel.send("You do not have that role ID")
+            message.channel.send("Image file size error (over 256kb)")
         }
 
         }
