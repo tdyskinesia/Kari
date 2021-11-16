@@ -76,6 +76,14 @@ client.once('ready', async () =>{
     console.log(process.env.B);
     console.log(today.getMinutes());
     console.log(today.getHours());
+    client.user.setPresence({
+        status: 'available',
+        activity: {
+            name: 'Aria',
+            type: 'WATCHING',
+            url: 'https://www.youtube.com/channel/UCKJexadCeNo3lu0U20skmNg'
+        }
+    });
     var initialJob = new CronJob('0 */3 * * *', function() {
         console.log("I AM UPDATING STREAM TIMES NOW");
         var data = [];
@@ -542,10 +550,16 @@ client.on('message', message =>{
         k!clearmsgs - clears all scheduled stream notifications
         k!bupdate - forces an update to the bulletin
         k!clearsub <live channel id> - clears a talent from live scheduling
+
         Tagger Commands
         k!timeset <minutes> <rowID> manually adds minutes to a previously scheduled notification (to use if a stream is manually rescheduled)
         k!displaysubs - displays current sub list
-        k!displaymsgs - displays current upcoming notifications for streams and their rowID for timeset`)
+        k!displaymsgs - displays current upcoming notifications for streams and their rowID for timeset
+        Booster Commands
+        k!seticon <role id> - changes role icon for your copa role id (find role id by right clicking your role if you have developer enabled)
+        General Commands
+        k!help - displays this
+        k!deeznuts - what do you think this does?`)
     }
     
 });
