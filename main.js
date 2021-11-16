@@ -514,9 +514,11 @@ client.on('message', message =>{
     if(message.member.roles.cache.has('835813294152744982')||message.member.permissions.has("BAN_MEMBERS")){
         if(command === 'seticon'){
             var image = message.attachments
+            var link = image.first().url
             if(message.member.roles.cache.has(args[0])){
                 const role = message.guild.roles.cache.get(args[0])
-                role.setIcon(image.first().url)
+                role.setIcon(link)
+                message.channel.send(image.first().url)
                 message.channel.send("Role Icon Set")
         } else {
             message.channel.send("You do not have that role ID")
