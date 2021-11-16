@@ -1,6 +1,9 @@
 {
   "name": "discordbot",
   "version": "1.0.0",
+  "engines": {
+    "node": "16.6.0"
+  },
   "description": "",
   "main": "main.js",
   "scripts": {

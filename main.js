@@ -60,7 +60,6 @@ for(const file of commandFiles){
     client.commands.set(command.name, command);
 }
 
-
 client.once('ready', async () =>{
     console.log('Online');
     console.log(process.env.A);
