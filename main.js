@@ -7,7 +7,7 @@ const {google} = require('googleapis');
 
 const yt = google.youtube({
     version: 'v3',
-    auth: "AIzaSyBPY0_LA0G7jd3o2YH22SVxfLESjxTTvRA"
+    auth: "AIzaSyDo7SrFpDXx7KBbb9rVFPka608L-Hsv4jM"
 })
 
 const { MessageEmbed } = require('discord.js');
@@ -441,15 +441,17 @@ client.on('message', message =>{
     if (message.member.permissions.has("MENTION_EVERYONE")){
         if(command === 'timeset'){
             if(args.length==2){
-            getYoutubeData(async function(err, row){
+            getMessageData(async function(err, row){
             if(err){
                 console.error(err.message)
             } else {
             
             let db = new sqlite.Database('./db/database.db')
-            
-            let date = new Date(new Date(row[parseInt(args[1])-1].date).setMinutes(new Date(row[parseInt(args[1])-1].date).getMinutes()+args[0]))
-            let sql = `UPDATE messages SET start_date = ? WHERE id = ?`;
+            let d1 = new Date(row[parseInt(args[1])-1].date)
+            d1.setMinutes(d1.getMinutes()+parseInt(args[0]))
+            let sql = `UPDATE messages 
+            SET start_date = ? 
+            WHERE id = ?`;
             
             db.run(sql, [date, args[1]], function(err){
                 if(err){
