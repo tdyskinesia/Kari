@@ -181,6 +181,7 @@ async function outputLiveTimes(data){
 
     let sql = 'SELECT start_time time, video_title title, video_link link, start_date date FROM messages ORDER BY id';
     var index = 0;
+    const channel = client.channels.cache.get('908671236895305760')
     // first row only
     db.all(sql, [], (err, rows) => {
         if (err) {
@@ -190,7 +191,7 @@ async function outputLiveTimes(data){
           console.log(row.time, row.title, row.link)
 
           if (row.time != null){
-            client.channels.cache.get('908671236895305760').send({embed: {
+            channel.send({embeds: {
                 type: "rich",
                 title: "NEXT UPCOMING STREAM",
                 color: '2b7d14',
@@ -206,7 +207,7 @@ async function outputLiveTimes(data){
             }
         });  
             } else {
-                client.channels.cache.get('908671236895305760').send({embed: {
+                channel.send({embeds: {
                     type: "rich",
                     title: "NEXT UPCOMING STREAM",
                     color: '911c1c',
