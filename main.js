@@ -453,7 +453,7 @@ client.on('message', message =>{
             SET start_date = ? 
             WHERE id = ?`;
             
-            db.run(sql, [date, args[1]], function(err){
+            db.run(sql, [d1.toISOString(), args[1]], function(err){
                 if(err){
                     console.error(err.message);
                 }
