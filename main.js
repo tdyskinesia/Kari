@@ -67,6 +67,7 @@ client.once('ready', async () =>{
     console.log(process.env.B);
     console.log(today.getMinutes());
     console.log(today.getHours());
+    client.user.setStatus('Aria', {type: 'WATCHING'});
     var initialJob = new CronJob('0 */3 * * *', function() {
         console.log("I AM UPDATING STREAM TIMES NOW");
         var data = [];
@@ -170,7 +171,8 @@ async function outputLiveTimes(data){
           throw err;
         }
         rows.forEach((row) => {
-          console.log(row.time, row.title, row.link);
+          console.log(row.time, row.title, row.link)
+
           if (row.time != null){
             client.channels.cache.get('908671236895305760').send({embed: {
                 type: "rich",
@@ -500,6 +502,37 @@ client.on('message', message =>{
                 }
             });
         }
+    }
+    if(message.member.roles.cache.has('835813294152744982')||message.member.permissions.has("BAN_MEMBERS")){
+        if(command === 'seticon'){
+            var image = message.attachments
+            if(message.member.roles.cache.has(args[0])){
+                const role = message.guild.roles.cache.get(args[0])
+                role.setIcon(image.first().url)
+                message.channel.send("Role Icon Set")
+        } else {
+            message.channel.send("You do not have that role ID")
+        }
+
+        }
+    }
+    if(command === 'deeznuts'){
+        message.channel.send("deez nuts")
+        message.delete()
+    }
+    else if(command === 'help'){
+        message.channel.send(`Kari Commands
+        Mod Commands
+        k!setup <talent name> <YouTube channel ID> <live channel id> <role id>
+        - subs talent to automatic updates
+        k!ping - checks if bot is alive by returning the next upcoming feesh stream
+        k!clearmsgs - clears all scheduled stream notifications
+        k!bupdate - forces an update to the bulletin
+        k!clearsub <live channel id> - clears a talent from live scheduling
+        Tagger Commands
+        k!timeset <minutes> <rowID> manually adds minutes to a previously scheduled notification (to use if a stream is manually rescheduled)
+        k!displaysubs - displays current sub list
+        k!displaymsgs - displays current upcoming notifications for streams and their rowID for timeset`)
     }
     
 });
