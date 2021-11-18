@@ -6,9 +6,9 @@ const statusOptions = [
     'Charlotte Suzu',
     'Aruru Gray',
     'Shee Icho',
-    'Namiji Freezia',
+    'Namiji Freesia',
     'Lua Asuka',
-    'Neena Murakamo'
+    'Neena Makurano'
 ]
 let counter = 0
 
