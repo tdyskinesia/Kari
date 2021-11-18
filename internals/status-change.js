@@ -1,7 +1,5 @@
-import {Client} from 'discord.js';
-
 module.exports = (client) => {
-    
+import {Client} from 'discord.js';
 const statusOptions = [
     'Reina Sun',
     'Nene Amano',
