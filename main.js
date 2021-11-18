@@ -24,6 +24,7 @@ const { Client, Intents } = require('discord.js');
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS] });
 
+const statusChange = require('./internals/status-change.js')
 
 const prefix = 'k!';
 
@@ -69,13 +70,7 @@ client.once('ready', async () =>{
     console.log(process.env.B);
     console.log(today.getMinutes());
     console.log(today.getHours());
-    client.user.setPresence({
-        activities: [{
-            name: 'Aria',
-            type: 'WATCHING'
-        }],
-        status: 'online'
-    });
+    statusChange(client);
     var initialJob = new CronJob('0 */3 * * *', function() {
         console.log("I AM UPDATING STREAM TIMES NOW");
         var data = [];
