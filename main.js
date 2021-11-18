@@ -22,14 +22,7 @@ const Discord = require('discord.js');
 
 const { Client, Intents } = require('discord.js');
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS],
-presence: {
-    status: 'online',
-    activity: {
-        name: 'Aria',
-        type: 'WATCHING',
-    }
-} });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS] });
 
 
 const prefix = 'k!';
@@ -77,12 +70,11 @@ client.once('ready', async () =>{
     console.log(today.getMinutes());
     console.log(today.getHours());
     client.user.setPresence({
-        status: 'available',
-        activity: {
+        activities: [{
             name: 'Aria',
-            type: 'WATCHING',
-            url: 'https://www.youtube.com/channel/UCKJexadCeNo3lu0U20skmNg'
-        }
+            type: 'WATCHING'
+        }],
+        status: 'online'
     });
     var initialJob = new CronJob('0 */3 * * *', function() {
         console.log("I AM UPDATING STREAM TIMES NOW");
