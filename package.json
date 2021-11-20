@@ -24,6 +24,7 @@
     "gapi": "^0.0.3",
     "googleapis": "^89.0.0",
     "moment-timezone": "^0.5.33",
+    "mongoose": "^6.0.13",
     "sql": "^0.78.0",
     "sqlite3": "^5.0.2",
     "website-scraper": "^4.2.3"

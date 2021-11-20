@@ -7,7 +7,7 @@ const {google} = require('googleapis');
 
 const yt = google.youtube({
     version: 'v3',
-    auth: "AIzaSyBPY0_LA0G7jd3o2YH22SVxfLESjxTTvRA"
+    auth: "AIzaSyAGS-DmnHW9D1iC2L60GwwdSW_fc7SJqFk"
 })
 
 const { MessageEmbed } = require('discord.js');
@@ -20,11 +20,17 @@ const moment = require('moment-timezone');
 
 const Discord = require('discord.js'); 
 
+const mongoose = require('mongoose');
+
 const { Client, Intents } = require('discord.js');
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS] });
 
-const statusChange = require('./internals/status-change.js')
+const statusChange = require('./internals/status-change.js');
+
+const displayYoutubeIDs = require('./internals/set-streams.js');
+
+const talentSchema  = require('./data/talentSchema.js')
 
 const prefix = 'k!';
 
@@ -66,10 +72,12 @@ for(const file of commandFiles){
 
 client.once('ready', async () =>{
     console.log('Online');
-    console.log(process.env.A);
-    console.log(process.env.B);
-    console.log(today.getMinutes());
-    console.log(today.getHours());
+    await mongoose.connect(process.env.mongooseConnectionString || '', {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+        keepAlive: true
+    }).then(console.log("Connected to mongodb"));
+    console.log(talentSchema.talent.find())
     statusChange(client);
     var initialJob = new CronJob('0 */3 * * *', function() {
         console.log("I AM UPDATING STREAM TIMES NOW");
@@ -443,6 +451,13 @@ client.on('message', message =>{
             }
            });
         }
+        else if(command === 'newsetup'){
+            client.commands.get('new setup').execute(message, args)
+        }
+        else if (command === 'experimentalset'){
+            console.log("here")
+            displayYoutubeIDs.ex(message)
+        }
     } 
     if (message.member.permissions.has("MENTION_EVERYONE")){
         if(command === 'timeset'){
@@ -556,6 +571,12 @@ client.on('message', message =>{
     }
     
 });
+
+//mongoose
+
+
+
+
 
 client.login(process.env.TOKEN);
 db.close();
