@@ -43,7 +43,7 @@ var talentList = [];
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-const maintenance = true;
+const maintenance = false;
 
 let db = new sqlite.Database('./db/database.db');
 
