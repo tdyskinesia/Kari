@@ -7,7 +7,7 @@ const {google} = require('googleapis');
 
 const yt = google.youtube({
     version: 'v3',
-    auth: "AIzaSyAGS-DmnHW9D1iC2L60GwwdSW_fc7SJqFk"
+    auth: "AIzaSyBPY0_LA0G7jd3o2YH22SVxfLESjxTTvRA"
 })
 
 const { MessageEmbed } = require('discord.js');
@@ -42,6 +42,8 @@ client.commands = new Discord.Collection();
 var talentList = [];
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+const maintenance = true;
 
 let db = new sqlite.Database('./db/database.db');
 
@@ -78,7 +80,7 @@ client.once('ready', async () =>{
         keepAlive: true
     }).then(console.log("Connected to mongodb"));
     console.log(talentSchema.talent.find())
-    statusChange(client);
+    statusChange(client, maintenance);
     var initialJob = new CronJob('0 */3 * * *', function() {
         console.log("I AM UPDATING STREAM TIMES NOW");
         var data = [];
@@ -456,7 +458,13 @@ client.on('message', message =>{
         }
         else if (command === 'experimentalset'){
             console.log("here")
-            displayYoutubeIDs.ex(message)
+            displayYoutubeIDs.queryTalents(message)
+        }
+        else if (command === 'experimentallive'){
+            displayYoutubeIDs.getYoutubeLive(message)
+        }
+        else if (command === 'experimentalstreams'){
+            displayYoutubeIDs.displayStreams(message)
         }
     } 
     if (message.member.permissions.has("MENTION_EVERYONE")){

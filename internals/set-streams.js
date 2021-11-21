@@ -11,6 +11,9 @@ const yt = google.youtube({
     auth: "AIzaSyAGS-DmnHW9D1iC2L60GwwdSW_fc7SJqFk"
 })
 
+const https = require('https');
+
+//unused
 const queryAllUsers = () => {
     //Where User is you mongoose user model
     talentSchema.talent.find({} , (err, talents) => {
@@ -24,6 +27,7 @@ const queryAllUsers = () => {
 
 const youtube = async(talent) => {
     var results = []
+    var streams = []
     var response = await yt.search.list({
         "part": [
             "id"
@@ -57,32 +61,62 @@ const youtube = async(talent) => {
         for (var i in results){console.log(results[i].data.items[0].liveStreamingDetails.scheduledStartTime) }
         now = new Date()
         for (var index in results){
-            if(new Date(results[index].data.items[0].liveStreamingDetails.scheduledStartTime) > now){
                 //return([results[index].data.items[0].liveStreamingDetails.scheduledStartTime, results[index].data.items[0].snippet.title, results[index].data.items[0].id, results[index].data.items[0].snippet.thumbnails.default.url])
-                return(talentSchema.stream({
+            if(new Date(results[index].data.items[0].liveStreamingDetails.scheduledStartTime) > now){
+            streams.push(talentSchema.stream({
                     streamName: results[index].data.items[0].snippet.title,
                     startTime: results[index].data.items[0].liveStreamingDetails.scheduledStartTime,
                     videoID: results[index].data.items[0].id,
                     thumbnailUrl: results[index].data.items[0].snippet.thumbnails.default.url
-                }).save())
-            } 
-
+                }))
+            }
         } 
-    } else {return null}
+        return streams;
+    } else {return []}
 
 }
 
+const checkHeader = async(ID, message) => {
+    var bool;
+        https.request(`https://www.youtube.com/channel/${ID}/live`, { method: 'HEAD' }, async(res) => {
+            console.log(res.statusCode)
+            await message.channel.send(`Status Code: ${res.statusCode.toString()} \nHeader Length: ${res.headers['content-length']}`)
+            if(res.headers['content-length']>400000){
+                bool = true
+            } else bool = false;
+            }).on('error', (err) => {
+            console.error(err);
+            }).end();
+            return bool;
+}
+
 module.exports = {
-    async ex(message){
+    async queryTalents(message){
 
         for await (const talent of talentSchema.talent.find()){
             console.log(talent.youtubeID)
-            talent.upcomingStream = await youtube(talent)
-            await message.channel.send(talent.name + ": " + talent.youtubeID +"\n" + talent.upcomingStream.streamName + " " + talent.upcomingStream.startTime)
+            talent.upcomingStreams = await youtube(talent)
+            await message.channel.send(talent.name + ": " + talent.youtubeID +"\n" + talent.upcomingStreams)
+            await talent.save();
         }
         console.log(talentSchema.talent.find())
         
     },
-    query: queryAllUsers()
+    getYoutubeLive(message) {
+        const iterate = async() => {
+            for await (const talent of talentSchema.talent.find()){
+                if(checkHeader(talent.youtubeID, message)){
+                   message.channel.send(talent.name+ " is live");
+                } else message.channel.send(talent.name+ " is not live");
+            }
+            setTimeout(iterate, 1000 * 30)
+        }
+        iterate()
+    },
+    async displayStreams(message){
+        for await (const talent of talentSchema.talent.find({guildID: message.guild.id})){
+
+        }
+    }
 }
 

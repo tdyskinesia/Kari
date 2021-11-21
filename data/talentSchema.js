@@ -44,8 +44,8 @@ const talent = new mongoose.Schema({
         type: String,
         required: true
     },
-    upcomingStream: {
-        type: stream,
+    upcomingStreams: {
+        type: [stream],
         required: false
     },
     liveStream: {
@@ -53,7 +53,7 @@ const talent = new mongoose.Schema({
         required: false
     },
     pastStreams: {
-        type: Array,
+        type: [stream],
         required: false
     }
 })
