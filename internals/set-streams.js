@@ -13,6 +13,10 @@ const yt = google.youtube({
 
 const https = require('https');
 
+const { parse } = require('node-html-parser')
+const fetch = require('node-fetch');
+const { stream } = require('../data/talentSchema');
+
 //unused
 const queryAllUsers = () => {
     //Where User is you mongoose user model
@@ -77,8 +81,26 @@ const youtube = async(talent) => {
 }
 
 const checkHeader = async(ID, message) => {
-    var bool;
-        https.request(`https://www.youtube.com/channel/${ID}/live`, { method: 'HEAD' }, async(res) => {
+
+
+    const response = await fetch(`https://youtube.com/channel/${ID}/live`)
+    const text = await response.text()
+    const html = parse(text, {blockTextElements: {
+        script: true,	// keep text content when parsing
+        noscript: true,	// keep text content when parsing
+        style: true,		// keep text content when parsing
+        pre: true			// keep text content when parsing
+      }})
+    console.log(html)
+    const canonicalURLTag = html.querySelector('link[rel=canonical]')
+    const streamTag = html.querySelector('.style-scope ytd-video-primary-info-renderer')
+    const streamCheck = streamTag.getAttribute('Started Streaming')
+    const canonicalURL = canonicalURLTag.getAttribute('href')
+    const isStreaming = canonicalURL.includes('/watch?v=')
+    await message.channel.send("href = "+canonicalURL + "\n" + streamCheck)
+    return isStreaming;
+
+        /*https.request(`https://www.youtube.com/channel/${ID}/live`, { method: 'HEAD' }, async(res) => {
             console.log(res.statusCode)
             await message.channel.send(`Status Code: ${res.statusCode.toString()} \nHeader Length: ${res.headers['content-length']}`)
             if(res.headers['content-length']>400000){
@@ -86,8 +108,8 @@ const checkHeader = async(ID, message) => {
             } else bool = false;
             }).on('error', (err) => {
             console.error(err);
-            }).end();
-            return bool;
+            }).end();*/
+    
 }
 
 module.exports = {
@@ -105,7 +127,7 @@ module.exports = {
     getYoutubeLive(message) {
         const iterate = async() => {
             for await (const talent of talentSchema.talent.find()){
-                if(checkHeader(talent.youtubeID, message)){
+                if(await checkHeader(talent.youtubeID, message)){
                    message.channel.send(talent.name+ " is live");
                 } else message.channel.send(talent.name+ " is not live");
             }
