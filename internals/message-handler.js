@@ -12,12 +12,14 @@ const iterate = async(client) => {
             let curDate = new Date(stream.startTime) 
             if(curDate.setMinutes(curDate.getMinutes()-15) < new Date()){
                 await (await guild.channels.cache.get(talent.liveChannelID)).send(`Hey ${talent.roleID}! ${talent.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${stream.videoID}`)
-                arr.push([talent._id, stream._id])
+                arr.push([talent.id, stream.id])
+                console.log(arr)
             }
         });
         await talent.save();
    }
-   for(var i of arr){
+
+   for await(var i of arr){
     talentSchema.talent.findOneAndUpdate({_id: arr[i][0]}, {
         $pull: {
             'upcomingStreams':{ _id: arr[i][1] } 
