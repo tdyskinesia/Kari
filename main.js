@@ -103,7 +103,7 @@ client.once('ready', async () =>{
     }, null, true, 'America/New_York');
 
     messageHandler.notify(client);
-
+    setInterval(messageHandler.notify.bind(null, client), 1000 * 30);
 });
 {//ALL DEPRECATED FUNCTIONS
 /*
