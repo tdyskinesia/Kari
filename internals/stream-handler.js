@@ -177,7 +177,7 @@ module.exports = {
         }
     },
     async timeChange(message, args){
-        await talentSchema.stream.find({videoID: args[0]}, async (res, err) => {
+        await talentSchema.stream.find({videoID: args[0]}, async (err, res) => {
             for await(const stream of res){
                 await message.channel.send("Original ISO: "+stream.startTime)
                 let curDate = new Date(stream.startTime)
