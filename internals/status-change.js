@@ -1,4 +1,4 @@
-module.exports = (client, bool) => {
+module.exports = (client) => {
 const statusOptions = [
     'Reina Sun',
     'Nene Amano',
@@ -15,7 +15,6 @@ const statusOptions = [
 let counter = 0
 
 const updateStatus = () => {
-    if(!bool){
     client.user.setPresence({
         status: 'online',
         activities: [
@@ -25,23 +24,13 @@ const updateStatus = () => {
             }
         ]
     })
-} else {
-    client.user.setPresence({
-        status: 'online',
-        activities: [
-            {
-                name: 'UNDERGOING MAINTENANCE',
-                type: 'PLAYING'
-            }
-        ]
-    })
 }
 
     if(++counter >= statusOptions.length){
         counter = 0;
     }
     setTimeout(updateStatus, 1000 * 20)
-}
+
 updateStatus()
 
     
