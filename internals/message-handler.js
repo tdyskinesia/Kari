@@ -22,7 +22,7 @@ const iterate = async(client) => {
    }
 }
 
-setTimeout(iterate, 1000 * 30);
+setInterval(iterate, 1000 * 30);
 
 module.exports = {
 notify(client) {
