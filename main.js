@@ -47,7 +47,7 @@ var talentList = [];
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-const maintenance = true;
+const maintenance = false;
 
 for(const file of commandFiles){
     const command = require(`./commands/${file}`);
