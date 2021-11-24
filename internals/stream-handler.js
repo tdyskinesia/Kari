@@ -136,7 +136,13 @@ module.exports = {
             }).catch((e)=>{
                 console.log(e)
             })
+            if(embedArray.length>10){
+                for(let i = 0; i <= (embedArray.length/10)+1; i+=10){
+                    await channel.send({embeds: embedArray.slice(i, i+9)})
+                }
+            } else {
             await channel.send({embeds: embedArray})
+            }
         
     },
     async queryTalents(message, client) {
