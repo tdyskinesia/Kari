@@ -99,7 +99,7 @@ module.exports = {
                 talent.upcomingStreams.forEach(async function(stream){
                     fieldArray.push({
                         name: stream.streamName,
-                        value: "In "+ (Math.round(Math.abs(new Date()-new Date(row.date))/3600000)) + " Hours\n**Waiting Room**\n" + "https://www.youtube.com/watch?v=" + stream.videoID
+                        value: "In "+ (Math.round(Math.abs(new Date()-new Date(stream.startTime))/3600000)) + " Hours\n**Waiting Room**\n" + "https://www.youtube.com/watch?v=" + stream.videoID
                     })
                 });
                 embedArray.push({
