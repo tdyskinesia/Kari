@@ -124,7 +124,7 @@ client.once('ready', async () =>{
     }, null, true, 'America/New_York');
 
     messageHandler.notify(client);
-    
+    setTimeout(messageHandler.notify, 1000 * 30) 
 
 });
 {//ALL DEPRECATED FUNCTIONS

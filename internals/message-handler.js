@@ -25,8 +25,7 @@ const iterate = async(client) => {
 module.exports = {
 async notify(client) {
     console.log("Checking for stream notifications now!")
-    await iterate(client)
-    setTimeout(iterate(client), 1000 * 30)  
+    await iterate(client) 
 },
 
 async clearNotifications(){
