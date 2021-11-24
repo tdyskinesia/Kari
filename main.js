@@ -457,8 +457,9 @@ client.on('message', message =>{
     if(message.member.roles.cache.has('835813294152744982')||message.member.permissions.has("BAN_MEMBERS")){
 
         if(command === 'seticon'){
-            if(message.attachments!=null){
+            
             var image = message.attachments
+            if(image.first()!=null){
             var link = image.first().url
 
             if(image.first().size<256000){
