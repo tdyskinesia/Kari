@@ -106,7 +106,7 @@ module.exports = {
                     fieldArray.push({
                         name: stream.streamName,
                         value: "In "+ (Math.round(Math.abs(new Date()-new Date(stream.startTime))/3600000)) + " Hours\n"+
-                        curStart.tz('America/Los_Angeles').format('ha z') + " | " + curStart.tz('America/New_York').format('ha z') + " | " + curStart.tz('Asia/Tokyo').format('ha z') + "\n"+
+                        curStart.tz('America/Los_Angeles').format('MM/DD/YYY HH:mm z') + " | " + curStart.tz('America/New_York').format('MM/DD/YYY HH:mm z') + " | " + curStart.tz('Asia/Tokyo').format('MM/DD/YYY HH:mm z') + "\n"+
                         "**Waiting Room**\n" + "https://www.youtube.com/watch?v=" + stream.videoID
                     })
                 });
