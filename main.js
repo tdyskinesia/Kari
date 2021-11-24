@@ -457,6 +457,7 @@ client.on('message', message =>{
     if(message.member.roles.cache.has('835813294152744982')||message.member.permissions.has("BAN_MEMBERS")){
 
         if(command === 'seticon'){
+            if(message.attachments!=null){
             var image = message.attachments
             var link = image.first().url
 
@@ -479,8 +480,9 @@ client.on('message', message =>{
             }
 
         } else {
-            message.channel.send("Image file size error (over 256kb)")
+            message.channel.send("Image file size error (over 256kb).")
         }
+    } else { message.channel.send("No file found.") }
 
         }
     }
@@ -500,7 +502,7 @@ client.on('message', message =>{
         "*k!clearsub <live channel id>* - clears a talent from live scheduling\n\n"+
 
         "**Tagger Commands**\n"+
-        "*k!timeset <video ID> <minutes>* manually adds minutes to a previously scheduled notification (to use if a stream is manually rescheduled)\n"+
+        "*k!timeset <video ID> <minutes>* - manually adds minutes to a previously scheduled notification (to use if a stream is manually rescheduled)\n"+
         "*k!displaysubs* - displays current sub list\n"+
         "*k!displaystreams* - displays current upcoming notifications for streams and their rowID for timeset\n\n"+
 

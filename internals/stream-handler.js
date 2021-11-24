@@ -14,6 +14,8 @@ const yt = google.youtube({
     auth: process.env.YT_AUTH
 })
 
+const moment = require('moment-timezone')
+
 const https = require('https');
 
 const { parse } = require('node-html-parser')
@@ -100,9 +102,12 @@ module.exports = {
             talent.upcomingStreams = await youtube(talent)
             if(talent.upcomingStreams.length>0){
                 talent.upcomingStreams.forEach(async function(stream){
+                    let curStart = moment(stream.startTime)
                     fieldArray.push({
                         name: stream.streamName,
-                        value: "In "+ (Math.round(Math.abs(new Date()-new Date(stream.startTime))/3600000)) + " Hours\n**Waiting Room**\n" + "https://www.youtube.com/watch?v=" + stream.videoID
+                        value: "In "+ (Math.round(Math.abs(new Date()-new Date(stream.startTime))/3600000)) + " Hours\n"+
+                        curStart.tz('America/Los_Angeles').format('ha z') + " | " + curStart.tz('America/New_York').format('ha z') + " | " + june.tz('Asia/Tokyo').format('ha z') + "\n"+
+                        "**Waiting Room**\n" + "https://www.youtube.com/watch?v=" + stream.videoID
                     })
                 });
                 embedArray.push({
