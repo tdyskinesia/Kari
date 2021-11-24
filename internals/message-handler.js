@@ -18,11 +18,11 @@ const iterate = async(client) => {
         });
         await talent.save();
    }
-
+   console.log(arr[0][0])
    for await(var i of arr){
     talentSchema.talent.findOneAndUpdate({_id: arr[i][0]}, {
         $pull: {
-            'upcomingStreams':{ _id: arr[i][1] } 
+            'talent.$.upcomingStreams':{ _id: arr[i][1] } 
         }, function (error, result){
             console.log(result)
         }
