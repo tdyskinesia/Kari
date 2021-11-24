@@ -28,7 +28,11 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 
 const statusChange = require('./internals/status-change.js');
 
-const displayYoutubeIDs = require('./internals/set-streams.js');
+const streamHandler = require('./internals/stream-handler.js');
+
+const talentHandler = require('./internals/talent-handler.js')
+
+const messageHandler = require('./internals/message-handler.js')
 
 const talentSchema  = require('./data/talentSchema.js')
 
@@ -43,9 +47,9 @@ var talentList = [];
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-const maintenance = false;
+const maintenance = true;
 
-let db = new sqlite.Database('./db/database.db');
+/*let db = new sqlite.Database('./db/database.db');
 
 db.run(`
   CREATE TABLE IF NOT EXISTS subs (
@@ -64,7 +68,8 @@ CREATE TABLE IF NOT EXISTS messages (
     "video_link" TEXT,
     "start_date" TEXT
 )
-`);
+`);*/
+
 for(const file of commandFiles){
     const command = require(`./commands/${file}`);
 
@@ -81,8 +86,9 @@ client.once('ready', async () =>{
     }).then(console.log("Connected to mongodb"));
     console.log(talentSchema.talent.find())
     statusChange(client, maintenance);
-    var initialJob = new CronJob('0 */3 * * *', function() {
-        console.log("I AM UPDATING STREAM TIMES NOW");
+    var initialJob = new CronJob('0 */3 * * *', async function() {
+        {
+        /*console.log("I AM UPDATING STREAM TIMES NOW");
         var data = [];
         getYoutubeData(async function(err, data){
             if(err){
@@ -113,14 +119,16 @@ client.once('ready', async () =>{
 
                 console.log('LIVE TIMES OUTPUTTED');
             }
-           });
+           });*/
+        }
+        await streamHandler.bupdate(client)
     }, null, true, 'America/New_York');
 
-    checkForPosts();
-    setInterval(checkForPosts, 1000 * 30)
+    await messageHandler.notify();
 
 });
-
+{//ALL DEPRECATED FUNCTIONS
+/*
 function sleep(ms) {
     return new Promise((resolve) => {
       setTimeout(resolve, ms);
@@ -179,6 +187,7 @@ async function outputLiveTimes(data){
     let sql = 'SELECT start_time time, video_title title, video_link link, start_date date FROM messages ORDER BY id';
     var index = 0;
     const channel = client.channels.cache.get('908671236895305760')
+    
     // first row only
     db.all(sql, [], (err, rows) => {
         if (err) {
@@ -264,7 +273,7 @@ async function storeLiveTimes(ID, data, i){
         db.close();
 
 }
-//unused
+
 async function makeEmbed(data, i, start, times, vidID){
     return new MessageEmbed()
     .setColor("2b7d14")
@@ -273,14 +282,14 @@ async function makeEmbed(data, i, start, times, vidID){
     .addField("["+start[1]+"]"+"(https://www.youtube.com/watch?v="+vidID+")");
 
 }
-//unused
+
 async function makeNoUpcomingEmbed(data, i){
     return new MessageEmbed()
                 .setColor("2b7d14")
                 .setAuthor(data[i].name)
                 .setDescription("NO UPCOMING STREAM");
 }
-//unused
+
 async function getLiveTimes(link, index){
     console.log("entered second loop");
     console.log("LINK: "+link);
@@ -391,6 +400,7 @@ async function displaySubData(data, message){
     for(var i in data){
         await message.channel.send(data[i].name_out + ": " + data[i].ytid + " " + data[i].channel + " " + data[i].role)
     }
+}*/
 }
 
 client.on('message', message =>{
@@ -408,19 +418,17 @@ client.on('message', message =>{
                 console.log(err);
             }
         }));*/
-        client.commands.get('sub talent').execute(message, command, args)
-    }
-    else if(command === 'sublist'){
-        message.channel.send(talentList.toString());
+        //client.commands.get('sub talent').execute(message, command, args)
+        client.commands.get('new setup').execute(message, args)
     }
     else if(command === 'clearsub'){
-        client.commands.get('clear sub').execute(message, args)
+        talentHandler.deleteTalent(message, args)
     }
     else if(command === 'clearmsgs'){
-        client.commands.get('clear msgs').execute(message, args)
+        messageHandler.clearNotifications()
     }
     else if(command === 'bupdate'){
-    console.log("I AM UPDATING STREAM TIMES NOW")
+    /*console.log("I AM UPDATING STREAM TIMES NOW")
     var data = []
         getYoutubeData(async function(err, data){
             if(err){
@@ -451,50 +459,26 @@ client.on('message', message =>{
 
                 console.log('LIVE TIMES OUTPUTTED');
             }
-           });
+           });*/
+           streamHandler.bupdate(client, message)
         }
-        else if(command === 'newsetup'){
-            client.commands.get('new setup').execute(message, args)
-        }
-        else if (command === 'experimentalset'){
-            console.log("here")
-            displayYoutubeIDs.queryTalents(message)
-        }
-        else if (command === 'experimentallive'){
-            displayYoutubeIDs.getYoutubeLive(message)
-        }
-        else if (command === 'experimentalstreams'){
-            displayYoutubeIDs.displayStreams(message)
-        }
+        
     } 
     if (message.member.permissions.has("MENTION_EVERYONE")){
         if(command === 'timeset'){
             if(args.length==2){
-            getMessageData(async function(err, row){
-            if(err){
-                console.error(err.message)
+                streamHandler.timeChange(message, args)
             } else {
-            
-            let db = new sqlite.Database('./db/database.db')
-            let d1 = new Date(row[parseInt(args[1])-1].date)
-            d1.setMinutes(d1.getMinutes()+parseInt(args[0]))
-            let sql = `UPDATE messages 
-            SET start_date = ? 
-            WHERE id = ?`;
-            
-            db.run(sql, [d1.toISOString(), args[1]], function(err){
-                if(err){
-                    console.error(err.message);
-                }
-            })
-            }
-        });
-            } else {
-                message.channel.send("You fucked up I think bro.")
+                message.channel.send("ERR: Too many arguments")
             }
         }
-        
-        else if(command === 'displaysubs'){
+        else if (command === 'displaysubs'){
+            streamHandler.queryTalents(message, client)
+        }
+        else if (command === 'displaystreams'){
+            streamHandler.displayStreams(message)
+        }
+        /*else if(command === 'displaysubs'){
             getYoutubeData(async function(err, data){
             if(err){
                 console.error(err.message)
@@ -528,21 +512,32 @@ client.on('message', message =>{
 
                 }
             });
-        }
+        }*/
     }
     if(message.member.roles.cache.has('835813294152744982')||message.member.permissions.has("BAN_MEMBERS")){
+
         if(command === 'seticon'){
             var image = message.attachments
             var link = image.first().url
 
             if(image.first().size<256000){
-            if(message.member.roles.cache.has(args[0])){
-                const role = message.guild.roles.cache.get(args[0])
-                role.setIcon(link)
-                message.channel.send("Role Icon Set")
-            }else{
-                message.channel.send("You do not have that role ID")
+
+            if(message.member.roles.cache.has(args[0])&&message.member.roles.highest===message.member.roles.cache.get(args[0])){
+
+                if(message.guild.me.roles.highest.comparePositionTo(message.member.roles.cache.get(args[0]))>0){
+
+                    const role = message.guild.roles.cache.get(args[0])
+                    role.setIcon(link)
+                    message.channel.send("Role Icon Set")
+
+                } else {
+                    message.channel.send("Role is out of Kari's permission range.")
+                }
+
+            } else {
+                message.channel.send("You do not have that role ID, or it was not your highest role.")
             }
+
         } else {
             message.channel.send("Image file size error (over 256kb)")
         }
@@ -550,41 +545,41 @@ client.on('message', message =>{
         }
     }
     if(command === 'deeznuts'){
-        message.channel.send("deez nuts")
-        message.delete()
+        async (message) => {
+            await message.channel.send("deez nuts")
+            await message.delete()
+        }
     }
     else if(command === 'help'){
         message.channel.send(
-        `Kari Commands
+       `Kari Commands
 
         Mod Commands
         k!setup <talent name> <YouTube channel ID> <live channel id> <role id>
         - subs talent to automatic updates
-        k!ping - checks if bot is alive by returning the next upcoming feesh stream
         k!clearmsgs - clears all scheduled stream notifications
         k!bupdate - forces an update to the bulletin
         k!clearsub <live channel id> - clears a talent from live scheduling
 
         Tagger Commands
-        k!timeset <minutes> <rowID> manually adds minutes to a previously scheduled notification (to use if a stream is manually rescheduled)
+        k!timeset <video ID> <minutes> manually adds minutes to a previously scheduled notification (to use if a stream is manually rescheduled)
         k!displaysubs - displays current sub list
-        k!displaymsgs - displays current upcoming notifications for streams and their rowID for timeset
+        k!displaystreams - displays current upcoming notifications for streams and their rowID for timeset
 
         Booster Commands
         k!seticon <role id> - changes role icon for your copa role id (find role id by right clicking your role if you have developer enabled)
 
         General Commands
         k!help - displays this
+        k!ping - pong
         k!deeznuts - what do you think this does?`)
     }
     
 });
-
-//mongoose
 
 
 
 
 
 client.login(process.env.TOKEN);
-db.close();
+//db.close();
