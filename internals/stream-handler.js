@@ -77,12 +77,23 @@ const youtube = async(talent) => {
                     streamName: results[index].data.items[0].snippet.title,
                     startTime: results[index].data.items[0].liveStreamingDetails.scheduledStartTime,
                     videoID: results[index].data.items[0].id,
-                    thumbnailUrl: results[index].data.items[0].snippet.thumbnails.default.url
+                    thumbnailUrl: results[index].data.items[0].snippet.thumbnails.high.url
                 }))
             }
         } 
         return streams;
     } else {return []}
+
+}
+
+const channelInfo = async(talent)=>{
+    var response = await yt.channels.list({
+        "part": [
+            "snippet"
+        ],
+        "channelId": talent.youtubeID
+        });
+    return response.data.items[0].snippet.thumbnails.high.url
 
 }
 
@@ -100,6 +111,7 @@ module.exports = {
             let fieldArray = []
             console.log(talent.youtubeID)
             talent.upcomingStreams = await youtube(talent)
+            let profileURL = await channelInfo(talent)
             if(talent.upcomingStreams.length>0){
                 talent.upcomingStreams.forEach(async function(stream){
                     let curStart = moment(stream.startTime)
@@ -115,6 +127,9 @@ module.exports = {
                     title: "UPCOMING STREAMS",
                     color: '2b7d14',
                     fields: fieldArray,
+                    thumbnail:{
+                        url: profileURL
+                    },
                     author: {
                         name: talent.name,
                         url: `https://www.youtube.com/channel/${talent.youtubeID}`
@@ -126,6 +141,9 @@ module.exports = {
                     title: "UPCOMING STREAM",
                     color: '911c1c',
                     description: "NO UPCOMING STREAM FOUND",
+                    thumbnail:{
+                        url: profileURL
+                    },
                     author: {
                         name: talent.name,
                         url: `https://www.youtube.com/channel/${talent.youtubeID}`

@@ -44,6 +44,10 @@ const talent = new mongoose.Schema({
         type: String,
         required: true
     },
+    profileURL: {
+        type: String,
+        required: false
+    },
     upcomingStreams: {
         type: [stream],
         required: false
