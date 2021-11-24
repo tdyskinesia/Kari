@@ -178,13 +178,13 @@ module.exports = {
     },
     async timeChange(message, args){
         await talentSchema.stream.find({videoID: args[0]}, async (res, err) => {
-            for await(var i of res){
-                await message.channel.send("Original ISO: "+res[i].startTime)
-                let curDate = new Date(res[i].startTime)
+            for await(const stream of res){
+                await message.channel.send("Original ISO: "+stream.startTime)
+                let curDate = new Date(stream.startTime)
                 curDate.setMinutes(curDate.getMinutes() + parseInt(args[1]))
-                res[i].startTime = curDate.toISOString()
-                await res[i].save()
-                await message.channel.send("Changed ISO: " + res[i].startTime)
+                stream.startTime = curDate.toISOString()
+                await stream.save()
+                await message.channel.send("Changed ISO: " + stream.startTime)
             }
             if(err){
                 console.log(err)
