@@ -184,7 +184,7 @@ module.exports = {
                     let curDate = new Date(stream.startTime)
                     curDate.setMinutes(curDate.getMinutes() + parseInt(args[1]))
                     stream.startTime = curDate.toISOString()
-                    await stream.save()
+                    await talent.save()
                     await message.channel.send("Changed ISO: " + stream.startTime)
                 }
             }
