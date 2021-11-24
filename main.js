@@ -84,7 +84,6 @@ client.once('ready', async () =>{
         useNewUrlParser: true,
         keepAlive: true
     }).then(console.log("Connected to mongodb"));
-    console.log(talentSchema.talent.find())
     statusChange(client, maintenance);
     var initialJob = new CronJob('0 */3 * * *', async function() {
         {
@@ -125,6 +124,7 @@ client.once('ready', async () =>{
     }, null, true, 'America/New_York');
 
     messageHandler.notify(client);
+    
 
 });
 {//ALL DEPRECATED FUNCTIONS
