@@ -91,7 +91,9 @@ const channelInfo = async(talent)=>{
         "part": [
             "snippet"
         ],
-        "channelId": talent.youtubeID
+        "id": [
+            "UC_x5XG1OV2P6uZZ5FSM9Ttw"
+          ]
         });
     return response.data.items[0].snippet.thumbnails.high.url
 
