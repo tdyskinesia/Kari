@@ -63,7 +63,7 @@ client.once('ready', async () =>{
         useNewUrlParser: true,
         keepAlive: true
     }).then(console.log("Connected to mongodb"));
-    statusChange(client, maintenance);
+    statusChange(client);
     var initialJob = new CronJob('0 */3 * * *', async function() {
         {
         /*console.log("I AM UPDATING STREAM TIMES NOW");
