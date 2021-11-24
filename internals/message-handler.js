@@ -22,10 +22,12 @@ const iterate = async(client) => {
    }
 }
 
+setTimeout(iterate, 1000 * 30);
+
 module.exports = {
-async notify(client) {
+notify(client) {
     console.log("Checking for stream notifications now!")
-    await iterate(client) 
+    iterate(client) 
 },
 
 async clearNotifications(){

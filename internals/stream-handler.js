@@ -141,7 +141,7 @@ module.exports = {
     },
     async queryTalents(message, client) {
         let guild = await client.guilds.cache.get(message.guild.id)
-            for await (const talent of talentSchema.talent.find()){
+            for await (const talent of talentSchema.talent.find({guildID: message.guild.id})){
                 await message.channel.send(
                `NAME: ${talent.name} 
                 YTID: ${talent.youtubeID}
