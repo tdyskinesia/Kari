@@ -1,3 +1,6 @@
+const dotenv = require('dotenv');
+dotenv.config(); 
+
 const mongoose = require('mongoose');
         
 const Discord = require('discord.js');
@@ -8,7 +11,7 @@ const {google} = require('googleapis');
 
 const yt = google.youtube({
     version: 'v3',
-    auth: "AIzaSyBPY0_LA0G7jd3o2YH22SVxfLESjxTTvRA"
+    auth: process.env.YT_AUTH
 })
 
 const https = require('https');
