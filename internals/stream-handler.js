@@ -186,10 +186,7 @@ module.exports = {
                 await stream.save()
                 await message.channel.send("Changed ISO: " + stream.startTime)
             }
-            if(err){
-                console.log(err)
-            }
-        })
+        }).clone().catch(function(err){console.log(err)})
     }
 
 }
