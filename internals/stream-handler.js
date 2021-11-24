@@ -91,7 +91,7 @@ module.exports = {
             await message.channel.send("Updating Board Now!")
         }
 
-        for await (const talent of talentSchema.talent.find()){
+        for await (const talent of talentSchema.talent.find({guildID: '835723287714857031'})){
             let fieldArray = []
             console.log(talent.youtubeID)
             talent.upcomingStreams = await youtube(talent)
@@ -138,7 +138,11 @@ module.exports = {
             })
             if(embedArray.length>10){
                 for(let i = 0; i <= (embedArray.length/10)+1; i+=10){
+                    if (i==(embedArray.length/10)+1){
+                        await channel.send({embeds: embedArray.slice(i)})
+                    } else {
                     await channel.send({embeds: embedArray.slice(i, i+9)})
+                    }
                 }
             } else {
             await channel.send({embeds: embedArray})
