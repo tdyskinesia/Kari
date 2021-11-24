@@ -10,7 +10,7 @@ const iterate = async(client) => {
         talent.upcomingStreams.forEach(async function(stream){
             let curDate = new Date(stream.startTime) 
             if(curDate.setMinutes(curDate.getMinutes()-15) < new Date()){
-                await (await guild.channels.cache.get(talent.liveChannelID)).send(`Hey <@&${talent.roleID}>! ${talent.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${stream.videoID}`)
+                await (await guild.channels.cache.get(talent.liveChannelID)).send(`Hey ${talent.roleID}! ${talent.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${stream.videoID}`)
                 talentSchema.stream.findOneAndDelete({_id: stream.id}, function (err, id){
                     if(err){ console.log(err)}
                     else{
