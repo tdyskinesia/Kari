@@ -124,7 +124,7 @@ client.once('ready', async () =>{
         await streamHandler.bupdate(client)
     }, null, true, 'America/New_York');
 
-    await messageHandler.notify(client);
+    messageHandler.notify(client);
 
 });
 {//ALL DEPRECATED FUNCTIONS
