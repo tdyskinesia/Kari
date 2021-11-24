@@ -8,7 +8,7 @@ const {google} = require('googleapis');
 
 const yt = google.youtube({
     version: 'v3',
-    auth: "AIzaSyAGS-DmnHW9D1iC2L60GwwdSW_fc7SJqFk"
+    auth: "AIzaSyBPY0_LA0G7jd3o2YH22SVxfLESjxTTvRA"
 })
 
 const https = require('https');
@@ -130,7 +130,7 @@ module.exports = {
         .then(async(msgs)=> {
                 return await msgs.forEach(async(msg)=>{
                     if(msg.author.id===client.user.id){
-                        return await msg.delete()
+                        await msg.delete()
                     }
                 })
             }).catch((e)=>{

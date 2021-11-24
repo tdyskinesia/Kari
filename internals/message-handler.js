@@ -11,7 +11,7 @@ const iterate = async(client) => {
             let curDate = new Date(stream.startTime)
             let curID = stream.videoId
             if(curDate.setMinutes(curDate.getMinutes()-15) < new Date()){
-                await (await guild.channels.cache.get(talent.liveChannelID)).send(`Hey ${talent.roleID}! ${talent.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${curID}`)
+                await (await guild.channels.cache.get(talent.liveChannelID)).send(`Hey <@&${talent.roleID}>! ${talent.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${curID}`)
                 talentSchema.stream.deleteOne({id: stream.id}, function (err, id){
                     if(err) console.log(err)
                     console.log(`Deleted ${id}`)

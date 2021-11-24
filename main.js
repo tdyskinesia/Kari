@@ -7,7 +7,7 @@ const {google} = require('googleapis');
 
 const yt = google.youtube({
     version: 'v3',
-    auth: "AIzaSyBPY0_LA0G7jd3o2YH22SVxfLESjxTTvRA"
+    auth: process.env.YT_AUTH
 })
 
 const { MessageEmbed } = require('discord.js');
@@ -48,27 +48,6 @@ var talentList = [];
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 const maintenance = true;
-
-/*let db = new sqlite.Database('./db/database.db');
-
-db.run(`
-  CREATE TABLE IF NOT EXISTS subs (
-    "id" INTEGER PRIMARY KEY,
-    "youtube_id" TEXT,
-    "channel_id" TEXT,
-    "role_id" TEXT,
-    "name" TEXT
-  )
-`);
-db.run(`
-CREATE TABLE IF NOT EXISTS messages (
-    "id" INTEGER PRIMARY KEY,
-    "start_time" TEXT,
-    "video_title" TEXT,
-    "video_link" TEXT,
-    "start_date" TEXT
-)
-`);*/
 
 for(const file of commandFiles){
     const command = require(`./commands/${file}`);
@@ -412,12 +391,6 @@ client.on('message', message =>{
         client.commands.get('ping').execute(message, args);
     }
     else if(command === 'setup'){
-        /*fs.writeFile('lastID.json', client.commands.get('sub talent').execute(message, command, args), (err => {
-            if(err){
-                console.log(err);
-            }
-        }));*/
-        //client.commands.get('sub talent').execute(message, command, args)
         client.commands.get('new setup').execute(message, args)
     }
     else if(command === 'clearsub'){
@@ -427,38 +400,6 @@ client.on('message', message =>{
         messageHandler.clearNotifications()
     }
     else if(command === 'bupdate'){
-    /*console.log("I AM UPDATING STREAM TIMES NOW")
-    var data = []
-        getYoutubeData(async function(err, data){
-            if(err){
-                console.error(err.message)
-            } else {
-                sleep(2000)
-                console.log("data array "+data)
-                console.log(data[0].channel)
-                console.log(data[2].ytid)
-                console.log('LIVE TIMES OUTPUTTING')
-                let db = new sqlite.Database('./db/database.db');
-                db.run(`
-                CREATE TABLE IF NOT EXISTS messages (
-                    "id" INTEGER PRIMARY KEY,
-                    "start_time" TEXT,
-                    "video_title" TEXT,
-                    "video_link" TEXT,
-                    "start_date" TEXT
-                )
-                `);
-                db.close();
-            for (let index = 0; index < data.length; index++) {
-                    await storeLiveTimes(data[index].ytid, data, index);  
-            }
-                await sleep(5000);
-                await outputLiveTimes(data);
-        
-
-                console.log('LIVE TIMES OUTPUTTED');
-            }
-           });*/
            streamHandler.bupdate(client, message)
         }
         
@@ -550,28 +491,26 @@ client.on('message', message =>{
         }
     }
     else if(command === 'help'){
-        message.channel.send(
-       `Kari Commands
+        message.channel.send("__**Kari Commands**__\n\n"+
 
-        Mod Commands
-        k!setup <talent name> <YouTube channel ID> <live channel id> <role id>
-        - subs talent to automatic updates
-        k!clearmsgs - clears all scheduled stream notifications
-        k!bupdate - forces an update to the bulletin
-        k!clearsub <live channel id> - clears a talent from live scheduling
+        "**Mod Commands**\n"+
+        "*k!setup <talent name> <YouTube channel ID> <live channel id> <role id>* - subs talent to automatic updates\n"+
+        "*k!clearmsgs* - clears all scheduled stream notifications\n"+
+        "*k!bupdate* - forces an update to the bulletin\n"+
+        "*k!clearsub <live channel id>* - clears a talent from live scheduling\n\n"+
 
-        Tagger Commands
-        k!timeset <video ID> <minutes> manually adds minutes to a previously scheduled notification (to use if a stream is manually rescheduled)
-        k!displaysubs - displays current sub list
-        k!displaystreams - displays current upcoming notifications for streams and their rowID for timeset
+        "**Tagger Commands**\n"+
+        "*k!timeset <video ID> <minutes>* manually adds minutes to a previously scheduled notification (to use if a stream is manually rescheduled)\n"+
+        "*k!displaysubs* - displays current sub list\n"+
+        "*k!displaystreams* - displays current upcoming notifications for streams and their rowID for timeset\n\n"+
 
-        Booster Commands
-        k!seticon <role id> - changes role icon for your copa role id (find role id by right clicking your role if you have developer enabled)
+        "**Booster Commands**\n"+
+        "*k!seticon <role id>* - changes role icon for your copa role id (find role id by right clicking your role if you have developer enabled)\n\n"+
 
-        General Commands
-        k!help - displays this
-        k!ping - pong
-        k!deeznuts - what do you think this does?`)
+        "**General Commands**\n"+
+        "*k!help* - displays this\n"+
+        "*k!ping* - pong\n"+
+        "*k!deeznuts* - what do you think this does?")
     }
     
 });
