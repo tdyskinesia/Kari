@@ -25,8 +25,10 @@ const {talent, stream, user, membership, member_channel} = require('./data/model
 
 const { Client, Intents } = require('discord.js');
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS],
-partials: ['MESSAGE', 'GUILD_MEMBER', 'CHANNEL', 'USER', 'REACTION'] });
+let Intss = new Discord.Intents(Discord.Intents.ALL);
+
+const client = new Client({ws:{ intents: Intss,
+partials: ['MESSAGE', 'GUILD_MEMBER', 'CHANNEL', 'USER', 'REACTION'] }});
 
 const statusChange = require('./internals/status-change.js');
 
@@ -116,7 +118,6 @@ client.once('ready', async () =>{
 });
 
 client.on('messageReactionAdd', async (reaction, user) => {
-    console.log('react')
     if (reaction.message.partial) await reaction.message.fetch();
     if (reaction.partial) await reaction.fetch();
     if (user.partial) await user.fetch();
