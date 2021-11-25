@@ -90,7 +90,7 @@ const talent = new mongoose.Schema({
 const user = new mongoose.Schema({
     memberships:{
         type: [membership],
-        required: true
+        required: false
     },
     userID:{
         type: String,

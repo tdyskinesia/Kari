@@ -5,7 +5,7 @@ const {talent, stream, user, membership, member_channel} = require('../data/mode
 const mongoose = require('mongoose');
 
 const findTalentName = async(talentName, guildID) => {
-    talent.findOne({guildID: guildID, name:{ $regex: '/'+ talentName + '/', $options: 'i' } }, (err, res)=>{
+    talent.findOne({guildID: guildID, name:{ $regex: '.*'+ talentName + '.*', $options: 'i' } }, (err, res)=>{
         if(err) {console.log(err)}
         if(res){
         console.log(res.name)
