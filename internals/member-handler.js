@@ -5,13 +5,13 @@ const {talent, stream, user, membership, member_channel} = require('../data/mode
 const mongoose = require('mongoose');
 const { compute_beta } = require('googleapis');
 
-const findTalentName = (talentName, guildID) => {
-    return talent.findOne({guildID: guildID, name:{ $regex: '.*'+ talentName + '.*', $options: 'i' } }, (err, res)=>{
-        if(err) {console.log(err)}
-        if(res){
-        return res.name;
-        }
+const findTalentName = async(talentName, guildID) => {
+    var name;
+    await talent.findOne({guildID: guildID, name:{ $regex: '.*'+ talentName + '.*', $options: 'i' } }).lean().exec(function(err, res){
+        if(err) console.log(err)
+        name = res.name
     })
+    return name
 }
 
 const insertTalentMembership = (guildID, talentName, inputMembership) => {
@@ -134,6 +134,7 @@ module.exports = {
     },
 
     async callSub(message, args) {
+        if(args.length==2){
         talent.findOne({guildID: message.guildId, name:{ $regex: args[0], $options: 'i' } }, async(err, res)=>{
             if(err) console.log(err)
             if(res){
@@ -167,6 +168,7 @@ module.exports = {
                 await message.channel.send("Talent not found subbed in your server.")
             }
         })
+    } else await message.channel.send("No args or too many args given")
     },
     async subMemberRole(message, args){
         if(args.length==2){
@@ -196,10 +198,11 @@ module.exports = {
     var args = message.content.slice(prefix.length).split(/ +/)
     var guildID = await message.guild.id
     console.log(guildID +  " "  + args[1])
-    var talentName = findTalentName(args[1], guildID)
+    var talentName = await findTalentName(args[1], guildID)
+    var exDate = new Date(args[2])
     var inputMembership = new membership({
         talentName: talentName,
-        expiration: new Date(args[2]),
+        expiration: exDate,
         staffID: staff
     })
     console.log(talentName)
@@ -209,7 +212,7 @@ module.exports = {
             user({
                 memberships: [new membership({
                     talentName: talentName,
-                    expiration: new Date(args[2]),
+                    expiration: exDate,
                     staffID: staff
                 })],
                 userID: message.author.id,
