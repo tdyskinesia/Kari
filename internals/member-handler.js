@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const { compute_beta } = require('googleapis');
 
 const findTalentName = async(talentName, guildID) => {
-    talent.findOne({guildID: guildID, name:{ $regex: '.*'+ talentName + '.*', $options: 'i' } }, (err, res)=>{
+    return talent.findOne({guildID: guildID, name:{ $regex: '.*'+ talentName + '.*', $options: 'i' } }, (err, res)=>{
         if(err) {console.log(err)}
         if(res){
         return res.name;
