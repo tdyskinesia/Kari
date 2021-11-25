@@ -3,12 +3,12 @@ const Discord = require('discord.js');
 const {talent, stream, user, membership, member_channel} = require('../data/models');
 
 const mongoose = require('mongoose');
+const { compute_beta } = require('googleapis');
 
 const findTalentName = async(talentName, guildID) => {
     talent.findOne({guildID: guildID, name:{ $regex: '.*'+ talentName + '.*', $options: 'i' } }, (err, res)=>{
         if(err) {console.log(err)}
         if(res){
-        console.log(res.name)
         return res.name;
         }
     })
@@ -27,7 +27,6 @@ const insertTalentMembership = async (guildID, talentName, inputMembership) => {
         },
         (err, res) => {
             if(err) {console.log(err)}
-            console.log("NEW MEMBERSHIP ARRAY FOR " + talentName)
         })
 }
 
@@ -46,6 +45,7 @@ const inputMember = async(message, authorID, staff) => {
         expiration: new Date(args[2]),
         staffID: staff
     })
+    console.log(talentName)
     await insertTalentMembership(guildID, talentName, inputMembership)
     user.findOne({userID: message.author.id}, async (err, res) => {
         if (!res){ 
@@ -206,7 +206,7 @@ module.exports = {
     await insertTalentMembership(guildID, talentName, inputMembership)
     user.findOne({userID: message.author.id}, async (err, res) => {
         if (!res){
-            user.create({
+            user({
                 memberships: [new membership({
                     talentName: talentName,
                     expiration: new Date(args[2]),
@@ -214,10 +214,9 @@ module.exports = {
                 })],
                 userID: message.author.id,
                 guildID: guildID
-            }, async (err, res) => {
-                if(err) { console.log(err) }
-                await message.channel.send(`User created with their first membership to ${talentName}! Thanks ${(await message.guild.members.cache.get(authorID)).user.username}!`)
-            })
+            }).save()
+            await message.channel.send(`User created with their first membership to ${talentName}! Thanks ${(await message.guild.members.cache.get(authorID)).user.username}!`)
+            
         } else {
             user.findOneAndUpdate({guildID: message.guildId, userID: message.author.id },
             {
