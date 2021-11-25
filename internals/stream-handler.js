@@ -121,14 +121,17 @@ module.exports = {
                         name: stream.streamName,
                         value: "In "+ (Math.round(Math.abs(new Date()-new Date(stream.startTime))/3600000)) + " Hours\n"+
                         curStart.tz('America/Los_Angeles').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('America/New_York').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('Asia/Tokyo').format('MM/DD/YYYY HH:mm z') + "\n"+
-                        "**Waiting Room**\n" + "https://www.youtube.com/watch?v=" + stream.videoID
+                        "[**Waiting Room**](https://www.youtube.com/watch?v=" + stream.videoID +")"
                     })
                 });
-                embedArray.push({
+                embedArray.push(new Discord.MessageEmbed({
                     type: "rich",
                     title: "UPCOMING STREAMS",
                     color: '2b7d14',
                     fields: fieldArray,
+                    footer: {
+                        text: 'Updated at:'
+                    },
                     thumbnail:{
                         url: profileURL
                     },
@@ -136,13 +139,16 @@ module.exports = {
                         name: talent.name,
                         url: `https://www.youtube.com/channel/${talent.youtubeID}`
                     }
-                })
+                }).setTimestamp())
         } else {
-                embedArray.push({
+                embedArray.push(new Discord.MessageEmbed({
                     type: "rich",
                     title: "UPCOMING STREAM",
                     color: '911c1c',
                     description: "NO UPCOMING STREAM FOUND",
+                    footer: {
+                        text: 'Updated at:'
+                    },
                     thumbnail:{
                         url: profileURL
                     },
@@ -150,7 +156,7 @@ module.exports = {
                         name: talent.name,
                         url: `https://www.youtube.com/channel/${talent.youtubeID}`
                     }
-                })
+                }).setTimestamp())
         }
             await talent.save();
         }
