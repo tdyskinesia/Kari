@@ -11,7 +11,7 @@ const findTalentName = async(talentName, guildID) => {
         if(res){
         return res.name;
         }
-    })
+    }).clone()
 }
 
 const insertTalentMembership = async (guildID, talentName, inputMembership) => {
