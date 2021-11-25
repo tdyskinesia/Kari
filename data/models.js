@@ -21,6 +21,21 @@ const stream = new mongoose.Schema({
     }
 })
 
+const membership = new mongoose.Schema({
+    talentName:{
+        type: String,
+        required: true
+    },
+    expiration:{
+        type: Date,
+        required: true
+    },
+    staffID: {
+        type: String,
+        required: true
+    }
+})
+
 const talent = new mongoose.Schema({
     name: {
         type: String,
@@ -65,21 +80,6 @@ const talent = new mongoose.Schema({
     pastStreams: {
         type: [stream],
         required: false
-    }
-})
-
-const membership = new mongoose.Schema({
-    talentName:{
-        type: String,
-        required: true
-    },
-    expiration:{
-        type: Date,
-        required: true
-    },
-    staffID: {
-        type: String,
-        required: true
     }
 })
 
