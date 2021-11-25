@@ -14,7 +14,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
     if (user.bot) return;
     if (!reaction.message.guild) return;
     console.log(reaction.message.id)
-    await member_channel.findOne({guildID: reaction.message.guildId}, async(err, res)=>{
+    member_channel.findOne({guildID: reaction.message.guildId}, async(err, res)=>{
         if(err) console.log(err)
         if(res.channelID==reaction.message.channel.id){
             if (reaction.emoji.name === '❌') {

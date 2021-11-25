@@ -21,6 +21,7 @@ const moment = require('moment-timezone');
 const Discord = require('discord.js'); 
 
 const mongoose = require('mongoose');
+const {talent, stream, user, membership, member_channel} = require('../data/models');
 
 const { Client, Intents } = require('discord.js');
 
@@ -113,6 +114,26 @@ client.once('ready', async () =>{
     // setInterval(messageHandler.notify.bind(null, client), 1000 * 30);
     
 });
+
+client.on('messageReactionAdd', async (reaction, user) => {
+    if (reaction.message.partial) await reaction.message.fetch();
+    if (reaction.partial) await reaction.fetch();
+    if (user.bot) return;
+    if (!reaction.message.guild) return;
+    console.log(reaction.message.id)
+    member_channel.findOne({guildID: reaction.message.guildId}, async(err, res)=>{
+        if(err) console.log(err)
+        if(res.channelID==reaction.message.channel.id){
+            if (reaction.emoji.name === '❌') {
+                await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
+            } else if (reaction.emoji.name === '✅'){
+                await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership as valid.`)
+                inputMember(await reaction.message.fetch(), reaction.message.author.id, user.id)
+
+            }
+        }
+    })
+})
 
 client.on('message', message =>{
     if(!message.content.startsWith(prefix) || message.author.bot) return;
