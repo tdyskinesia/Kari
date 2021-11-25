@@ -24,12 +24,13 @@ const updateStatus = async() => {
             }
         ]
     })
-}
-
     if(++counter >= statusOptions.length){
         counter = 0;
     }
-    setTimeout(updateStatus, 1000 * 20)
+}
+
+    
+    setInterval(updateStatus, 1000 * 20)
 
 updateStatus()
 
