@@ -5,7 +5,7 @@ const {talent, stream, user, membership, member_channel} = require('../data/mode
 const mongoose = require('mongoose');
 
 const findTalentName = async(talentName, guildID) => {
-    talent.findOne({guildID: guildID, name:{ $regex: talentName, $options: 'i' } }, (err, res)=>{
+    talent.findOne({guildID: guildID, name:{ $regex: '/'+ talentName + '/', $options: 'i' } }, (err, res)=>{
         if(err) {console.log(err)}
         if(res){
         console.log(res.name)
@@ -23,6 +23,7 @@ const insertTalentMembership = async (guildID, talentName, inputMembership) => {
         },
         {
             new: true,
+            upsert: true
         },
         (err, res) => {
             if(err) {console.log(err)}
@@ -47,7 +48,7 @@ const inputMember = async(message, authorID, staff) => {
     })
     await insertTalentMembership(guildID, talentName, inputMembership)
     user.findOne({userID: message.author.id}, async (err, res) => {
-        if (!res){
+        if (!res){ 
             user.create({
                 memberships: [inputMembership],
                 userID: message.author.id,
@@ -197,11 +198,11 @@ module.exports = {
     let guildID = await message.guild.id
     console.log(guildID +  " "  + args[1])
     let talentName = await findTalentName(args[1], guildID)
-    // let inputMembership = new membership({
-    //     talentName: talentName,
-    //     expiration: new Date(args[2]),
-    //     staffID: staff
-    // })
+    let inputMembership = new membership({
+        talentName: talentName,
+        expiration: new Date(args[2]),
+        staffID: staff
+    })
     await insertTalentMembership(guildID, talentName, inputMembership)
     user.findOne({userID: message.author.id}, async (err, res) => {
         if (!res){
