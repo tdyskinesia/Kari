@@ -79,7 +79,7 @@ const collectors = []
 const checkCollectors = async() => {
     for (const collector of collectors){    
         if(collector.total>0){
-            collector.collected.forEach((res)=>{
+            collector.collected.forEach(async(res)=>{
                 if(res.reaction.emoji.name === '❌'){
                     await res.reaction.channel.send(`<@&${collector.message.author.id}>, a staff member has marked your 
                     membership application as invalid. Please review and resubmit.`)
