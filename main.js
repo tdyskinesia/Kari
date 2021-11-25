@@ -27,8 +27,8 @@ const { Client, Intents } = require('discord.js');
 
 let Intss = new Discord.Intents(Discord.Intents.ALL);
 
-const client = new Client({ws:{ intents: Intss,
-partials: ['MESSAGE', 'GUILD_MEMBER', 'CHANNEL', 'USER', 'REACTION'] }});
+const client = new Client({ intents: Intss,
+partials: ['MESSAGE', 'GUILD_MEMBER', 'CHANNEL', 'USER', 'REACTION'] });
 
 const statusChange = require('./internals/status-change.js');
 
