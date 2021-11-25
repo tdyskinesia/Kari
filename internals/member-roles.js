@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 
 const {inputMember} = require('./member-handler.js')
 
-module.exports = (client) => {
+module.exports = async(client) => {
 
 client.on('messageReactionAdd', async (reaction, user) => {
     if (reaction.message.partial) await reaction.message.fetch();
