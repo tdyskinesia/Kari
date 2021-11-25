@@ -5,9 +5,9 @@ const {talent, stream, user, membership, member_channel} = require('../data/mode
 const mongoose = require('mongoose');
 const { compute_beta } = require('googleapis');
 
-const findTalentName = async(talentName, guildID) => {
+const findTalentName = (talentName, guildID) => {
     var name;
-    await talent.findOne({guildID: guildID, name:{ $regex: '.*'+ talentName + '.*', $options: 'i' } }).lean().exec(function(err, res){
+    var query = talent.findOne({guildID: guildID, name:{ $regex: '.*'+ talentName + '.*', $options: 'i' } }).lean().exec(function(err, res){
         if(err) console.log(err)
         name = res.name
     })
@@ -196,9 +196,9 @@ module.exports = {
     },
     async inputMember(message, authorID, staff, prefix) {
     var args = message.content.slice(prefix.length).split(/ +/)
-    var guildID = await message.guild.id
+    var guildID = message.guild.id
     console.log(guildID +  " "  + args[1])
-    var talentName = await findTalentName(args[1], guildID)
+    var talentName = findTalentName(args[1], guildID)
     var exDate = new Date(args[2])
     var inputMembership = new membership({
         talentName: talentName,
