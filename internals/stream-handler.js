@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
         
 const Discord = require('discord.js');
 
-const talentSchema = require('../data/talentSchema');
+const talentSchema = require('../data/models');
 
 const {google} = require('googleapis');
 
@@ -20,7 +20,7 @@ const https = require('https');
 
 const { parse } = require('node-html-parser')
 const fetch = require('node-fetch');
-const { stream } = require('../data/talentSchema');
+const { stream } = require('../data/models');
 const cheerio = require('cheerio');
 
 //unused

@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 
-const talentSchema = require('../data/talentSchema');
+const talentSchema = require('../data/models');
 
 const mongoose = require('mongoose');
 

@@ -34,7 +34,7 @@ const talentHandler = require('./internals/talent-handler.js')
 
 const messageHandler = require('./internals/message-handler.js')
 
-const talentSchema  = require('./data/talentSchema.js')
+const talentSchema  = require('./data/models.js')
 
 const prefix = 'k!';
 

@@ -6,7 +6,7 @@ module.exports = {
         
         const Discord = require('discord.js');
 
-        const talentSchema = require('../data/talentSchema');
+        const talentSchema = require('../data/models');
    
         talentSchema.talent.create({
             name: args[0] + " " + args[1],

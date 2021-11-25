@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const userSchema  = require('./userSchema.js')
+const Discord = require('discord.js');
 
 const stream = new mongoose.Schema({
     streamName: {
@@ -46,12 +46,8 @@ const talent = new mongoose.Schema({
         type: String,
         required: true
     },
-    verificationChannel: {
-        type: String,
-        required: false
-    },
     memberships: {
-        type: [userSchema.membership],
+        type: [membership],
         required: false
     },
     profileURL: {
@@ -72,8 +68,55 @@ const talent = new mongoose.Schema({
     }
 })
 
+const membership = new mongoose.Schema({
+    talentName:{
+        type: String,
+        required: true
+    },
+    expiration:{
+        type: Date,
+        required: true
+    },
+    staffID: {
+        type: String,
+        required: true
+    }
+})
+
+const user = new mongoose.Schema({
+    memberships:{
+        type: [membership],
+        required: true
+    },
+    userID:{
+        type: String,
+        required: true
+    },
+    guildID: {
+        type: String, 
+        required: true
+    }
+})
+
+const member_channel = new mongoose.Schema({
+    guildID: {
+        type: String,
+        required: true
+    },
+    channelID: {
+        type: String, 
+        required: true
+    },
+    reactionCollectors: {
+        type: [Discord.MessageCollector],
+        required: false
+    }
+})
 
 module.exports = {
 talent: mongoose.model('talent', talent),
-stream: mongoose.model('stream', stream)
+stream: mongoose.model('stream', stream),
+user: mongoose.model('user', user),
+membership: mongoose.model('membership', membership),
+member_channel: mongoose.model('member_channel', member_channel)
 }
