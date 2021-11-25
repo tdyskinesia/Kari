@@ -145,6 +145,32 @@ client.on('messageReactionAdd', async (reaction, user) => {
     // })
 })
 
+client.on('raw', async(event) =>{
+    if (event.t === 'MESSAGE_REACTION_ADD'){
+        let reaction = event.d.emoji
+        let userID = event.d.user_id
+        let messageID = event.d.message_id
+        let guildID = event.d.guild_id
+        let channelID = event.d.channel_id
+        let guild = client.guilds.cache.get(guildID)
+        let channel = client.channels.cache.get(channelID)
+        let message = await channel.fetch(messageID)
+        let user = guild.members.cache.get(userID)
+        
+        member_channel.findOne({guildID: guildID}, async(err, res)=>{
+        if(res.channelID == message.channel.id){
+        if (reaction.name === '❌') {
+            await message.channel.send(`<@&${message.author.id}>, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
+        } else if (reaction.name === '✅'){
+            await message.channel.send(`<@&${message.author.id}>, ${user.username} has marked your membership as valid.`)
+            inputMember(message, message.author.id, user.id)
+        }
+    }
+    })
+       
+    }
+})
+
 client.on('message', message =>{
     if(!message.content.startsWith(prefix) || message.author.bot) return;
     const args = message.content.slice(prefix.length).split(/ +/);
