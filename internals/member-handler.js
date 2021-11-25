@@ -8,7 +8,8 @@ const findTalentName = async(talentName, guildID) => {
     talent.findOne({guildID: guildID, name:{ $regex: talentName, $options: 'i' } }, (err, res)=>{
         if(err) {console.log(err)}
         if(res){
-        return res.name
+        console.log(res.name)
+        return res.name;
         }
     })
 }
@@ -196,16 +197,20 @@ module.exports = {
     let guildID = await message.guild.id
     console.log(guildID +  " "  + args[1])
     let talentName = await findTalentName(args[1], guildID)
-    let inputMembership = new membership({
-        talentName: talentName,
-        expiration: new Date(args[2]),
-        staffID: staff
-    })
+    // let inputMembership = new membership({
+    //     talentName: talentName,
+    //     expiration: new Date(args[2]),
+    //     staffID: staff
+    // })
     await insertTalentMembership(guildID, talentName, inputMembership)
     user.findOne({userID: message.author.id}, async (err, res) => {
         if (!res){
             user.create({
-                memberships: [inputMembership],
+                memberships: [new membership({
+                    talentName: talentName,
+                    expiration: new Date(args[2]),
+                    staffID: staff
+                })],
                 userID: message.author.id,
                 guildID: guildID
             }, async (err, res) => {
