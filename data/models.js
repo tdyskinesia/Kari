@@ -108,7 +108,7 @@ const member_channel = new mongoose.Schema({
         required: true
     },
     reactionCollectors: {
-        type: [Discord.MessageCollector],
+        type: [String],
         required: false
     }
 })
