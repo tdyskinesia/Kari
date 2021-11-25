@@ -228,6 +228,9 @@ client.on('message', message =>{
     else if(command === 'member'){
         memberHandler.callSub(message, args)
     }
+    else if(command === 'mlist'){
+        memberHandler.getMemberships(message, args)
+    }
 }
     if (message.member.permissions.has("MENTION_EVERYONE")){
         if(command === 'timeset'){

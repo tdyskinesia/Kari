@@ -180,7 +180,7 @@ module.exports = {
             },
             async (err, res) => {
                 if(err) console.log(err)
-                await message.channel.send(res.name + "member role set to " + (await message.guild.roles.cache.get(res.memberRoleID)).name)
+                await message.channel.send(res.name + " member role set to " + (await message.guild.roles.cache.get(res.memberRoleID)).name)
             })
 
         } else message.channel.send("Too many or no arguments")
@@ -199,7 +199,8 @@ module.exports = {
     var inputMembership = new membership({
         talentName: talentName,
         expiration: exDate,
-        staffID: staff
+        staffID: staff,
+        userID: message.author.id
     })
     console.log(talentName)
     insertTalentMembership(guildID, talentName, inputMembership)
@@ -209,7 +210,8 @@ module.exports = {
                 memberships: [new membership({
                     talentName: talentName,
                     expiration: exDate,
-                    staffID: staff
+                    staffID: staff,
+                    userID: message.author.id
                 })],
                 userID: message.author.id,
                 guildID: guildID
@@ -234,5 +236,15 @@ module.exports = {
         }
     });
     
+    },
+    async getMemberships(message, args){
+        var user = await user.findOne({guildID: message.guild.id, userID: message.author.id}).lean().exec()
+        if(user){
+            user.memberships.forEach(async function(membership){
+                await message.channel.send(membership.talentName + " " + membership.expiration + " (Verified by: "+ (await message.guild.members.cache.get(membership.staffID)).user.username)
+            })
+        } else {
+            message.channel.send("No memberships found.")
+        }
     }
 }

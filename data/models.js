@@ -33,6 +33,10 @@ const membership = new mongoose.Schema({
     staffID: {
         type: String,
         required: true
+    },
+    userID: {
+        type: String,
+        required: true
     }
 })
 
