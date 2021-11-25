@@ -48,7 +48,7 @@ const inputMember = async(message, authorID, staff) => {
         if (!res){
             user.create({
                 memberships: [inputMembership],
-                userId: authorID,
+                userID: message.author.id,
                 guildID: guildID
             }, async (err, res) => {
                 if(err) { console.log(err) }
