@@ -21,6 +21,7 @@ const moment = require('moment-timezone');
 const Discord = require('discord.js'); 
 
 const mongoose = require('mongoose');
+
 const {talent, stream, user, membership, member_channel} = require('./data/models');
 
 const { Client, Intents } = require('discord.js');
@@ -126,10 +127,10 @@ client.on('messageReactionAdd', async (reaction, user) => {
         if(err) console.log(err)
         if(res.channelID==reaction.message.channel.id){
             if (reaction.emoji.name === '❌') {
-                await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
+                await reaction.message.channel.send(`${reaction.message.author.toString()}, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
             } else if (reaction.emoji.name === '✅'){
-                await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership as valid.`)
-                inputMember(await reaction.message.fetch(), reaction.message.author.id, user.id)
+                await reaction.message.channel.send(`${reaction.message.author.toString()}, ${user.username} has marked your membership as valid.`)
+                memberHandler.inputMember(await reaction.message.fetch(), reaction.message.author.id, user.id)
 
             }
         }
