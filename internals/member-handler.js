@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const { compute_beta } = require('googleapis');
 
 const findTalentName = async(talentName, guildID) => {
-    return talent.findOne({guildID: guildID, name:{ $regex: '.*'+ talentName + '.*', $options: 'i' } }, (err, res)=>{
+    return await talent.findOne({guildID: guildID, name:{ $regex: '.*'+ talentName + '.*', $options: 'i' } }, (err, res)=>{
         if(err) {console.log(err)}
         if(res){
         return res.name;
@@ -34,47 +34,47 @@ const insertTalentMembership = async (guildID, talentName, inputMembership) => {
 //     return (reaction.emoji.name === '❌'|| reaction.emoji.name === '✅')&&member.permissions.has("BAN_MEMBERS")
 // }
 
-const inputMember = async(message, authorID, staff) => {
-    var args = message.content.slice(prefix.length).split(/ +/)
-    var guildID = await message.guild.id
-    console.log(guildID +  " "  + args[1])
-    var talentName = await findTalentName(args[1], guildID)
-    var inputMembership = new membership({
-        talentName: talentName,
-        expiration: new Date(args[2]),
-        staffID: staff
-    })
-    console.log(talentName)
-    await insertTalentMembership(guildID, talentName, inputMembership)
-    user.findOne({userID: message.author.id}, async (err, res) => {
-        if (!res){ 
-            user.create({
-                memberships: [inputMembership],
-                userID: message.author.id,
-                guildID: guildID
-            }, async (err, res) => {
-                if(err) { console.log(err) }
-                await message.channel.send(`User created with their first membership to ${talentName}! Thanks ${(await message.guild.members.cache.get(authorID)).user.username}!`)
-            })
-        } else {
-            user.findOneAndUpdate({guildID: message.guildId, userID: message.author.id },
-            {
-                '$push': {
-                    "memberships" : inputMembership
-                }
-            },
-            {
-                new: true,
-                upsert: true
-            },
-             (err, res)=>{
-                if(err) {console.log(err)}
-            })
-            await message.channel.send(`Added a membership to ${talentName} for ${(await message.guild.members.cache.get(authorID)).user.username}!`)
-        }
-    });
+// const inputMember = async(message, authorID, staff) => {
+//     var args = message.content.slice(prefix.length).split(/ +/)
+//     var guildID = await message.guild.id
+//     console.log(guildID +  " "  + args[1])
+//     var talentName = await findTalentName(args[1], guildID)
+//     var inputMembership = new membership({
+//         talentName: talentName,
+//         expiration: new Date(args[2]),
+//         staffID: staff
+//     })
+//     console.log(talentName)
+//     await insertTalentMembership(guildID, talentName, inputMembership)
+//     user.findOne({userID: message.author.id}, async (err, res) => {
+//         if (!res){ 
+//             user.create({
+//                 memberships: [inputMembership],
+//                 userID: message.author.id,
+//                 guildID: guildID
+//             }, async (err, res) => {
+//                 if(err) { console.log(err) }
+//                 await message.channel.send(`User created with their first membership to ${talentName}! Thanks ${(await message.guild.members.cache.get(authorID)).user.username}!`)
+//             })
+//         } else {
+//             user.findOneAndUpdate({guildID: message.guildId, userID: message.author.id },
+//             {
+//                 '$push': {
+//                     "memberships" : inputMembership
+//                 }
+//             },
+//             {
+//                 new: true,
+//                 upsert: true
+//             },
+//              (err, res)=>{
+//                 if(err) {console.log(err)}
+//             })
+//             await message.channel.send(`Added a membership to ${talentName} for ${(await message.guild.members.cache.get(authorID)).user.username}!`)
+//         }
+//     });
 
-}
+// }
 
 // const collectors = []
 
