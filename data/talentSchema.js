@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 
+const userSchema  = require('./userSchema.js')
+
 const stream = new mongoose.Schema({
     streamName: {
         type: String,
@@ -43,6 +45,14 @@ const talent = new mongoose.Schema({
     guildID: {
         type: String,
         required: true
+    },
+    verificationChannel: {
+        type: String,
+        required: false
+    },
+    memberships: {
+        type: [userSchema.membership],
+        required: false
     },
     profileURL: {
         type: String,
