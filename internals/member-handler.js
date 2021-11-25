@@ -37,10 +37,10 @@ const insertTalentMembership = async (guildID, talentName, inputMembership) => {
 const inputMember = async(message, authorID, staff) => {
     let args = message.content.slice(prefix.length).split(/ +/)
     let guildID = await message.guild.id
-    let talentName = findTalentName(args[0], guildID)
+    let talentName = findTalentName(args[1], guildID)
     let inputMembership = new membership({
         talentName: talentName,
-        expiration: args[1],
+        expiration: new Date(args[2]),
         staffID: staff
     })
     await insertTalentMembership(guildID, talentName, inputMembership)
