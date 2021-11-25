@@ -51,8 +51,6 @@ client.commands = new Discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-const maintenance = false;
-
 for(const file of commandFiles){
     const command = require(`./commands/${file}`);
 
@@ -67,7 +65,7 @@ client.once('ready', async () =>{
         useNewUrlParser: true,
         keepAlive: true
     }).then(console.log("Connected to mongodb"));
-    //statusChange(client);
+    statusChange(client);
 
     var initialJob = new CronJob('0 */3 * * *', async function() {
         {
@@ -107,69 +105,69 @@ client.once('ready', async () =>{
         await streamHandler.bupdate(client)
     }, null, true, 'America/New_York');
 
-    //memberRoles(client);
+    memberRoles(client);
     //memberHandler.iterateCollectors();
     //setInterval(memberHandler.iterateCollectors, 1000 * 20);
-    // messageHandler.notify(client);
-    // setInterval(messageHandler.notify.bind(null, client), 1000 * 30);
+    messageHandler.notify(client);
+    setInterval(messageHandler.notify.bind(null, client), 1000 * 30);
     
 });
 
-client.on('messageReactionAdd', async (reaction, user) => {
-    if (reaction.message.partial) await reaction.message.fetch();
-    if (reaction.partial) await reaction.fetch();
-    if (user.partial) await user.fetch();
-    if (user.bot) return;
-    if (!reaction.message.guild) return;
-    console.log(reaction.message.id)
-    if('835727274107207711'==reaction.message.channel.id){
-                if (reaction.emoji.name === '❌') {
-                    await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
-                } else if (reaction.emoji.name === '✅'){
-                    await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership as valid.`)
-                    inputMember(await reaction.message.fetch(), reaction.message.author.id, user.id)
+// client.on('messageReactionAdd', async (reaction, user) => {
+//     if (reaction.message.partial) await reaction.message.fetch();
+//     if (reaction.partial) await reaction.fetch();
+//     if (user.partial) await user.fetch();
+//     if (user.bot) return;
+//     if (!reaction.message.guild) return;
+//     console.log(reaction.message.id)
+//     if('835727274107207711'==reaction.message.channel.id){
+//                 if (reaction.emoji.name === '❌') {
+//                     await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
+//                 } else if (reaction.emoji.name === '✅'){
+//                     await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership as valid.`)
+//                     inputMember(await reaction.message.fetch(), reaction.message.author.id, user.id)
     
-                }
-            }
-    // member_channel.findOne({guildID: reaction.message.guildId}, async(err, res)=>{
-    //     if(err) console.log(err)
-    //     if(res.channelID==reaction.message.channel.id){
-    //         if (reaction.emoji.name === '❌') {
-    //             await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
-    //         } else if (reaction.emoji.name === '✅'){
-    //             await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership as valid.`)
-    //             inputMember(await reaction.message.fetch(), reaction.message.author.id, user.id)
+//                 }
+//             }
+//     // member_channel.findOne({guildID: reaction.message.guildId}, async(err, res)=>{
+//     //     if(err) console.log(err)
+//     //     if(res.channelID==reaction.message.channel.id){
+//     //         if (reaction.emoji.name === '❌') {
+//     //             await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
+//     //         } else if (reaction.emoji.name === '✅'){
+//     //             await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership as valid.`)
+//     //             inputMember(await reaction.message.fetch(), reaction.message.author.id, user.id)
 
-    //         }
-    //     }
-    // })
-})
+//     //         }
+//     //     }
+//     // })
+// })
 
-client.on('raw', async(event) =>{
-    if (event.t === 'MESSAGE_REACTION_ADD'){
-        let reaction = event.d.emoji
-        let userID = event.d.user_id
-        let messageID = event.d.message_id
-        let guildID = event.d.guild_id
-        let channelID = event.d.channel_id
-        let guild = client.guilds.cache.get(guildID)
-        let channel = client.channels.cache.get(channelID)
-        let message = await channel.fetch(messageID)
-        let user = guild.members.cache.get(userID)
+// client.on('raw', async(event) =>{
+//     if (event.t === 'MESSAGE_REACTION_ADD'){
+//         let reaction = event.d.emoji
+//         let userID = event.d.user_id
+//         let messageID = event.d.message_id
+//         let guildID = event.d.guild_id
+//         let channelID = event.d.channel_id
+//         let guild = client.guilds.cache.get(guildID)
+//         let channel = client.channels.cache.get(channelID)
+//         let message = await channel.fetch(messageID)
+//         let user = guild.members.cache.get(userID)
         
-        member_channel.findOne({guildID: guildID}, async(err, res)=>{
-        if(res.channelID == message.channel.id){
-        if (reaction.name === '❌') {
-            await message.channel.send(`<@&${message.author.id}>, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
-        } else if (reaction.name === '✅'){
-            await message.channel.send(`<@&${message.author.id}>, ${user.username} has marked your membership as valid.`)
-            inputMember(message, message.author.id, user.id)
-        }
-    }
-    })
+//         member_channel.findOne({guildID: guildID}, async(err, res)=>{
+//         if(res.channelID == message.channel.id){
+//         if (reaction.name === '❌') {
+//             await message.channel.send(`<@&${message.author.id}>, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
+//         } else if (reaction.name === '✅'){
+//             await message.channel.send(`<@&${message.author.id}>, ${user.username} has marked your membership as valid.`)
+//             inputMember(message, message.author.id, user.id)
+//         }
+//     }
+//     })
        
-    }
-})
+//     }
+// })
 
 client.on('message', message =>{
     if(!message.content.startsWith(prefix) || message.author.bot) return;
