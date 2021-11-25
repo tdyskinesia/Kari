@@ -128,7 +128,7 @@ client.on('message', message =>{
            streamHandler.bupdate(client, message)
         }
         
-    }
+    
     else if(command === 'vchset') {
         memberHandler.subChannel(message, args)
     }
@@ -139,6 +139,7 @@ client.on('message', message =>{
     else if(command === 'member'){
         memberHandler.callSub(message, args)
     }
+}
     if (message.member.permissions.has("MENTION_EVERYONE")){
         if(command === 'timeset'){
             if(args.length==2){
