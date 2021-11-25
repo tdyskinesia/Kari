@@ -25,9 +25,7 @@ const {talent, stream, user, membership, member_channel} = require('./data/model
 
 const { Client, Intents } = require('discord.js');
 
-let Intss = new Discord.Intents(Discord.Intents.ALL);
-
-const client = new Client({ intents: Intss,
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MESSAGES],
 partials: ['MESSAGE', 'GUILD_MEMBER', 'CHANNEL', 'USER', 'REACTION'] });
 
 const statusChange = require('./internals/status-change.js');
@@ -109,7 +107,7 @@ client.once('ready', async () =>{
         await streamHandler.bupdate(client)
     }, null, true, 'America/New_York');
 
-    //memberRoles(client);
+    memberRoles(client);
     //memberHandler.iterateCollectors();
     //setInterval(memberHandler.iterateCollectors, 1000 * 20);
     messageHandler.notify(client);
