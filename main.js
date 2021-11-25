@@ -103,7 +103,7 @@ client.once('ready', async () =>{
     }, null, true, 'America/New_York');
 
     memberHandler.iterateCollectors();
-    setInterval(memberHandler.iterateCollectors(), 1000 * 20);
+    setInterval(memberHandler.iterateCollectors, 1000 * 20);
     messageHandler.notify(client);
     setInterval(messageHandler.notify.bind(null, client), 1000 * 30);
 });
