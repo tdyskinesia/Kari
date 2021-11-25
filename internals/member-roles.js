@@ -11,6 +11,7 @@ module.exports = async(client) => {
 client.on('messageReactionAdd', async (reaction, user) => {
     if (reaction.message.partial) await reaction.message.fetch();
     if (reaction.partial) await reaction.fetch();
+    if (user.partial) await user.fetch();
     if (user.bot) return;
     if (!reaction.message.guild) return;
     console.log(reaction.message.id)

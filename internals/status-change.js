@@ -14,8 +14,8 @@ const statusOptions = [
 
 let counter = 0
 
-const updateStatus = () => {
-    client.user.setPresence({
+const updateStatus = async() => {
+    await client.user.setPresence({
         status: 'online',
         activities: [
             {
