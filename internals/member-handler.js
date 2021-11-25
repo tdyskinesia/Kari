@@ -22,8 +22,7 @@ const insertTalentMembership = async (guildID, talentName, inputMembership) => {
             }
         },
         {
-            new: true,
-            upsert: true
+            new: true
         },
         (err, res) => {
             if(err) {console.log(err)}
@@ -36,11 +35,11 @@ const insertTalentMembership = async (guildID, talentName, inputMembership) => {
 // }
 
 const inputMember = async(message, authorID, staff) => {
-    let args = message.content.slice(prefix.length).split(/ +/)
-    let guildID = await message.guild.id
+    var args = message.content.slice(prefix.length).split(/ +/)
+    var guildID = await message.guild.id
     console.log(guildID +  " "  + args[1])
-    let talentName = await findTalentName(args[1], guildID)
-    let inputMembership = new membership({
+    var talentName = await findTalentName(args[1], guildID)
+    var inputMembership = new membership({
         talentName: talentName,
         expiration: new Date(args[2]),
         staffID: staff
