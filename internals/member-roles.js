@@ -13,7 +13,7 @@ for await(const channel of member_channel.find().lean()){
     for(var i in data){
         try{
         let ch = await client.channels.cache.get(channel.channelID)
-        arr.push(await ch.messages.fetch(data[i], false))
+        await ch.messages.fetch(data[i], false)
         console.log(data[i])
         }
         catch (e){
@@ -21,7 +21,6 @@ for await(const channel of member_channel.find().lean()){
         }
     }
 }
-return arr;
 
 
 
