@@ -123,9 +123,10 @@ client.on('messageReactionAdd', async (reaction, user) => {
     if (user.bot) return;
     if (!reaction.message.guild) return;
     console.log(reaction.message.id)
-    member_channel.findOne({guildID: reaction.message.guildId}, async(err, res)=>{
+    var res = member_channel.findOne({guildID: reaction.message.guildId}).lean().exec()
         if(err) console.log(err)
         if(res.channelID==reaction.message.channel.id){
+            if(res.verificationIDs.includes(message.id)){
             let member = reaction.message.guild.members.cache.get(user.id)
             if(member.permissions.has("BAN_MEMBERS")){
             if (reaction.emoji.name === '❌') {
@@ -137,7 +138,8 @@ client.on('messageReactionAdd', async (reaction, user) => {
             }
         }
     }
-    })
+    }
+    
 })
 // client.on('messageReactionAdd', async (reaction, user) => {
 //     if (reaction.message.partial) await reaction.message.fetch();
