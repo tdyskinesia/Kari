@@ -4,7 +4,7 @@ const {talent, stream, user, membership, member_channel} = require('../data/mode
 
 const mongoose = require('mongoose');
 
-const findTalentName = (talentName, guildID) => {
+const findTalentName = async(talentName, guildID) => {
     talent.findOne({guildID: guildID, name:{ $regex: talentName, $options: 'i' } }, (err, res)=>{
         if(err) {console.log(err)}
         if(res){
@@ -37,7 +37,8 @@ const insertTalentMembership = async (guildID, talentName, inputMembership) => {
 const inputMember = async(message, authorID, staff) => {
     let args = message.content.slice(prefix.length).split(/ +/)
     let guildID = await message.guild.id
-    let talentName = findTalentName(args[1], guildID)
+    console.log(guildID +  " "  + args[1])
+    let talentName = await findTalentName(args[1], guildID)
     let inputMembership = new membership({
         talentName: talentName,
         expiration: new Date(args[2]),
@@ -191,42 +192,43 @@ module.exports = {
         console.log("COLLECTORS CHECKED")
     },
     async inputMember(message, authorID, staff, prefix) {
-        let args = message.content.slice(prefix.length).split(/ +/)
-        let talentName = findTalentName(args[0])
-        let guildID = await message.guild.id
-        let inputMembership = new membership({
-            talentName: talentName,
-            expiration: args[1],
-            staffID: staff
-        })
-        await insertTalentMembership(message, talentName, inputMembership)
-        user.findOne({userID: message.author.id}, async (err, res) => {
-            if (!res){
-                user.create({
-                    memberships: [inputMembership],
-                    userId: authorID,
-                    guildID: guildID
-                }, async (err, res) => {
-                    if(err) { console.log(err) }
-                    await message.channel.send(`User created with their first membership to ${args[0]}! Thanks ${(await message.guild.members.cache.get(authorID)).user.username}!`)
-                })
-            } else {
-                user.findOneAndUpdate({guildID: message.guildId, userID: message.author.id },
-                {
-                    '$push': {
-                        "memberships" : inputMembership
-                    }
-                },
-                {
-                    new: true,
-                    upsert: true
-                },
-                 (err, res)=>{
-                    if(err) {console.log(err)}
-                })
-                await message.channel.send(`Added a membership to ${args[0]} for ${(await message.guild.members.cache.get(authorID)).user.username}!`)
-            }
-        });
+    let args = message.content.slice(prefix.length).split(/ +/)
+    let guildID = await message.guild.id
+    console.log(guildID +  " "  + args[1])
+    let talentName = await findTalentName(args[1], guildID)
+    let inputMembership = new membership({
+        talentName: talentName,
+        expiration: new Date(args[2]),
+        staffID: staff
+    })
+    await insertTalentMembership(guildID, talentName, inputMembership)
+    user.findOne({userID: message.author.id}, async (err, res) => {
+        if (!res){
+            user.create({
+                memberships: [inputMembership],
+                userID: message.author.id,
+                guildID: guildID
+            }, async (err, res) => {
+                if(err) { console.log(err) }
+                await message.channel.send(`User created with their first membership to ${talentName}! Thanks ${(await message.guild.members.cache.get(authorID)).user.username}!`)
+            })
+        } else {
+            user.findOneAndUpdate({guildID: message.guildId, userID: message.author.id },
+            {
+                '$push': {
+                    "memberships" : inputMembership
+                }
+            },
+            {
+                new: true,
+                upsert: true
+            },
+             (err, res)=>{
+                if(err) {console.log(err)}
+            })
+            await message.channel.send(`Added a membership to ${talentName} for ${(await message.guild.members.cache.get(authorID)).user.username}!`)
+        }
+    });
     
     }
 }
