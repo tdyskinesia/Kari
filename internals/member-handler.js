@@ -25,7 +25,7 @@ const insertTalentMembership = async (guildID, talentName, inputMembership) => {
         },
         (err, res) => {
             if(err) {console.log(err)}
-            console.log("NEW MEMBERSHIP ARRAY FOR " + res.name + "\n" + res.memberships)
+            console.log("NEW MEMBERSHIP ARRAY FOR " + talentName)
         })
 }
 
@@ -52,7 +52,7 @@ const inputMember = async(message, authorID, staff) => {
                 guildID: guildID
             }, async (err, res) => {
                 if(err) { console.log(err) }
-                await message.channel.send(`User created with their first membership to ${args[0]}! Thanks ${(await message.guild.members.cache.get(authorID)).user.username}!`)
+                await message.channel.send(`User created with their first membership to ${talentName}! Thanks ${(await message.guild.members.cache.get(authorID)).user.username}!`)
             })
         } else {
             user.findOneAndUpdate({guildID: message.guildId, userID: message.author.id },
@@ -68,7 +68,7 @@ const inputMember = async(message, authorID, staff) => {
              (err, res)=>{
                 if(err) {console.log(err)}
             })
-            await message.channel.send(`Added a membership to ${args[0]} for ${(await message.guild.members.cache.get(authorID)).user.username}!`)
+            await message.channel.send(`Added a membership to ${talentName} for ${(await message.guild.members.cache.get(authorID)).user.username}!`)
         }
     });
 
