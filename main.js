@@ -38,6 +38,8 @@ const memberHandler = require('./internals/member-handler.js')
 
 const talentSchema  = require('./data/models.js')
 
+const memberRoles = require('./internals/member-roles.js')
+
 const prefix = 'k!';
 
 const fs = require('fs');
@@ -103,10 +105,12 @@ client.once('ready', async () =>{
         await streamHandler.bupdate(client)
     }, null, true, 'America/New_York');
 
+    memberRoles(client);
     //memberHandler.iterateCollectors();
     //setInterval(memberHandler.iterateCollectors, 1000 * 20);
     messageHandler.notify(client);
     setInterval(messageHandler.notify.bind(null, client), 1000 * 30);
+    
 });
 
 client.on('message', message =>{

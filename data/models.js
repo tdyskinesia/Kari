@@ -111,7 +111,7 @@ const member_channel = new mongoose.Schema({
         type: String, 
         required: true
     },
-    collectorIDs: {
+    verificationIDs: {
         type: [String],
         required: false
     }

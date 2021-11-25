@@ -29,10 +29,10 @@ const insertTalentMembership = async (message, talentName, inputMembership) => {
         })
 }
 
-const filter = async(reaction, user) => {
-    let member = await reaction.message.guild.members.cache.get(user.id)
-    return (reaction.emoji.name === '❌'|| reaction.emoji.name === '✅')&&member.permissions.has("BAN_MEMBERS")
-}
+// const filter = async(reaction, user) => {
+//     let member = await reaction.message.guild.members.cache.get(user.id)
+//     return (reaction.emoji.name === '❌'|| reaction.emoji.name === '✅')&&member.permissions.has("BAN_MEMBERS")
+// }
 
 const inputMember = async(message, authorID, staff) => {
     let args = message.content.slice(prefix.length).split(/ +/)
@@ -74,26 +74,26 @@ const inputMember = async(message, authorID, staff) => {
 
 }
 
-const collectors = []
+// const collectors = []
 
-const checkCollectors = async() => {
-    console.log(collectors)
-    for (const collector of collectors){
-        console.log(collector)    
-        if(collector.total>0){
-            collector.collected.forEach(async(res)=>{
-                if(res.reaction.emoji.name === '❌'){
-                    await res.reaction.channel.send(`<@&${collector.message.author.id}>, a staff member has marked your 
-                    membership application as invalid. Please review and resubmit.`)
-                }
-            })
-            let staff = await collector.collected.first().reaction.users.cache.first().id
-            let authorID = await collector.message.author.id
-            let message = await collector.message.fetch()
-            inputMember(message, authorID, staff)
-        }
-    }
-}
+// const checkCollectors = async() => {
+//     console.log(collectors)
+//     for (const collector of collectors){
+//         console.log(collector)    
+//         if(collector.total>0){
+//             collector.collected.forEach(async(res)=>{
+//                 if(res.reaction.emoji.name === '❌'){
+//                     await res.reaction.channel.send(`<@&${collector.message.author.id}>, a staff member has marked your 
+//                     membership application as invalid. Please review and resubmit.`)
+//                 }
+//             })
+//             let staff = await collector.collected.first().reaction.users.cache.first().id
+//             let authorID = await collector.message.author.id
+//             let message = await collector.message.fetch()
+//             inputMember(message, authorID, staff)
+//         }
+//     }
+// }
 
 
 module.exports = {
@@ -141,7 +141,7 @@ module.exports = {
                         member_channel.findOneAndUpdate({_id: res._id},
                             {
                                 '$push' : {
-                                    "collectorIDs" : message.id
+                                    "verificationIDs" : message.id
                                 }
                             }, 
                             {   
@@ -152,19 +152,9 @@ module.exports = {
                                 if(err) console.log(err)
                                 await message.channel.send(message.id + " added to collection stack.")
                             })
-                        const curCollect = message.createReactionCollector({filter})
+                        await message.channel.send(`Request to member to ${args[0]} recieved.`)
                         message.react('✅')
                         message.react('❌')
-                        curCollect.on('collect', (reaction, user)=>{
-                            if (reaction.emoji.name === '❌') {
-                                curCollect.stop()
-                                reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
-                            } else if (reaction.emoji.name === '✅'){
-                                curCollect.stop()
-                                reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership as valid.`)
-                            }
-                        })
-                        await message.channel.send(`Request to member to ${args[0]} recieved.`)
                     } else {
                         await message.channel.send("No membership verification channel set!")
                     }
@@ -199,5 +189,44 @@ module.exports = {
     async iterateCollectors(){
         await checkCollectors()
         console.log("COLLECTORS CHECKED")
+    },
+    async inputMember(message, authorID, staff) {
+        let args = message.content.slice(prefix.length).split(/ +/)
+        let talentName = findTalentName(args[0])
+        let guildID = await message.guild.id
+        let inputMembership = new membership({
+            talentName: talentName,
+            expiration: args[1],
+            staffID: staff
+        })
+        await insertTalentMembership(message, talentName, inputMembership)
+        user.findOne({userID: message.author.id}, async (err, res) => {
+            if (!res){
+                user.create({
+                    memberships: [inputMembership],
+                    userId: authorID,
+                    guildID: guildID
+                }, async (err, res) => {
+                    if(err) { console.log(err) }
+                    await message.channel.send(`User created with their first membership to ${args[0]}! Thanks ${(await message.guild.members.cache.get(authorID)).user.username}!`)
+                })
+            } else {
+                user.findOneAndUpdate({guildID: message.guildId, userID: message.author.id },
+                {
+                    '$push': {
+                        "memberships" : inputMembership
+                    }
+                },
+                {
+                    new: true,
+                    upsert: true
+                },
+                 (err, res)=>{
+                    if(err) {console.log(err)}
+                })
+                await message.channel.send(`Added a membership to ${args[0]} for ${(await message.guild.members.cache.get(authorID)).user.username}!`)
+            }
+        });
+    
     }
 }
