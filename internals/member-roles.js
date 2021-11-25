@@ -14,9 +14,9 @@ client.on('messageReactionAdd', async (reaction, user) => {
     if (user.bot) return;
     if (!reaction.message.guild) return;
 
-    member_channel.find({guildID: reaction.message.guildId}, async(err, res)=>{
+    member_channel.findOne({guildID: reaction.message.guildId}, async(err, res)=>{
         if(err) console.log(err)
-        if(res.channelID===reaction.message.channel.id){
+        if(res.channelID==reaction.message.channel.id){
             if (reaction.emoji.name === '❌') {
                 await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
             } else if (reaction.emoji.name === '✅'){
