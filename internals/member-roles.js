@@ -11,7 +11,7 @@ let arr = []
 for await(const channel of member_channel.find().lean()){
     let data = channel.verificationIDs
     for(var i in data){
-        arr.push(await (await client.channels.cache.get(channel.channelID)).messages.fetch(data[i]))
+        arr.push(await (await client.channels.cache.get(channel.channelID)).messages.fetch(data[i], false))
         console.log(data[i])
     }
 }
