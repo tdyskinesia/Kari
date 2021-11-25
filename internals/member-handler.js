@@ -193,15 +193,16 @@ module.exports = {
         console.log("COLLECTORS CHECKED")
     },
     async inputMember(message, authorID, staff, prefix) {
-    let args = message.content.slice(prefix.length).split(/ +/)
-    let guildID = await message.guild.id
+    var args = message.content.slice(prefix.length).split(/ +/)
+    var guildID = await message.guild.id
     console.log(guildID +  " "  + args[1])
-    let talentName = await findTalentName(args[1], guildID)
-    let inputMembership = new membership({
+    var talentName = await findTalentName(args[1], guildID)
+    var inputMembership = new membership({
         talentName: talentName,
         expiration: new Date(args[2]),
         staffID: staff
     })
+    console.log(talentName)
     await insertTalentMembership(guildID, talentName, inputMembership)
     user.findOne({userID: message.author.id}, async (err, res) => {
         if (!res){
