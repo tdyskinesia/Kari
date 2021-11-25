@@ -31,7 +31,7 @@ const insertTalentMembership = async (message, talentName, inputMembership) => {
 
 const filter = async(reaction, user) => {
     let member = await reaction.message.guild.members.cache.get(user.id)
-    return (reaction.emoji.name === '❌'|| reaction.emoji.name === '✅')&&member.permissions.has("BAN_MEMBERS")
+    return (reaction.emoji.name === ':x:'|| reaction.emoji.name === ':white_check_mark:')&&member.permissions.has("BAN_MEMBERS")
 }
 
 const inputMember = async(message, authorID, staff) => {
