@@ -190,7 +190,7 @@ module.exports = {
         await checkCollectors()
         console.log("COLLECTORS CHECKED")
     },
-    async inputMember(message, authorID, staff) {
+    async inputMember(message, authorID, staff, prefix) {
         let args = message.content.slice(prefix.length).split(/ +/)
         let talentName = findTalentName(args[0])
         let guildID = await message.guild.id
