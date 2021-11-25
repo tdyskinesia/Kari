@@ -64,6 +64,7 @@ client.once('ready', async () =>{
         keepAlive: true
     }).then(console.log("Connected to mongodb"));
     statusChange(client);
+    
     var initialJob = new CronJob('0 */3 * * *', async function() {
         {
         /*console.log("I AM UPDATING STREAM TIMES NOW");

@@ -77,7 +77,9 @@ const inputMember = async(message, authorID, staff) => {
 const collectors = []
 
 const checkCollectors = async() => {
-    for (const collector of collectors){    
+    console.log(collectors)
+    for (const collector of collectors){
+        console.log(collector)    
         if(collector.total>0){
             collector.collected.forEach(async(res)=>{
                 if(res.reaction.emoji.name === '❌'){
@@ -93,8 +95,6 @@ const checkCollectors = async() => {
     }
 }
 
-
-setInterval(checkCollectors, 1000 * 20)
 
 module.exports = {
     async subChannel(message, args){
