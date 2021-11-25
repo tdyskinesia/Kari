@@ -69,7 +69,7 @@ client.once('ready', async () =>{
         useNewUrlParser: true,
         keepAlive: true
     }).then(console.log("Connected to mongodb"));
-    cache = statusChange(client);
+    statusChange(client);
 
     var initialJob = new CronJob('0 */3 * * *', async function() {
         {
@@ -109,7 +109,7 @@ client.once('ready', async () =>{
         await streamHandler.bupdate(client)
     }, null, true, 'America/New_York');
 
-    memberRoles(client);
+    //memberRoles(client);
     //memberHandler.iterateCollectors();
     //setInterval(memberHandler.iterateCollectors, 1000 * 20);
     messageHandler.notify(client);
