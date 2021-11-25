@@ -67,7 +67,6 @@ const inputMember = async(message, authorID, staff) => {
             },
              (err, res)=>{
                 if(err) {console.log(err)}
-                await res.save()
             })
             await message.channel.send(`Added a membership to ${args[0]} for ${(await message.guild.members.cache.get(authorID)).user.username}!`)
         }
