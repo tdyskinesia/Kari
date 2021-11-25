@@ -58,7 +58,7 @@ for(const file of commandFiles){
 
 client.once('ready', async () =>{
     console.log('Online');
-    await mongoose.connect(process.env.mongooseConnectionString || '', {
+    await mongoose.connect(process.env.MONGOOSE_CONNECTION_STRING || '', {
         useUnifiedTopology: true,
         useNewUrlParser: true,
         keepAlive: true
