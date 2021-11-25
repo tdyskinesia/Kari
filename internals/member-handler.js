@@ -31,7 +31,7 @@ const insertTalentMembership = async (message, talentName, inputMembership) => {
 
 const filter = async(reaction, user) => {
     let member = await reaction.message.guild.members.cache.get(user.id)
-    return (reaction.emoji.name === ':x:'|| reaction.emoji.name === ':white_check_mark:')&&member.permissions.has("BAN_MEMBERS")
+    return (reaction.emoji.name === '❌'|| reaction.emoji.name === '✅')&&member.permissions.has("BAN_MEMBERS")
 }
 
 const inputMember = async(message, authorID, staff) => {
@@ -152,7 +152,18 @@ module.exports = {
                                 if(err) console.log(err)
                                 await message.channel.send(message.id + " added to collection stack.")
                             })
-                        collectors.push(message.createReactionCollector({filter}))
+                        const curCollect = message.createReactionCollector({filter})
+                        message.react('✅')
+                        message.react('❌')
+                        curCollect.on('collect', (reaction, user)=>{
+                            if (reaction.emoji.name === '❌') {
+                                curCollect.stop()
+                                await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
+                            } else if (reaction.emoji.name === '✅'){
+                                curCollect.stop()
+                                await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership as valid.`)
+                            }
+                        })
                         await message.channel.send(`Request to member to ${args[0]} recieved.`)
                     } else {
                         await message.channel.send("No membership verification channel set!")

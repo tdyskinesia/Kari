@@ -64,7 +64,7 @@ client.once('ready', async () =>{
         keepAlive: true
     }).then(console.log("Connected to mongodb"));
     statusChange(client);
-    
+
     var initialJob = new CronJob('0 */3 * * *', async function() {
         {
         /*console.log("I AM UPDATING STREAM TIMES NOW");
@@ -103,8 +103,8 @@ client.once('ready', async () =>{
         await streamHandler.bupdate(client)
     }, null, true, 'America/New_York');
 
-    memberHandler.iterateCollectors();
-    setInterval(memberHandler.iterateCollectors, 1000 * 20);
+    //memberHandler.iterateCollectors();
+    //setInterval(memberHandler.iterateCollectors, 1000 * 20);
     messageHandler.notify(client);
     setInterval(messageHandler.notify.bind(null, client), 1000 * 30);
 });
