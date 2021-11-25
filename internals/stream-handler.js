@@ -186,11 +186,13 @@ module.exports = {
     async queryTalents(message, client) {
         let guild = await client.guilds.cache.get(message.guild.id)
             for await (const talent of talentSchema.talent.find({guildID: message.guild.id})){
+                if(talent.memberRoleID){
                 await message.channel.send(
-               `NAME: ${talent.name} 
-                YTID: ${talent.youtubeID}
-                LIVE CHANNEL: ${(await client.channels.cache.get(talent.liveChannelID)).toString()}
-                ROLE:${(await guild.roles.cache.get(talent.roleID)).name}`)
+               `NAME: ${talent.name} YTID: ${talent.youtubeID} LIVE CHANNEL: ${(await client.channels.cache.get(talent.liveChannelID)).toString()} ROLE: ${(await guild.roles.cache.get(talent.roleID)).name} MEMBER ROLE: ${(await guild.roles.cache.get(talent.memberRoleID)).name}`)
+                } else {
+                    await message.channel.send(
+                        `NAME: ${talent.name} YTID: ${talent.youtubeID} LIVE CHANNEL: ${(await client.channels.cache.get(talent.liveChannelID)).toString()} ROLE: ${(await guild.roles.cache.get(talent.roleID)).name}`)
+                }
             }
     },
     async displayStreams(message){

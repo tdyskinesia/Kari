@@ -65,6 +65,10 @@ const talent = new mongoose.Schema({
         type: [membership],
         required: false
     },
+    memberRoleID: {
+        type: String,
+        required: false
+    },
     profileURL: {
         type: String,
         required: false
@@ -107,7 +111,7 @@ const member_channel = new mongoose.Schema({
         type: String, 
         required: true
     },
-    reactionCollectors: {
+    collectorIDs: {
         type: [String],
         required: false
     }

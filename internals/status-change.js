@@ -29,7 +29,7 @@ const updateStatus = () => {
     if(++counter >= statusOptions.length){
         counter = 0;
     }
-    setInterval(updateStatus, 1000 * 20)
+    setTimeout(updateStatus, 1000 * 20)
 
 updateStatus()
 

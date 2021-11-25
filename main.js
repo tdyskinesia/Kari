@@ -34,6 +34,8 @@ const talentHandler = require('./internals/talent-handler.js')
 
 const messageHandler = require('./internals/message-handler.js')
 
+const memberHandler = require('./internals/member-handler.js')
+
 const talentSchema  = require('./data/models.js')
 
 const prefix = 'k!';
@@ -110,23 +112,33 @@ client.on('message', message =>{
     const command = args.shift().toLowerCase();
     if(message.member.permissions.has("BAN_MEMBERS")){
 
-    if(command === 'ping'){
+    if(command === 'ping') {
         client.commands.get('ping').execute(message, args);
     }
-    else if(command === 'setup'){
+    else if(command === 'setup') {
         client.commands.get('new setup').execute(message, args)
     }
-    else if(command === 'clearsub'){
+    else if(command === 'clearsub') {
         talentHandler.deleteTalent(message, args)
     }
-    else if(command === 'clearmsgs'){
+    else if(command === 'clearmsgs') {
         messageHandler.clearNotifications()
     }
-    else if(command === 'bupdate'){
+    else if(command === 'bupdate') {
            streamHandler.bupdate(client, message)
         }
         
-    } 
+    }
+    else if(command === 'vchset') {
+        memberHandler.subChannel(message, args)
+    }
+    else if(command === 'mrole') {
+        memberHandler.subMemberRole(message, args)
+    }
+    //for now only for staff to debug
+    else if(command === 'member'){
+        memberHandler.callSub(message, args)
+    }
     if (message.member.permissions.has("MENTION_EVERYONE")){
         if(command === 'timeset'){
             if(args.length==2){
@@ -176,10 +188,8 @@ client.on('message', message =>{
         }
     }
     if(command === 'deeznuts'){
-        async (message) => {
-            await message.channel.send("deez nuts")
-            await message.delete()
-        }
+        message.channel.send("deez nuts")
+        message.delete()
     }
     else if(command === 'help'){
         message.channel.send("__**Kari Commands**__\n\n"+
