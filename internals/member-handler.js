@@ -185,5 +185,8 @@ module.exports = {
         } else message.channel.send("Too many or no arguments")
     },
 
-    iterateCollectors: checkCollectors
+    async iterateCollectors(){
+        await checkCollectors()
+        console.log("COLLECTORS CHECKED")
+    }
 }
