@@ -158,10 +158,10 @@ module.exports = {
                         curCollect.on('collect', (reaction, user)=>{
                             if (reaction.emoji.name === '❌') {
                                 curCollect.stop()
-                                await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
+                                reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
                             } else if (reaction.emoji.name === '✅'){
                                 curCollect.stop()
-                                await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership as valid.`)
+                                reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership as valid.`)
                             }
                         })
                         await message.channel.send(`Request to member to ${args[0]} recieved.`)
