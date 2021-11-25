@@ -9,9 +9,10 @@ const {inputMember} = require('./member-handler.js')
 module.exports = async(client) => {
 
 for await(const channel of member_channel.find().lean()){
-    for(var i in channel.verificationIDs){
-        await (await client.channels.cache.get(channel.channelID)).messages.fetch(channel.verificationIDs[i])
-        console.log(channel.verificationIDs[i])
+    let data = channel.verificationIDs
+    for(var i in data){
+        await (await client.channels.cache.get(channel.channelID)).messages.fetch(data[i])
+        console.log(data[i])
     }
 }
 
