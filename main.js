@@ -21,7 +21,7 @@ const moment = require('moment-timezone');
 const Discord = require('discord.js'); 
 
 const mongoose = require('mongoose');
-const {talent, stream, user, membership, member_channel} = require('../data/models');
+const {talent, stream, user, membership, member_channel} = require('./data/models');
 
 const { Client, Intents } = require('discord.js');
 
