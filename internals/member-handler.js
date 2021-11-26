@@ -118,7 +118,7 @@ module.exports = {
         let d = new Date(args[1])
         let now = new Date()
         if(d!=null){
-        if(d.setDate(d.getDate()-30)>now){
+        if(d.setDate(d.getDate()-32)<now){
         let tal = await talent.findOne({guildID: message.guildId, name:{ $regex: '.*'+ args[0]+ '.*', $options: 'i' } }).lean().exec()
             if(tal!=null){
                 if(tal.memberRoleID){
