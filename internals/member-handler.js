@@ -310,16 +310,16 @@ module.exports = {
     async manualMembershipRemove(message, args) {
         if(args.length==3){
         try{       
-        let m = await message.guild.members.fetch(args[2])
+        let m = await message.guild.members.fetch(args[1])
         let username = m.user.username
-        let foundTalent = await talent.findOne({guildID: message.guild.id, name:{ $regex: '.*'+ args[1]+ '.*', $options: 'i' } }).lean().exec()
-        let foundUser = await user.findOne({guildID: message.guild.id, userID: args[2]}).lean().exec()
+        let foundTalent = await talent.findOne({guildID: message.guild.id, name:{ $regex: '.*'+ args[0]+ '.*', $options: 'i' } }).lean().exec()
+        let foundUser = await user.findOne({guildID: message.guild.id, userID: args[1]}).lean().exec()
         if(foundTalent){
             if(foundUser){
 
                 let newTalent = await talent.findByIdAndUpdate(foundTalent._id,{
                     '$pull': {
-                        'memberships': {'userID': args[2]}
+                        'memberships': {'userID': args[1]}
                     }}, {new: true}).lean().exec()
             
             if(foundTalent.memberships.length>newTalent.memberships.length){
