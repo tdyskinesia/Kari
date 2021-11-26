@@ -2,6 +2,8 @@ const Discord = require('discord.js');
 
 const {talent, stream, user, membership, member_channel} = require('../data/models');
 
+const models = require('../data/models');
+
 const mongoose = require('mongoose');
 
 const {inputMember, membershipRemove, automatedMembershipRemove, notifyUser} = require('./member-handler.js')
@@ -69,7 +71,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
             if (reaction.emoji.name === '❌') {
                 let mes = await reaction.message.fetch()
                 await reaction.message.channel.send(`${reaction.message.author.toString()}, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
-                let member = await user.find({guildID: reaction.message.guild.id ,userID: user.id}).lean().exec()
+                let member = await models.user.find({guildID: reaction.message.guild.id ,userID: user.id}).lean().exec()
                 const args = reaction.message.content.slice(prefix.length).split(/ +/);
                 for await (const membership of member.memberships){
                     if(membership.talentName==args[1]){
