@@ -308,7 +308,7 @@ module.exports = {
     //removes a talent membership from given user ID
     //called with <talent name> <user ID>
     async manualMembershipRemove(message, args) {
-        if(args.length==3){
+        if(args.length==2){
         try{       
         let m = await message.guild.members.fetch(args[1])
         let username = m.user.username
