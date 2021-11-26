@@ -393,7 +393,7 @@ module.exports = {
         if(args.length==1){
             let tal = await talent.findOne({guildID: message.guild.id, name: { $regex: '.*'+ args[0]+ '.*', $options: 'i' }}).exec()
                 for(const membership of tal.memberships){
-                    message.channel.send(message.guild.members.cache.get(membership.userID))
+                    message.channel.send(message.guild.members.cache.get(membership.userID).user.username)
                 }
         } else message.channel.send("Incorrect # of args.")
     } catch (e)
