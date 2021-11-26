@@ -80,7 +80,7 @@ module.exports = {
         let targetChannel = await message.guild.channels.cache.get(args[0])
             if(args.length==1){
             args[0].replace(/\D/g,'')
-            res = member_channel.findOne({guildID: message.guildId}).exec()
+            let res = member_channel.findOne({guildID: message.guildId}).exec()
                 if(res==null){
                     await member_channel.create({
                         guildID: message.guildId,
