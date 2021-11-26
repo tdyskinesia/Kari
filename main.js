@@ -129,12 +129,12 @@ client.on('message', message =>{
         messageHandler.clearNotifications()
     }
     else if(command === 'bupdate') {
-           streamHandler.bupdate(client, message)
-        }
+           streamHandler.bupdate(client, message, args)
+    }
     else if(command === 'vchset') {
         memberHandler.subChannel(message, args)
     }
-    else if(command === 'mrole') {
+    else if(command === 'mrole'||command === 'mr') {
         memberHandler.subMemberRole(message, args)
     }
     //for now only for staff to debug
@@ -143,6 +143,9 @@ client.on('message', message =>{
     }
     else if(command === 'mlist'){
         memberHandler.getMemberships(message, args)
+    }
+    else if(command === 'mrclear'||command === 'mroleclear'){
+        memberHandler.changeMemberRole(message, args)
     }
 }
     if (message.member.permissions.has("MENTION_EVERYONE")){

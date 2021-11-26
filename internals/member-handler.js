@@ -3,11 +3,18 @@ const Discord = require('discord.js');
 const {talent, stream, user, membership, member_channel} = require('../data/models');
 
 const mongoose = require('mongoose');
-const { compute_beta } = require('googleapis');
 
 const findTalentName = async(talentName, guildID) => {
+    try{
     var q = await talent.findOne({guildID: guildID, name:{ $regex: '.*'+ talentName + '.*', $options: 'i' } }).lean().exec()
-    return q.name
+    if(q){
+        return q.name
+        } else return null
+    }
+    catch (e){
+        console.log(e)
+    }
+
 }
 
 const insertTalentMembership = (guildID, talentName, inputMembership) => {
@@ -24,74 +31,6 @@ const insertTalentMembership = (guildID, talentName, inputMembership) => {
             if(err) {console.log(err)}
         })
 }
-
-// const filter = async(reaction, user) => {
-//     let member = await reaction.message.guild.members.cache.get(user.id)
-//     return (reaction.emoji.name === '❌'|| reaction.emoji.name === '✅')&&member.permissions.has("BAN_MEMBERS")
-// }
-
-// const inputMember = async(message, authorID, staff) => {
-//     var args = message.content.slice(prefix.length).split(/ +/)
-//     var guildID = await message.guild.id
-//     console.log(guildID +  " "  + args[1])
-//     var talentName = await findTalentName(args[1], guildID)
-//     var inputMembership = new membership({
-//         talentName: talentName,
-//         expiration: new Date(args[2]),
-//         staffID: staff
-//     })
-//     console.log(talentName)
-//     await insertTalentMembership(guildID, talentName, inputMembership)
-//     user.findOne({userID: message.author.id}, async (err, res) => {
-//         if (!res){ 
-//             user.create({
-//                 memberships: [inputMembership],
-//                 userID: message.author.id,
-//                 guildID: guildID
-//             }, async (err, res) => {
-//                 if(err) { console.log(err) }
-//                 await message.channel.send(`User created with their first membership to ${talentName}! Thanks ${(await message.guild.members.cache.get(authorID)).user.username}!`)
-//             })
-//         } else {
-//             user.findOneAndUpdate({guildID: message.guildId, userID: message.author.id },
-//             {
-//                 '$push': {
-//                     "memberships" : inputMembership
-//                 }
-//             },
-//             {
-//                 new: true,
-//                 upsert: true
-//             },
-//              (err, res)=>{
-//                 if(err) {console.log(err)}
-//             })
-//             await message.channel.send(`Added a membership to ${talentName} for ${(await message.guild.members.cache.get(authorID)).user.username}!`)
-//         }
-//     });
-
-// }
-
-// const collectors = []
-
-// const checkCollectors = async() => {
-//     console.log(collectors)
-//     for (const collector of collectors){
-//         console.log(collector)    
-//         if(collector.total>0){
-//             collector.collected.forEach(async(res)=>{
-//                 if(res.reaction.emoji.name === '❌'){
-//                     await res.reaction.channel.send(`<@&${collector.message.author.id}>, a staff member has marked your 
-//                     membership application as invalid. Please review and resubmit.`)
-//                 }
-//             })
-//             let staff = await collector.collected.first().reaction.users.cache.first().id
-//             let authorID = await collector.message.author.id
-//             let message = await collector.message.fetch()
-//             inputMember(message, authorID, staff)
-//         }
-//     }
-// }
 
 
 module.exports = {
@@ -130,6 +69,7 @@ module.exports = {
     },
 
     async callSub(message, args) {
+        if(message.attachments){
         if(args.length==2){
         talent.findOne({guildID: message.guildId, name:{ $regex: args[0], $options: 'i' } }, async(err, res)=>{
             if(err) console.log(err)
@@ -163,13 +103,13 @@ module.exports = {
             } else {
                 await message.channel.send("Talent does not have member role set.")
             }
-                //await inputMember(res, message, args)
             } else {
                 await message.channel.send("Talent not found subbed in your server.")
             }
             
-        })
-    } else await message.channel.send("No args or too many args given")
+            })
+        } else await message.channel.send("No args or too many args given")
+    } else message.channel.send("No attachment found")
     },
     async subMemberRole(message, args){
         if(args.length==2){
@@ -189,11 +129,6 @@ module.exports = {
             })
 
         } else message.channel.send("Too many or no arguments")
-    },
-
-    async iterateCollectors(){
-        await checkCollectors()
-        console.log("COLLECTORS CHECKED")
     },
     async inputMember(message, authorID, staff, prefix) {
     var args = message.content.slice(prefix.length).split(/ +/)
@@ -242,7 +177,7 @@ module.exports = {
     });
     
     },
-    async getMemberships(message, args){
+    async getMemberships(message, args) {
         var me = await user.findOne({guildID: message.guild.id, userID: message.author.id}).lean().exec()
         if(me){
             me.memberships.forEach(async function(membership){
@@ -251,5 +186,38 @@ module.exports = {
         } else {
             message.channel.send("No memberships found.")
         }
+    },
+    async changeMemberRole(message, args) {
+    if(args.length == 2){
+        try {
+    let res = await talent.findOneAndUpdate({guildID: message.guild.id, name: {$regex: args[0], $options: 'i'}},
+        {
+            '$set' : {
+                    "memberRoleID": args[1]
+            }
+        }, {new: true}).lean().exec()
+        if(res){
+        message.channel.send("Member role for " + res.name + " changed to " + (await message.guild.roles.cache.get(res.memberRoleID)).name)
+        } else message.channel.send(args[0]+ " not found in database.")
+    } catch (e){
+        console.log(e)
+    }
+            
+
+    } else if(args.length == 1){
+        try {
+            let res = await talent.findOneAndUpdate({guildID: message.guild.id, name: {$regex: args[0], $options: 'i'}},
+                {
+                    '$unset' : {
+                            "memberRoleID": ""
+                    }
+                }, {new: true}).lean().exec()
+                if(res) message.channel.send("Member role for " + res.name + " cleared.")
+                else message.channel.send(args[0]+ " not found in database.")
+            } catch (e){
+                console.log(e)
+            }
+    }
+    else { message.channel.send("Invalid Arguments")}
     }
 }
