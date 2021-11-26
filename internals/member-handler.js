@@ -78,6 +78,7 @@ module.exports = {
                 member_channel.findOne({guildID: message.guildId}, async(err, res)=>{
                     if(err) {console.log(err)}
                     if(res){
+                        if(res.channelID==message.channel.id){
                         member_channel.findOneAndUpdate({_id: res._id},
                             {
                                 '$push' : {
@@ -95,6 +96,7 @@ module.exports = {
                         await message.channel.send(`Request to member to ${args[0]} recieved.`)
                         message.react('✅')
                         message.react('❌')
+                        } else message.channel.send("Request recieved from outside of verification channel " + message.guild.channels.cache.get(res.channelID).toString())
                     } else {
                         await message.channel.send("No membership verification channel set!")
                     }
