@@ -74,9 +74,11 @@ client.on('messageReactionAdd', async (reaction, user) => {
             if (reaction.emoji.name === '❌') {
                 let mes = await reaction.message.fetch()
                 await reaction.message.channel.send(`${reaction.message.author.toString()}, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
-                let member = await models.user.find({guildID: reaction.message.guild.id ,userID: user.id}).lean().exec()
+                let member = await models.user.find({guildID: reaction.message.guild.id ,userID: user.id}).lean()
                 const args = reaction.message.content.slice(prefix.length).split(/ +/);
-                for await (const membership of member.memberships){
+                let memberships = JSON.parse(JSON.stringify(member.memberships))
+                for (var i in memberships){
+                    let membership = memberships[i]
                     if(membership.talentName==args[1]){
                         automatedMembershipRemove(member, membership, client)
                     }
