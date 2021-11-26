@@ -17,19 +17,58 @@ const findTalentName = async(talentName, guildID) => {
 
 }
 
-const insertTalentMembership = (guildID, talentName, inputMembership) => {
-    talent.findOneAndUpdate({guildID: guildID, name: talentName}, 
+const insertTalentMembership = async(guildID, talentName, inputMembership) => {
+    try{
+    let tal = await talent.findOneAndUpdate({guildID: guildID, name: talentName}, 
         {
             '$push' : {
                 "memberships" : inputMembership
             }
-        },
-        {
-            new: true
-        },
-        (err, res) => {
-            if(err) {console.log(err)}
-        })
+        }).lean().exec()
+    let newTal = await talent.findById(tal._id).lean().exec()
+    if(newTal.memberships.length>tal.memberships.length){
+        return true
+    } else return false
+    }catch (e){
+        console.log(e)
+    }
+}
+
+const memberRoleAssign = async(userID, talentName, guildID, client) => {
+    let tal = await talent.findOne({guildID: guildID, name:{ $regex: talentName, $options: 'i' }}).lean().exec()
+    if(!tal.memberRoleID) return false;
+    try{
+    let roleID = tal.memberRoleID
+    let guild = client.guilds.cache.get(guildID)
+    await guild.members.fetch(userID)
+    .then((member)=>{
+        rolesInit = member.roles.length
+        if(!member.roles.cache.has(roleID)){
+            member.roles.add(roleID)
+            .then((res)=>
+            {
+                console.log(res)
+                return true
+            })
+            .catch((err) => {
+                console.log(err)
+                return false
+            })
+        } else {
+            console.log(member.user.username + " already had Role: " + member.roles.cache.get(roleID))
+            return false
+        }
+    })
+    .catch((err)=>{
+        console.log(err)
+        return false
+    })
+    }
+    catch (e) {
+        console.log(e)
+        return  false
+    }
+    
 }
 
 
@@ -136,7 +175,7 @@ module.exports = {
     },
     //creates a membership for a member
     //called from reaction event
-    async inputMember(message, authorID, staff, prefix) {
+    async inputMember(message, authorID, staff, prefix, client) {
     var args = message.content.slice(prefix.length).split(/ +/)
     var guildID = message.guild.id
     console.log(guildID +  " "  + args[1])
@@ -149,7 +188,7 @@ module.exports = {
         userID: message.author.id
     })
     console.log(talentName)
-    insertTalentMembership(guildID, talentName, inputMembership)
+    let talBool = await insertTalentMembership(guildID, talentName, inputMembership)
     user.findOne({userID: message.author.id}, async (err, res) => {
         if (!res){
             user({
@@ -163,6 +202,7 @@ module.exports = {
                 guildID: guildID
             }).save()
             await message.channel.send(`User created with their first membership to ${talentName}! Thanks ${(await message.guild.members.cache.get(authorID)).user.username}!`)
+            return await memberRoleAssign(authorID, talentName, guildID, client);
             
         } else {
             user.findOneAndUpdate({guildID: message.guildId, userID: message.author.id },
@@ -179,6 +219,7 @@ module.exports = {
                 if(err) {console.log(err)}
             })
             await message.channel.send(`Added a membership to ${talentName} for ${(await message.guild.members.cache.get(authorID)).user.username}!`)
+            return await memberRoleAssign(authorID, talentName, guildID, client);
         }
     });
     
@@ -231,27 +272,29 @@ module.exports = {
     },
     //removes a talent membership from given user ID
     //called with <talent name> <user ID>
-    async membershipRemove(message, args) {
-        if(args.length==2){
+    async membershipRemove(message) {
+    var args = message.content.slice(prefix.length).split(/ +/)
+
+        if(args.length==3){
         
-        let m = await message.guild.members.fetch(args[1])
+        let m = await message.guild.members.fetch(args[2])
         .then(async(member) => {
             let username = member.user.username
             console.log(username)
         try{
-        let foundTalent = await talent.findOne({guildID: message.guild.id, name:{ $regex: args[0], $options: 'i' } }).lean().exec()
+        let foundTalent = await talent.findOne({guildID: message.guild.id, name:{ $regex: args[1], $options: 'i' } }).lean().exec()
         if(foundTalent){
             try{
                 let newTalent = await talent.findByIdAndUpdate(foundTalent._id,{
                     '$pull': {
-                        'memberships': {'userID': args[1]}
+                        'memberships': {'userID': args[2]}
                     }}, {new: true}).lean().exec()
             
             if(foundTalent.memberships.length>newTalent.memberships.length){
             message.channel.send(username + " removed from " + foundTalent.name)
             } else message.channel.send(username + " not found in " + foundTalent.name + "'s data.")
             try{
-            let foundUser = await user.findOne({guildID: message.guild.id, userID: args[1]}).lean().exec()
+            let foundUser = await user.findOne({guildID: message.guild.id, userID: args[2]}).lean().exec()
             if(foundUser){
                 let newUser = await user.findByIdAndUpdate(foundUser._id,{
                     '$pull': {
@@ -261,8 +304,7 @@ module.exports = {
                         message.channel.send(foundTalent.name + " removed from " + username + "'s membership data.")
                     } else message.channel.send("Could not find that membership")
                 } else message.channel.send("User not found in database.")
-            } catch (e) {console.log(e)}
-            
+                } catch (e) {console.log(e)}
             } catch (e) {console.log(e)}    
         } else message.channel.send("Talent not found in database.")
         } catch (e) {console.log(e)}
@@ -271,5 +313,9 @@ module.exports = {
     });
 
     } else message.channel.send("Missing arguments.")
-}
+},
+    //will manually assign a member role DEBUGGING ONLY!!!
+    async manualMembershipAssign(message, args){
+
+    }
 }
