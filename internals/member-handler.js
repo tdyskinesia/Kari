@@ -47,12 +47,11 @@ const memberRoleAssign = async(userID, talentName, guildID, client) => {
             member.roles.add(roleID)
             .then((res)=>
             {
-                console.log(res)
                 return true
             })
             .catch((err) => {
                 console.log(err)
-                return false
+                if(err) return false
             })
         } else {
             console.log(member.user.username + " already had Role: " + member.roles.cache.get(roleID))
@@ -61,12 +60,12 @@ const memberRoleAssign = async(userID, talentName, guildID, client) => {
     })
     .catch((err)=>{
         console.log(err)
-        return false
+        if(err) false
     })
     }
     catch (e) {
         console.log(e)
-        return  false
+        if(e) return false
     }
     
 }
@@ -314,7 +313,7 @@ module.exports = {
         } else message.channel.send("Talent not found in database.")
         } catch (e) {console.log(e)}
     }).catch((error) => {
-        message.channel.send("Could not find that userID in server.")
+        if(error) message.channel.send("Could not find that userID in server.")
     });
 
     } else message.channel.send("Missing arguments.")
