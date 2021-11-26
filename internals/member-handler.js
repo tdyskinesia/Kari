@@ -76,22 +76,20 @@ const iterateMemberships = async(user, talentName)=>{
 
 module.exports = {
     async subChannel(message, args){
+        try{
         let targetChannel = await message.guild.channels.cache.get(args[0])
             if(args.length==1){
             args[0].replace(/\D/g,'')
-            member_channel.findOne({guildID: message.guildId}, async(err, res)=>{
-                if(err) {console.log(err)}
-                if(!res){
-                    member_channel.create({
+            res = member_channel.findOne({guildID: message.guildId}).exec()
+                if(res==null){
+                    await member_channel.create({
                         guildID: message.guildId,
                         channelID: args[0]
-                    }, function(err, channel){
-                        if(err) {console.log(err)}
                     })
                     await message.channel.send(`No sub found. Sub created in ${targetChannel.toString()}.`)
                 } else {
                     let prev = await message.guild.channels.cache.get(res.channelID)
-                    member_channel.findOneAndUpdate({_id: res._id},
+                    await member_channel.findOneAndUpdate({_id: res._id},
                         {
                             '$set' : {
                                 "channelID" : args[0]
@@ -99,14 +97,11 @@ module.exports = {
                         },
                         {
                             new: true
-                        },
-                        async (err, res) => {
-                            if(err) console.log(err)
-                        })
+                        }).exec()
                     await message.channel.send(`Previous sub found at ${prev.toString()}. Changed member channel sub to ${targetChannel.toString()}.`)
                 }
-            })
         } else { message.channel.send("Too many arguments or no argument found for channel sub.") }
+    } catch (e) {console.log(e)}
     },
 
     //adds a membership request to queue
