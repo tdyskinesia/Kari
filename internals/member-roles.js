@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 const {inputMember} = require('./member-handler.js')
 
 module.exports = async(client, prefix) => {
-let arr = []
 for await(const channel of member_channel.find().lean()){
     let data = channel.verificationIDs
     for(var i in data){
@@ -27,11 +26,8 @@ client.on('messageReactionAdd', async (reaction, user) => {
     if (user.partial) await user.fetch();
     if (user.bot) return;
     if (!reaction.message.guild) return;
-    console.log(reaction.message.id)
     var res = await member_channel.findOne({guildID: reaction.message.guildId}).lean().exec()
-    console.log(res)
         if(res.channelID==reaction.message.channel.id){
-            let arr = []
             if(res.verificationIDs.includes(reaction.message.id)){
             let member = reaction.message.guild.members.cache.get(user.id)
             if(member.permissions.has("BAN_MEMBERS")){
