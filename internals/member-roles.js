@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 
 const {inputMember, membershipRemove, automatedMembershipRemove} = require('./member-handler.js')
 
-const iterateMembers = (client) => {
+const iterateMembers = async(client) => {
     try{
         const date = new Date()
             for await (const member of user.find({memberships: { $exists: true }})){
