@@ -39,7 +39,8 @@ const iterateMembers = async(client) => {
         const date = new Date()
             for await (const member of user.find({memberships: { $exists: true }})){
                 for await (const membership of member.memberships){
-                    if(membership.expirationDate<date.setDate(date.getDate())&&(membership.notifyFlag==null||!membership.notifyFlag)){
+                    if(membership.expirationDate<date&&!membership.notifyFlag){
+                        console.log("Notifying user.")
                         notifyUser(member, membership, client)
                     }
                     else if(membership.expiration<date.setDate(date.getDate()+1)){
