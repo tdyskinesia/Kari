@@ -11,7 +11,7 @@ const {inputMember, membershipRemove, automatedMembershipRemove, notifyUser} = r
 
 
 module.exports = async(client, prefix) => {
-for await(const channel of member_channel.find().lean().exec()){
+for await(const channel of member_channel.find().lean()){
     let data = channel.verificationIDs
     for(var i in data){
         try{
@@ -37,7 +37,7 @@ for await(const channel of member_channel.find().lean().exec()){
 const iterateMembers = async(client) => {
     try{
         const date = new Date()
-            for await (const member of user.find({memberships: { $exists: true }}).exec()){
+            for await (const member of user.find({memberships: { $exists: true }}).lean())){
                 for await (const membership of member.memberships){
                     if(membership.expirationDate<date&&!membership.notifyFlag){
                         console.log("Notifying user.")
