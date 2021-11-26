@@ -180,7 +180,7 @@ client.on('message', message =>{
         "**Mod Commands**\n"+
         "*k!setup <talent name> <YouTube channel ID> <live channel ID> <roleID>* - subs talent to automatic updates\n"+
         "*k!clearmsgs* - clears all scheduled stream notifications\n"+
-        "*k!bupdate* - forces an update to the bulletin\n"+
+        "*k!bupdate <-o?>* - forces an update to the bulletin. the -o flag outputs the last saved data to the current channel without using any api requests\n"+
         "*k!clearsub <live channel ID>* - clears a talent from live scheduling\n"+
         "*k!mrclear <roleID?> (or k!mroleclear)* - if no arguments given, clears talent's member role. otherwise changes the member role to given role ID\n"+
         "*k!mtlist <talent name>* - lists all members for given talent name\n"+

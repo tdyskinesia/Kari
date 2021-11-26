@@ -115,7 +115,10 @@ module.exports = {
         try{
         if(message.attachments.size>0){
         if(args.length==2){
-        let tal = await talent.findOne({guildID: message.guildId, name:{ $regex: '.*'+ args[0]+ '.*', $options: 'i' } }).lean.exec()
+        let d = new Date(args[1])
+        if(d!=null){
+        if(d.setDate(d.getDate()-30)<Date.now){
+        let tal = await talent.findOne({guildID: message.guildId, name:{ $regex: '.*'+ args[0]+ '.*', $options: 'i' } }).lean().exec()
             if(tal!=null){
                 if(tal.memberRoleID){
                 let memChannel = await member_channel.findOne({guildID: message.guildId})
@@ -149,6 +152,8 @@ module.exports = {
             } else {
                 message.channel.send("Talent not found subbed in your server.")
             }
+        } else message.channel.send("Date is more than one month away")
+        } else message.channel.send("Invalid date")
             
 
         } else message.channel.send("No args or too many args given")
