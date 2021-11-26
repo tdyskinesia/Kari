@@ -181,6 +181,7 @@ module.exports = {
     console.log(guildID +  " "  + args[1])
     var talentName = await findTalentName(args[1], guildID)
     var exDate = new Date(args[2])
+    var cl = client
     var inputMembership = new membership({
         talentName: talentName,
         expiration: exDate,
@@ -202,7 +203,7 @@ module.exports = {
                 guildID: guildID
             }).save()
             await message.channel.send(`User created with their first membership to ${talentName}! Thanks ${(await message.guild.members.cache.get(authorID)).user.username}!`)
-            return await memberRoleAssign(authorID, talentName, guildID, client);
+            return await memberRoleAssign(authorID, talentName, guildID, cl);
             
         } else {
             user.findOneAndUpdate({guildID: message.guildId, userID: message.author.id },
@@ -219,7 +220,7 @@ module.exports = {
                 if(err) {console.log(err)}
             })
             await message.channel.send(`Added a membership to ${talentName} for ${(await message.guild.members.cache.get(authorID)).user.username}!`)
-            return await memberRoleAssign(authorID, talentName, guildID, client);
+            return await memberRoleAssign(authorID, talentName, guildID, cl);
         }
     });
     
