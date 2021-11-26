@@ -37,7 +37,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
                 membershipRemove(mes)
             } else if (reaction.emoji.name === '✅'){
                 await reaction.message.channel.send(`${reaction.message.author.toString()}, ${user.username} has marked your membership as valid.`)
-                inputMember(await reaction.message.fetch(), reaction.message.author.id, user.id, prefix)
+                inputMember(await reaction.message.fetch(), reaction.message.author.id, user.id, prefix, client)
 
             }
         }
