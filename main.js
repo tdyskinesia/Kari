@@ -107,9 +107,7 @@ client.on('message', message =>{
     }
     //for now only for staff to debug
     
-    else if(command === 'mlist'){
-        memberHandler.getMemberships(message, args)
-    }
+    
     else if(command === 'mrclear'||command === 'mroleclear'){
         memberHandler.changeMemberRole(message, args)
     }
@@ -175,6 +173,9 @@ client.on('message', message =>{
     else if(command === 'member'){
         memberHandler.callSub(message, args)
     }
+    else if(command === 'mlist'){
+        memberHandler.getMemberships(message, args)
+    }
     else if(command === 'help'){
         message.channel.send("__**Kari Commands**__\n\n"+
 
@@ -200,6 +201,7 @@ client.on('message', message =>{
         "**General Commands**\n"+
         "*k!help* - displays this\n"+
         "*k!github* - displays kari github\n" +
+        "*k!mlist* - displays your current memberships and the staff who verified them\n"+
         "*k!member <talent name> <MM/DD/YYYY> <attachment>* - adds you to the verification queue. one day before expiration you will recieve a DM notification to update your verification\n"+
         "*k!ping* - pong\n"+
         "*k!deeznuts* - what do you think this does?")
