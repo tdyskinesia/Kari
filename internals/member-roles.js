@@ -42,7 +42,8 @@ const iterateMembers = async(client) => {
                 for (var i in memberships){
                     let membership = memberships[i]
                     console.log(membership.expiration)
-                    if(membership.expiration<date&&membership.notifyFlag==false){
+                    let d = new Date(membership.expiration)
+                    if(d<date&&membership.notifyFlag==false){
                         console.log("Notifying user.")
                         notifyUser(member, membership, client)
                     }
