@@ -41,7 +41,6 @@ const iterateMembers = async(client) => {
                 let memberships = member.memberships
                 for (var i in memberships){
                     let membership = memberships[i]
-                    console.log(membership)
                     if(membership.expiration<date&&membership.notifyFlag==false){
                         console.log("Notifying user.")
                         notifyUser(member, membership, client)
@@ -75,11 +74,11 @@ client.on('messageReactionAdd', async (reaction, user) => {
             if (reaction.emoji.name === '❌') {
                 let mes = await reaction.message.fetch()
                 await reaction.message.channel.send(`${reaction.message.author.toString()}, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
-                let member = await models.user.findOne({guildID: reaction.message.guild.id ,userID: user.id}).exec()
+                let member = await models.user.findOne({guildID: reaction.message.guild.id, userID: reaction.message.author.id}).exec()
                 const args = reaction.message.content.slice(prefix.length).split(/ +/);
-                let memberships = member.memberships
-                for (var i in memberships){
-                    let membership = memberships[i]
+                for (var i in member.memberships){
+                    let membership = member.memberships[i]
+                    console.log(membership.talentName)
                     if(membership.talentName==args[1]){
                         automatedMembershipRemove(member, membership, client)
                     }
