@@ -233,12 +233,11 @@ module.exports = {
     //called with <talent name> <user ID>
     async membershipRemove(message, args) {
         if(args.length==2){
+        
+        await message.guild.members.fetch(args[1])
+        .then((console.log), (member) => {
+            let username = member.user.username
         try{
-        var member = await message.guild.members.fetch(args[1])
-        .then(console.log)
-        .catch((console.error), () => {
-            message.channel.send("Could not find that userID in server.")
-        });
         let foundTalent = await talent.findOne({guildID: message.guild.id, name:{ $regex: args[0], $options: 'i' } }).lean().exec()
         if(foundTalent){
             try{
@@ -248,8 +247,8 @@ module.exports = {
                     }}, {new: true}).lean().exec()
             
             if(foundTalent.memberships.length>newTalent.memberships.length){
-            message.channel.send(member.user.username + " removed from " + foundTalent.name)
-            } else message.channel.send(member.user.username + " not found in " + foundTalent.name + "'s data.")
+            message.channel.send(username + " removed from " + foundTalent.name)
+            } else message.channel.send(username + " not found in " + foundTalent.name + "'s data.")
             try{
             let foundUser = await user.findOne({guildID: message.guild.id, userID: args[1]}).lean().exec()
             if(foundUser){
@@ -258,7 +257,7 @@ module.exports = {
                         'memberships': {'talentName': foundTalent.name}
                     }}, {new: true}).exec()
                     if(foundUser.memberships.length>newUser.memberships.length){
-                        message.channel.send(foundTalent.name + " removed from " + member.user.username + "'s membership data.")
+                        message.channel.send(foundTalent.name + " removed from " + username + "'s membership data.")
                     } else message.channel.send("Could not find that membership")
                 } else message.channel.send("User not found in database.")
             } catch (e) {console.log(e)}
@@ -266,6 +265,10 @@ module.exports = {
             } catch (e) {console.log(e)}    
         } else message.channel.send("Talent not found in database.")
         } catch (e) {console.log(e)}
+    })
+    .catch((console.error), () => {
+        message.channel.send("Could not find that userID in server.")
+    });
 
     } else message.channel.send("Missing arguments.")
 }
