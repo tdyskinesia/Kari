@@ -85,7 +85,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
     if (user.bot) return;
     if (!reaction.message.guild) return;
     console.log(reaction.message.id)
-    var res = member_channel.findOne({guildID: reaction.message.guildId}).lean().exec()
+    var res = await member_channel.findOne({guildID: reaction.message.guildId}).lean().exec()
     console.log(res)
         if(res.channelID==reaction.message.channel.id){
             let arr = []
