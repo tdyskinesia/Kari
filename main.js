@@ -106,9 +106,7 @@ client.on('message', message =>{
         memberHandler.subMemberRole(message, args)
     }
     //for now only for staff to debug
-    else if(command === 'member'){
-        memberHandler.callSub(message, args)
-    }
+    
     else if(command === 'mlist'){
         memberHandler.getMemberships(message, args)
     }
@@ -173,6 +171,9 @@ client.on('message', message =>{
     if(command === 'deeznuts'){
         message.channel.send("deez nuts")
         message.delete()
+    }
+    else if(command === 'member'){
+        memberHandler.callSub(message, args)
     }
     else if(command === 'help'){
         message.channel.send("__**Kari Commands**__\n\n"+
