@@ -37,9 +37,9 @@ const insertTalentMembership = async(guildID, talentName, inputMembership) => {
 const memberRoleAssign = async(userID, talentName, guildID, client) => {
     let tal = await talent.findOne({guildID: guildID, name:{ $regex: talentName, $options: 'i' }}).lean().exec()
     if(!tal.memberRoleID) return false;
-    try{
     let roleID = tal.memberRoleID
-    let guild = client.guilds.cache.get(guildID)
+    let guild = await client.guilds.cache.get(guildID)
+    try{
     await guild.members.fetch(userID)
     .then((member)=>{
         rolesInit = member.roles.length
