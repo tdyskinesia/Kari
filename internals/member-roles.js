@@ -14,7 +14,17 @@ for await(const channel of member_channel.find().lean()){
     for(var i in data){
         try{
         let ch = await client.channels.cache.get(channel.channelID)
-        await ch.messages.fetch(data[i], false)
+        let m = await ch.messages.fetch(data[i], false)
+        let d = new Date()
+        if(m.createdAt < d.setDate(getDate()-7)){
+            await member_channel.findOneAndUpdate({guildID: channel.guildID}, 
+            {
+                "$pull": {
+                    "verificationIDs.$.": data[i]
+                }
+            }
+            ).exec()
+        }
         }
         catch (e){
             console.log(e)
