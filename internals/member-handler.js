@@ -391,7 +391,7 @@ module.exports = {
     async talentMembers(message, args){
     try{
         if(args.length==1){
-            let tal = await findOne({guildID: message.guild.id, name: { $regex: '.*'+ args[0]+ '.*', $options: 'i' }}).exec()
+            let tal = await talent.findOne({guildID: message.guild.id, name: { $regex: '.*'+ args[0]+ '.*', $options: 'i' }}).exec()
                 for(const membership of tal.memberships){
                     message.channel.send(message.guild.cache.get(membership.userID))
                 }
