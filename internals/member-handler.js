@@ -134,6 +134,7 @@ module.exports = {
         talent.findOne({guildID: message.guildId, name:{ $regex: args[0], $options: 'i' } }, async(err, res)=>{
             if(err) console.log(err)
             if(res){
+                if(res.memberRoleID){
                 member_channel.findOne({guildID: message.guildId}, async(err, res)=>{
                     if(err) {console.log(err)}
                     if(res){
@@ -159,10 +160,14 @@ module.exports = {
                     }
 
                 })
+            } else {
+                await message.channel.send("Talent does not have member role set.")
+            }
                 //await inputMember(res, message, args)
             } else {
                 await message.channel.send("Talent not found subbed in your server.")
             }
+            
         })
     } else await message.channel.send("No args or too many args given")
     },
@@ -241,7 +246,7 @@ module.exports = {
         var me = await user.findOne({guildID: message.guild.id, userID: message.author.id}).lean().exec()
         if(me){
             me.memberships.forEach(async function(membership){
-                await message.channel.send(membership.talentName + " " + membership.expiration + " (Verified by: "+ (await message.guild.members.cache.get(membership.staffID)).user.username)+")"
+                await message.channel.send(membership.talentName + " " + membership.expiration + " (Verified by: "+ (await message.guild.members.cache.get(membership.staffID)).user.username+ ")")
             })
         } else {
             message.channel.send("No memberships found.")

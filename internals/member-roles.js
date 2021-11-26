@@ -22,6 +22,36 @@ for await(const channel of member_channel.find().lean()){
     }
 }
 
+client.on('messageReactionAdd', async (reaction, user) => {
+    if (reaction.message.partial) await reaction.message.fetch();
+    if (reaction.partial) await reaction.fetch();
+    if (user.partial) await user.fetch();
+    if (user.bot) return;
+    if (!reaction.message.guild) return;
+    console.log(reaction.message.id)
+    var res = await member_channel.findOne({guildID: reaction.message.guildId}).lean().exec()
+    console.log(res)
+        if(res.channelID==reaction.message.channel.id){
+            let arr = []
+            console.log(res.verificationIDs)
+            for(const i of res.verificationIDs){
+                console.log(i)
+                arr.push(i);
+            }
+            if(arr.includes(reaction.message.id)){
+            let member = reaction.message.guild.members.cache.get(user.id)
+            if(member.permissions.has("BAN_MEMBERS")){
+            if (reaction.emoji.name === '❌') {
+                await reaction.message.channel.send(`${reaction.message.author.toString()}, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
+            } else if (reaction.emoji.name === '✅'){
+                await reaction.message.channel.send(`${reaction.message.author.toString()}, ${user.username} has marked your membership as valid.`)
+                memberHandler.inputMember(await reaction.message.fetch(), reaction.message.author.id, user.id, prefix)
 
+            }
+        }
+    }
+    }
+    
+})
 
 }
