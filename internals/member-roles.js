@@ -73,7 +73,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
             if(member.permissions.has("BAN_MEMBERS")){
             if (reaction.emoji.name === '❌') {
                 let mes = await reaction.message.fetch()
-                await reaction.message.channel.send(`${reaction.message.author.toString()}, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
+                await reaction.message.channel.send(`${reaction.message.author.username}, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
                 let member = await models.user.findOne({guildID: reaction.message.guild.id, userID: reaction.message.author.id}).exec()
                 const args = reaction.message.content.slice(prefix.length).split(/ +/);
                 for (var i in member.memberships){
@@ -84,7 +84,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
                     }
                 }
             } else if (reaction.emoji.name === '✅'){
-                await reaction.message.channel.send(`${reaction.message.author.toString()}, ${user.username} has marked your membership as valid.`)
+                await reaction.message.channel.send(`${reaction.message.author.username}, ${user.username} has marked your membership as valid.`)
                 inputMember(await reaction.message.fetch(), reaction.message.author.id, user.id, prefix, client)
                     
 
