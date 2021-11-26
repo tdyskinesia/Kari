@@ -42,24 +42,24 @@ const memberRoleAssign = async(userID, talentName, guildID, client) => {
     try{
     await guild.members.fetch(userID)
     .then((member)=>{
-        rolesInit = member.roles.length
+        rolesInit = member.roles.cache.size
         if(!member.roles.cache.has(roleID)){
-            member.roles.add(roleID)
+            await member.roles.add(roleID)
             .then((res)=>
             {
-                return true
+                if(res.roles.cache.size>rolesInit) {return true;}
+                else return false;
             })
             .catch(console.error)
         } else {
             console.log(member.user.username + " already had Role: " + member.roles.cache.get(roleID))
-            return false
+            return false;
         }
     })
     .catch(console.error)
     }
     catch (e) {
         console.log(e)
-        if(e) return false
     }
     
 }
