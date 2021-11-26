@@ -36,12 +36,12 @@ for await(const channel of member_channel.find().lean()){
 
 const iterateMembers = async(client) => {
     try{
-        const date = new Date()
             for await (const member of user.find({memberships: { $exists: true }})){
                 let memberships = member.memberships
                 for (var i in memberships){
                     let membership = memberships[i]
                     console.log(membership.expiration)
+                    let date  = new Date()
                     let d = new Date(membership.expiration)
                     if(d<date&&membership.notifyFlag==false){
                         console.log("Notifying user.")
