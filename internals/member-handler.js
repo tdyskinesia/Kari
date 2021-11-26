@@ -235,7 +235,7 @@ module.exports = {
         if(args.length==2){
         
         let m = await message.guild.members.fetch(args[1])
-        .then((member) => {
+        .then(async(member) => {
             let username = member.user.username
             console.log(username)
         try{
