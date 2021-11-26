@@ -353,7 +353,8 @@ module.exports = {
         let guild = await client.guilds.fetch(guildID)
         let gMember = await guild.members.fetch(userID)
         let tal = await talent.findOne({name: membership.talentName}).lean().exec()
-        await gMember.roles.remove(tal.memberRoleID, "Expired membership.")
+        let role = guild.roles.cache.get(tal.memberRoleID)
+        await gMember.roles.remove(role)
         await user.findByIdAndUpdate(member._id,
         {
             "$pull" : {
