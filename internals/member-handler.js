@@ -242,11 +242,11 @@ module.exports = {
                 }
             } else message.channel.send("ERR: Could not add membership to " +talentName)
         } else {
-            await user.findOneAndUpdate({_id: member._id, "membership._id" : membershipID}, 
+            await user.findOneAndUpdate({_id: member._id, "membership_id" : membershipID}, 
             {
                 "$set": {
-                    "memberships.$.expiration": exDate,
-                    "memberships.$.notifyFlag": false
+                    "memberships.$[].expiration": exDate,
+                    "memberships.$[].notifyFlag": false
                 }
             }
             ).exec()
@@ -378,7 +378,7 @@ module.exports = {
         await user.findOneAndUpdate({_id: member._id, "membership._id" : membership._id}, 
             {
                 "$set": {
-                    "memberships.$.notifyFlag": true
+                    "memberships.$[].notifyFlag": true
                 }
             }, {upsert: true}
             ).exec()
