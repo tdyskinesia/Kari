@@ -20,7 +20,7 @@ for await(const channel of member_channel.find().lean()){
             await member_channel.findOneAndUpdate({guildID: channel.guildID}, 
             {
                 "$pull": {
-                    "verificationIDs.$.": data[i]
+                    "verificationIDs": data[i]
                 }
             }
             ).exec()
