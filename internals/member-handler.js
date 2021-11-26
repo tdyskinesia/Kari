@@ -356,10 +356,10 @@ module.exports = {
         console.log(tal.memberRoleID)
         let role = await guild.roles.fetch(tal.memberRoleID)
         await gMember.roles.remove(role)
-        await user.findByIdAndUpdate(member._id,
+        await user.findOneAndUpdate({guildID: guildID, userID: userID},
         {
             "$pull" : {
-                "memberships" : {"._id": membership._id}
+                "memberships" : {"userID": userID}
             }
         }).exec()
         await talent.findOneAndUpdate({guildID: guildID, name: membership.talentName},
