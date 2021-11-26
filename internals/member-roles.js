@@ -4,7 +4,7 @@ const {talent, stream, user, membership, member_channel} = require('../data/mode
 
 const mongoose = require('mongoose');
 
-const {inputMember, membershipRemove, automatedMembershipRemove} = require('./member-handler.js')
+const {inputMember, membershipRemove, automatedMembershipRemove, notifyUser} = require('./member-handler.js')
 
 
 
@@ -26,9 +26,11 @@ const iterateMembers = async(client) => {
     try{
         const date = new Date()
             for await (const member of user.find({memberships: { $exists: true }})){
-                console.log(member)
                 for await (const membership of member.memberships){
-                    if(membership.expiration<date){
+                    if(membership.expirationDate<date.setDate(date.getDate())&&(membership.notifyFlag==null||!membership.notifyFlag)){
+                        notifyUser(member, membership, client)
+                    }
+                    else if(membership.expiration<date.setDate(date.getDate()+1)){
                         automatedMembershipRemove(member, membership, client)
                     }
                 }
@@ -49,7 +51,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
     if (user.partial) await user.fetch();
     if (user.bot) return;
     if (!reaction.message.guild) return;
-    var res = await member_channel.findOne({guildID: reaction.message.guildId}).lean().exec()
+    var res = await member_channel.findOne({guildID: reaction.message.guild.id}).lean().exec()
         if(res.channelID==reaction.message.channel.id){
             if(res.verificationIDs.includes(reaction.message.id)){
             let member = reaction.message.guild.members.cache.get(user.id)
@@ -57,7 +59,13 @@ client.on('messageReactionAdd', async (reaction, user) => {
             if (reaction.emoji.name === '❌') {
                 let mes = await reaction.message.fetch()
                 await reaction.message.channel.send(`${reaction.message.author.toString()}, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
-                automatedMembershipRemove(mes, )
+                let member = await user.find({guildID: reaction.message.guild.id ,userID: user.id}).lean().exec()
+                const args = reaction.message.content.slice(prefix.length).split(/ +/);
+                for await (const membership of member.memberships){
+                    if(membership.talentName==args[1]){
+                        automatedMembershipRemove(member, membership, client)
+                    }
+                }
             } else if (reaction.emoji.name === '✅'){
                 await reaction.message.channel.send(`${reaction.message.author.toString()}, ${user.username} has marked your membership as valid.`)
                 inputMember(await reaction.message.fetch(), reaction.message.author.id, user.id, prefix, client)

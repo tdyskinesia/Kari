@@ -37,6 +37,10 @@ const membership = new mongoose.Schema({
     userID: {
         type: String,
         required: true
+    },
+    notifyFlag:{
+        type: Boolean,
+        required: false
     }
 })
 

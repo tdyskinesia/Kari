@@ -118,6 +118,9 @@ client.on('message', message =>{
     else if(command === 'mremove'){
         memberHandler.manualMembershipRemove(message, args)
     }
+    else if(command === 'mtlist'){
+        memberHandler.talentMembers(message, args)
+    }
 }
     if (message.member.permissions.has("MENTION_EVERYONE")){
         if(command === 'timeset'){
@@ -175,21 +178,28 @@ client.on('message', message =>{
         message.channel.send("__**Kari Commands**__\n\n"+
 
         "**Mod Commands**\n"+
-        "*k!setup <talent name> <YouTube channel ID> <live channel id> <role id>* - subs talent to automatic updates\n"+
+        "*k!setup <talent name> <YouTube channel ID> <live channel ID> <roleID>* - subs talent to automatic updates\n"+
         "*k!clearmsgs* - clears all scheduled stream notifications\n"+
         "*k!bupdate* - forces an update to the bulletin\n"+
-        "*k!clearsub <live channel id>* - clears a talent from live scheduling\n\n"+
-
+        "*k!clearsub <live channel ID>* - clears a talent from live scheduling\n"+
+        "*k!mrclear <roleID?> (or k!mroleclear)* - if no arguments given, clears talent's member role. otherwise changes the member role to given role ID\n"+
+        "*k!mtlist <talent name>* - lists all members for given talent name\n"+
+        "*k!mremove <talent name> <userID>* - manually removes membership for given user from given talent\n"+
+        "*k!vchset <channelID>* - sets a verification channel\n"+
+        "*k!mrole <talent name> <role ID>* - sets a member role for a talent\n\n"+
+        
         "**Tagger Commands**\n"+
         "*k!timeset <video ID> <minutes>* - manually adds minutes to a previously scheduled notification (to use if a stream is manually rescheduled)\n"+
         "*k!displaysubs* - displays current sub list\n"+
         "*k!displaystreams* - displays current upcoming notifications for streams and their rowID for timeset\n\n"+
 
         "**Booster Commands**\n"+
-        "*k!seticon <role id>* - changes role icon for your copa role id (find role id by right clicking your role if you have developer enabled)\n\n"+
+        "*k!seticon <role id> <attachment>* - changes role icon for your copa role id (find role id by right clicking your role if you have developer enabled)\n\n"+
 
         "**General Commands**\n"+
         "*k!help* - displays this\n"+
+        "*k!github* - displays kari github\n" +
+        "*k!member <talent name> <MM/DD/YYYY> <attachment>* - adds you to the verification queue. one day before expiration you will recieve a DM notification to update your verification\n"+
         "*k!ping* - pong\n"+
         "*k!deeznuts* - what do you think this does?")
     }
