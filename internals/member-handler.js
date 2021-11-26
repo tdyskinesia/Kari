@@ -235,7 +235,7 @@ module.exports = {
         if(args.length==2){
         
         await message.guild.members.fetch(args[1])
-        .then((console.log), (member) => {
+        .then((console.log), async(member) => {
             let username = member.user.username
         try{
         let foundTalent = await talent.findOne({guildID: message.guild.id, name:{ $regex: args[0], $options: 'i' } }).lean().exec()
