@@ -204,8 +204,8 @@ module.exports = {
             }).save()
             await message.channel.send(`User created with their first membership to ${talentName}! Thanks ${(await message.guild.members.cache.get(authorID)).user.username}!`)
             if(await memberRoleAssign(authorID, talentName, guildID, cl)){
-                reaction.message.channel.send("Role assigned.")
-            } else reaction.message.channel.send("User already had role assigned.")
+                message.channel.send("Role assigned.")
+            } else message.channel.send("User already had role assigned.")
             
         } else {
             user.findOneAndUpdate({guildID: message.guildId, userID: message.author.id },
@@ -223,8 +223,8 @@ module.exports = {
             })
             await message.channel.send(`Added a membership to ${talentName} for ${(await message.guild.members.cache.get(authorID)).user.username}!`)
             if(await memberRoleAssign(authorID, talentName, guildID, cl)){
-                reaction.message.channel.send("Role assigned.")
-            } else reaction.message.channel.send("User already had role assigned.")
+                message.channel.send("Role assigned.")
+            } else message.channel.send("User already had role assigned.")
         }
     });
     
