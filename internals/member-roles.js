@@ -37,7 +37,7 @@ for await(const channel of member_channel.find().lean()){
 const iterateMembers = async(client) => {
     try{
         const date = new Date()
-            for await (const member of user.find({memberships: { $exists: true }}).lean()){
+            for await (const member of user.find({memberships: { $exists: true }})){
                 let memberships = member.memberships
                 for (var i in memberships){
                     let membership = JSON.parse(JSON.stringify(memberships[i]))
@@ -74,7 +74,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
             if (reaction.emoji.name === '❌') {
                 let mes = await reaction.message.fetch()
                 await reaction.message.channel.send(`${reaction.message.author.toString()}, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
-                let member = await models.user.find({guildID: reaction.message.guild.id ,userID: user.id}).lean().exec()
+                let member = await models.user.find({guildID: reaction.message.guild.id ,userID: user.id}).exec()
                 const args = reaction.message.content.slice(prefix.length).split(/ +/);
                 let memberships = member.memberships
                 for (var i in memberships){
