@@ -273,7 +273,7 @@ module.exports = {
     },
     //removes a talent membership from given user ID
     //called with <talent name> <user ID>
-    async membershipRemove(message) {
+    async membershipRemove(message, prefix) {
     var args = message.content.slice(prefix.length).split(/ +/)
 
         if(args.length==3){
