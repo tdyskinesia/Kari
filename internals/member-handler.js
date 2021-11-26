@@ -233,10 +233,12 @@ module.exports = {
     //called with <talent name> <user ID>
     async membershipRemove(message, args) {
         if(args.length==2){
-        let member = await (message.guild.members.fetch(args[1])
+        let member = await message.guild.members.fetch(args[1])
         .then(console.log)
-        .catch(console.error))
-        if(member){
+        .catch((console.error), () => {
+            message.channel.send("Could not find that userID in server.")
+        });
+
         try{
         let foundTalent = await talent.findOne({guildID: message.guild.id, name:{ $regex: args[0], $options: 'i' } }).lean().exec()
         if(foundTalent){
@@ -265,8 +267,7 @@ module.exports = {
             } catch (e) {console.log(e)}    
         } else message.channel.send("Talent not found in database.")
         } catch (e) {console.log(e)}
-    } else message.channel.send("Could not find that userID in server.")
-        
+
     } else message.channel.send("Missing arguments.")
 }
 }
