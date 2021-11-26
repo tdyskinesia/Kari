@@ -32,12 +32,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
     console.log(res)
         if(res.channelID==reaction.message.channel.id){
             let arr = []
-            console.log(res.verificationIDs)
-            for(const i of res.verificationIDs){
-                console.log(i)
-                arr.push(i);
-            }
-            if(arr.includes(reaction.message.id)){
+            if(res.verificationIDs.includes(reaction.message.id)){
             let member = reaction.message.guild.members.cache.get(user.id)
             if(member.permissions.has("BAN_MEMBERS")){
             if (reaction.emoji.name === '❌') {

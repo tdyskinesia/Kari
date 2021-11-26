@@ -233,7 +233,9 @@ module.exports = {
     //called with <talent name> <user ID>
     async membershipRemove(message, args) {
         if(args.length==2){
-        let member = await (message.guild.members.fetch(args[1]))
+        let member = await (message.guild.members.fetch(args[1])
+        .then(console.log)
+        .catch(console.error))
         if(member){
         try{
         let foundTalent = await talent.findOne({guildID: message.guild.id, name:{ $regex: args[0], $options: 'i' } }).lean().exec()
