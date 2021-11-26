@@ -16,7 +16,7 @@ for await(const channel of member_channel.find().lean()){
         let ch = await client.channels.cache.get(channel.channelID)
         let m = await ch.messages.fetch(data[i], false)
         let d = new Date()
-        if(m.createdAt < d.setDate(getDate()-7)){
+        if(m.createdAt < d.setDate(d.getDate()-7)){
             await member_channel.findOneAndUpdate({guildID: channel.guildID}, 
             {
                 "$pull": {

@@ -32,7 +32,6 @@ const iterate = async(client) => {
 
 module.exports = {
 notify(client) {
-    console.log("Checking for stream notifications now!")
     iterate(client) 
     
 },
