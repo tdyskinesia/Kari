@@ -377,7 +377,7 @@ module.exports = {
         let guild = await client.guilds.fetch(member.guildID)
         
         DM.send(`Hi! You have one more day to renew your membership to ${membership.talentName}! Please verify in ${guild.name}. Thank you!`)
-        await user.findOneAndUpdate({_id: member._id, "membership._id" : membership._id}, 
+        await user.findOneAndUpdate({_id: member._id, "memberships._id" : membership._id}, 
             {
                 "$set": {
                     "memberships.$[].notifyFlag": true
