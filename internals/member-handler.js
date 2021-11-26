@@ -40,11 +40,11 @@ const memberRoleAssign = async(userID, talentName, guildID, client) => {
     let roleID = tal.memberRoleID
     let guild = await client.guilds.cache.get(guildID)
     try{
-    await guild.members.fetch(userID)
+    guild.members.fetch(userID)
     .then((member)=>{
         rolesInit = member.roles.cache.size
         if(!member.roles.cache.has(roleID)){
-            await member.roles.add(roleID)
+            member.roles.add(roleID)
             .then((res)=>
             {
                 if(res.roles.cache.size>rolesInit) {return true;}
