@@ -18,7 +18,7 @@ for await(const channel of member_channel.find().lean()){
         let ch = await client.channels.cache.get(channel.channelID)
         let m = await ch.messages.fetch(data[i], false)
         let d = new Date()
-        if(m.createdAt < d.setDate(d.getDate()-7)){
+        if(m.createdAt < d.setDate(d.getDate()-3)){
             await member_channel.findOneAndUpdate({guildID: channel.guildID}, 
             {
                 "$pull": {
@@ -41,6 +41,7 @@ const iterateMembers = async(client) => {
                 let memberships = member.memberships
                 for (var i in memberships){
                     let membership = memberships[i]
+                    console.log(membership.expiration)
                     if(membership.expiration<date&&membership.notifyFlag==false){
                         console.log("Notifying user.")
                         notifyUser(member, membership, client)
