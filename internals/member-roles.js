@@ -40,7 +40,8 @@ const iterateMembers = async(client) => {
             for await (const member of user.find({memberships: { $exists: true }})){
                 let memberships = member.memberships
                 for (var i in memberships){
-                    let membership = JSON.parse(JSON.stringify(memberships[i]))
+                    let membership = memberships[i]
+                    console.log(membership)
                     if(membership.expirationDate<date&&!membership.notifyFlag){
                         console.log("Notifying user.")
                         notifyUser(member, membership, client)
@@ -78,7 +79,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
                 const args = reaction.message.content.slice(prefix.length).split(/ +/);
                 let memberships = member.memberships
                 for (var i in memberships){
-                    let membership = JSON.parse(JSON.stringify(memberships[i]))
+                    let membership = memberships[i]
                     if(membership.talentName==args[1]){
                         automatedMembershipRemove(member, membership, client)
                     }
