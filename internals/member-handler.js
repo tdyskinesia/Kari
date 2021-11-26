@@ -207,7 +207,7 @@ module.exports = {
         let membershipID = await iterateMemberships(member, talentName)
         if(membershipID==null){
             if(await insertTalentMembership(guildID, talentName, inputMembership)){
-                if (member!=null){
+                if (member==null){
                     user({
                         memberships: [new membership({
                             talentName: talentName,
