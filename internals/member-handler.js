@@ -67,9 +67,10 @@ module.exports = {
             })
         } else { message.channel.send("Too many arguments or no argument found for channel sub.") }
     },
-
+    //adds a membership request to queue
+    //called when k!member <talent> <date> is called by user
     async callSub(message, args) {
-        if(message.attachments){
+        if(message.attachments.size>0){
         if(args.length==2){
         talent.findOne({guildID: message.guildId, name:{ $regex: args[0], $options: 'i' } }, async(err, res)=>{
             if(err) console.log(err)
@@ -113,6 +114,7 @@ module.exports = {
         } else await message.channel.send("No args or too many args given")
     } else message.channel.send("No attachment found")
     },
+    //adds member role to talent
     async subMemberRole(message, args){
         if(args.length==2){
             talent.findOneAndUpdate({guildID: message.guildId, name:{ $regex: args[0], $options: 'i' }},
@@ -132,6 +134,8 @@ module.exports = {
 
         } else message.channel.send("Too many or no arguments")
     },
+    //creates a membership for a member
+    //called from reaction event
     async inputMember(message, authorID, staff, prefix) {
     var args = message.content.slice(prefix.length).split(/ +/)
     var guildID = message.guild.id
@@ -179,6 +183,7 @@ module.exports = {
     });
     
     },
+    //gets all of memberships for the user that called the command
     async getMemberships(message, args) {
         var me = await user.findOne({guildID: message.guild.id, userID: message.author.id}).lean().exec()
         if(me){
@@ -189,6 +194,8 @@ module.exports = {
             message.channel.send("No memberships found.")
         }
     },
+    //clears member role for given talent if no additional arguments
+    //or changes member role to additional argument
     async changeMemberRole(message, args) {
     if(args.length == 2){
         try {
@@ -221,5 +228,43 @@ module.exports = {
             }
     }
     else { message.channel.send("Invalid Arguments")}
-    }
+    },
+    //removes a talent membership from given user ID
+    //called with <talent name> <user ID>
+    async membershipRemove(message, args) {
+        if(args.length==2){
+        let member = await (message.guild.members.fetch(args[1]))
+        if(member){
+        try{
+        let foundTalent = await talent.findOne({guildID: message.guild.id, name:{ $regex: args[0], $options: 'i' } }).lean().exec()
+        if(foundTalent){
+            try{
+                let newTalent = await talent.findByIdAndUpdate(foundTalent._id,{
+                    '$pull': {
+                        'memberships': {'userID': args[1]}
+                    }}, {new: true}).lean().exec()
+            } catch (e) {console.log(e)}
+            if(foundTalent.memberships.length>newTalent.memberships.length){
+            message.channel.send(member.user.username + " removed from " + foundTalent.name)
+            } else message.channel.send(member.user.username + " not found in " + foundTalent.name + "'s data.")
+            try{
+            let foundUser = await user.findOne({guildID: message.guild.id, userID: args[1]}).lean().exec()
+            if(foundUser){
+                let newUser = await user.findByIdAndUpdate(foundUser._id,{
+                    '$pull': {
+                        'memberships': {'talentName': foundTalent.name}
+                    }}, {new: true}).exec()
+                    if(foundUser.memberships.length>newUser.memberships.length){
+                        message.channel.send(foundTalent.name + " removed from " + member.user.username + "'s membership data.")
+                    } else message.channel.send("Could not find that membership")
+                } else message.channel.send("User not found in database.")
+            } catch (e) {console.log(e)}
+            
+                
+        } else message.channel.send("Talent not found in database.")
+        } catch (e) {console.log(e)}
+    } else message.channel.send("Could not find that userID in server.")
+        
+    } else message.channel.send("Missing arguments.")
+}
 }

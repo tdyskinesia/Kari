@@ -147,6 +147,9 @@ client.on('message', message =>{
     else if(command === 'mrclear'||command === 'mroleclear'){
         memberHandler.changeMemberRole(message, args)
     }
+    else if(command === 'mremove'){
+        memberHandler.membershipRemove(message, args)
+    }
 }
     if (message.member.permissions.has("MENTION_EVERYONE")){
         if(command === 'timeset'){
@@ -221,6 +224,9 @@ client.on('message', message =>{
         "*k!help* - displays this\n"+
         "*k!ping* - pong\n"+
         "*k!deeznuts* - what do you think this does?")
+    }
+    else if(command === 'github'){
+        message.channel.send("https://github.com/tdyskinesia/Kari")
     }
     
 });
