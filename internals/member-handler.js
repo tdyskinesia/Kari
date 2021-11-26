@@ -352,7 +352,7 @@ module.exports = {
         let userID = membership.userID
         let guild = await client.guilds.fetch(guildID)
         let gMember = await guild.members.fetch(userID)
-        let tal = await talent.findOne({name: membership.talentName}).lean().exec()
+        let tal = await talent.findOne({guildID: guildID, name: membership.talentName}).lean().exec()
         console.log(tal.memberRoleID)
         let role = await guild.roles.fetch(tal.memberRoleID)
         await gMember.roles.remove(role)
