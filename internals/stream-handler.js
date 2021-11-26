@@ -102,13 +102,12 @@ const channelInfo = async(talent)=>{
 
 module.exports = {
     async bupdate(client, message, args){
-        if(!args){
+        
         const channel = await client.channels.cache.get('908671236895305760')
         let embedArray = []
-        
-        if(message != null){
-            await message.channel.send("Updating Board Now!")
-        }
+        if(message!=null) await message.channel.send("Updating board now!")
+        message = null;
+        if(message == null){
 
         for await (const talent of talentSchema.talent.find({guildID: '835723287714857031'})){
             let fieldArray = []
