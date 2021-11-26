@@ -14,7 +14,6 @@ for await(const channel of member_channel.find().lean()){
         try{
         let ch = await client.channels.cache.get(channel.channelID)
         await ch.messages.fetch(data[i], false)
-        console.log(data[i])
         }
         catch (e){
             console.log(e)

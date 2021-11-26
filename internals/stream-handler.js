@@ -186,6 +186,7 @@ module.exports = {
             let embedArray = []
             await message.channel.send("Updating Board without Calling API")
             for await (const curTalent of talentSchema.talent.find({guildID: message.guild.id})){
+                let fieldArray = []
                 if(curTalent.upcomingStreams.length>0){
                     curTalent.upcomingStreams.forEach(async function(stream){
                         let curStart = moment(stream.startTime)
