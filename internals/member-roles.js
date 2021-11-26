@@ -6,6 +6,25 @@ const mongoose = require('mongoose');
 
 const {inputMember, membershipRemove, automatedMembershipRemove} = require('./member-handler.js')
 
+const iterateMembers = (client) => {
+    try{
+        const date = new Date()
+            for await (const member of user.find({memberships: { $exists: true }})){
+                console.log(member)
+                for await (const membership of member.memberships){
+                    if(membership.expiration<date){
+                        automatedMembershipRemove(member, membership, client)
+                    }
+                }
+            }
+    } catch (e){
+    console.log(e)
+}
+
+}
+
+setInterval(iterateMembers.bind(null, client), 1000 * 30)
+
 module.exports = async(client, prefix) => {
 for await(const channel of member_channel.find().lean()){
     let data = channel.verificationIDs
@@ -19,6 +38,8 @@ for await(const channel of member_channel.find().lean()){
         }
     }
 }
+
+iterateMembers(client)
 
 client.on('messageReactionAdd', async (reaction, user) => {
     if (reaction.message.partial) await reaction.message.fetch();

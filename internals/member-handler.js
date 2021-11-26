@@ -97,6 +97,7 @@ module.exports = {
             })
         } else { message.channel.send("Too many arguments or no argument found for channel sub.") }
     },
+
     //adds a membership request to queue
     //called when k!member <talent> <date> is called by user
     async callSub(message, args) {
@@ -144,6 +145,7 @@ module.exports = {
         } else await message.channel.send("No args or too many args given")
     } else message.channel.send("No attachment found")
     },
+
     //adds member role to talent
     async subMemberRole(message, args){
         if(args.length==2){
@@ -164,6 +166,7 @@ module.exports = {
 
         } else message.channel.send("Too many or no arguments")
     },
+
     //creates a membership for a member
     //called from reaction event
     async inputMember(message, authorID, staff, prefix, client) {
@@ -222,6 +225,7 @@ module.exports = {
     },
     //gets all of memberships for the user that called the command
     async getMemberships(message, args) {
+        try{
         var me = await user.findOne({guildID: message.guild.id, userID: message.author.id}).lean().exec()
         if(me){
             me.memberships.forEach(async function(membership){
@@ -230,6 +234,10 @@ module.exports = {
         } else {
             message.channel.send("No memberships found.")
         }
+    } catch (e){
+        console.log(e)
+
+    }
     },
     //clears member role for given talent if no additional arguments
     //or changes member role to additional argument
@@ -268,7 +276,7 @@ module.exports = {
     },
     //removes a talent membership from given user ID
     //called with <talent name> <user ID>
-    async membershipRemove(message, args) {
+    async manualMembershipRemove(message, args) {
         if(args.length==3){
         try{       
         let m = await message.guild.members.fetch(args[2])
@@ -307,7 +315,11 @@ module.exports = {
 
     },
     //will automatically remove a membership when reaction event is called
-    async automatedMembershipRemove(){
+    async automatedMembershipRemove(member, membership, client){
+        console.log(member.guildID)
+        console.log(membership.expiration)
+        console.log(membership.userID)
+        console.log(member.userID)
 
     }
 }
