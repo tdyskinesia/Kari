@@ -243,7 +243,7 @@ module.exports = {
                     '$pull': {
                         'memberships': {'userID': args[1]}
                     }}, {new: true}).lean().exec()
-            } catch (e) {console.log(e)}
+            
             if(foundTalent.memberships.length>newTalent.memberships.length){
             message.channel.send(member.user.username + " removed from " + foundTalent.name)
             } else message.channel.send(member.user.username + " not found in " + foundTalent.name + "'s data.")
@@ -260,7 +260,7 @@ module.exports = {
                 } else message.channel.send("User not found in database.")
             } catch (e) {console.log(e)}
             
-                
+            } catch (e) {console.log(e)}    
         } else message.channel.send("Talent not found in database.")
         } catch (e) {console.log(e)}
     } else message.channel.send("Could not find that userID in server.")
