@@ -37,15 +37,14 @@ client.on('messageReactionAdd', async (reaction, user) => {
                 membershipRemove(mes, prefix)
             } else if (reaction.emoji.name === '✅'){
                 await reaction.message.channel.send(`${reaction.message.author.toString()}, ${user.username} has marked your membership as valid.`)
-                if(await inputMember(await reaction.message.fetch(), reaction.message.author.id, user.id, prefix, client)){
-                    reaction.message.channel.send("Role assigned.")
-                } else reaction.message.channel.send("User already had role assigned.")
+                inputMember(await reaction.message.fetch(), reaction.message.author.id, user.id, prefix, client)
+                    
 
             }
-        }
+        
     }
     }
-    
+}
 })
 
 }
