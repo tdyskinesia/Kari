@@ -48,8 +48,6 @@ const prefix = 'k!';
 const fs = require('fs');
 const { id } = require('date-fns/locale');
 
-var cache = []
-
 client.commands = new Discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -71,46 +69,10 @@ client.once('ready', async () =>{
     statusChange(client);
 
     var initialJob = new CronJob('0 */3 * * *', async function() {
-        {
-        /*console.log("I AM UPDATING STREAM TIMES NOW");
-        var data = [];
-        getYoutubeData(async function(err, data){
-            if(err){
-                console.log(err);
-            } else {
-                console.log("data array "+data);
-                console.log(data[0].channel);
-                console.log(data[2].ytid);
-                console.log('LIVE TIMES OUTPUTTING');
-                let db = new sqlite.Database('./db/database.db');
-                db.run(`
-                CREATE TABLE IF NOT EXISTS messages (
-                    "id" INTEGER PRIMARY KEY,
-                    "start_time" TEXT,
-                    "video_title" TEXT,
-                    "video_link" TEXT,
-                    "start_date" TEXT
-                )
-                `);
-                db.run(`DELETE FROM messages`);
-                db.close();
-            for (let index = 0; index < data.length; index++) {
-                    await storeLiveTimes(data[index].ytid, data, index);  
-            }
-                await sleep(4000);
-                await outputLiveTimes(data);
-        
-
-                console.log('LIVE TIMES OUTPUTTED');
-            }
-           });*/
-        }
         await streamHandler.bupdate(client)
     }, null, true, 'America/New_York');
 
     memberRoles(client);
-    //memberHandler.iterateCollectors();
-    //setInterval(memberHandler.iterateCollectors, 1000 * 20);
     messageHandler.notify(client);
     setInterval(messageHandler.notify.bind(null, client), 1000 * 30);
     
@@ -124,10 +86,13 @@ client.on('messageReactionAdd', async (reaction, user) => {
     if (!reaction.message.guild) return;
     console.log(reaction.message.id)
     var res = member_channel.findOne({guildID: reaction.message.guildId}).lean().exec()
+    console.log(res)
         if(res.channelID==reaction.message.channel.id){
             let arr = []
+            console.log(res.verificationIDs)
             for(const i of res.verificationIDs){
-                arr.push(i)
+                console.log(i)
+                arr.push(i);
             }
             if(arr.includes(reaction.message.id)){
             let member = reaction.message.guild.members.cache.get(user.id)
@@ -144,61 +109,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
     }
     
 })
-// client.on('messageReactionAdd', async (reaction, user) => {
-//     if (reaction.message.partial) await reaction.message.fetch();
-//     if (reaction.partial) await reaction.fetch();
-//     if (user.partial) await user.fetch();
-//     if (user.bot) return;
-//     if (!reaction.message.guild) return;
-//     console.log(reaction.message.id)
-//     if('835727274107207711'==reaction.message.channel.id){
-//                 if (reaction.emoji.name === '❌') {
-//                     await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
-//                 } else if (reaction.emoji.name === '✅'){
-//                     await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership as valid.`)
-//                     inputMember(await reaction.message.fetch(), reaction.message.author.id, user.id)
-    
-//                 }
-//             }
-//     // member_channel.findOne({guildID: reaction.message.guildId}, async(err, res)=>{
-//     //     if(err) console.log(err)
-//     //     if(res.channelID==reaction.message.channel.id){
-//     //         if (reaction.emoji.name === '❌') {
-//     //             await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
-//     //         } else if (reaction.emoji.name === '✅'){
-//     //             await reaction.message.channel.send(`<@&${reaction.message.author.id}>, ${user.username} has marked your membership as valid.`)
-//     //             inputMember(await reaction.message.fetch(), reaction.message.author.id, user.id)
-
-//     //         }
-//     //     }
-//     // })
-// })
-
-// client.on('raw', async(event) =>{
-//     if (event.t === 'MESSAGE_REACTION_ADD'){
-//         let reaction = event.d.emoji
-//         let userID = event.d.user_id
-//         let messageID = event.d.message_id
-//         let guildID = event.d.guild_id
-//         let channelID = event.d.channel_id
-//         let guild = client.guilds.cache.get(guildID)
-//         let channel = client.channels.cache.get(channelID)
-//         let message = await channel.fetch(messageID)
-//         let user = guild.members.cache.get(userID)
-        
-//         member_channel.findOne({guildID: guildID}, async(err, res)=>{
-//         if(res.channelID == message.channel.id){
-//         if (reaction.name === '❌') {
-//             await message.channel.send(`<@&${message.author.id}>, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
-//         } else if (reaction.name === '✅'){
-//             await message.channel.send(`<@&${message.author.id}>, ${user.username} has marked your membership as valid.`)
-//             inputMember(message, message.author.id, user.id)
-//         }
-//     }
-//     })
-       
-//     }
-// })
 
 client.on('message', message =>{
     if(!message.content.startsWith(prefix) || message.author.bot) return;
@@ -221,8 +131,6 @@ client.on('message', message =>{
     else if(command === 'bupdate') {
            streamHandler.bupdate(client, message)
         }
-        
-    
     else if(command === 'vchset') {
         memberHandler.subChannel(message, args)
     }
