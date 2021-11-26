@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 
 const {inputMember} = require('./member-handler.js')
 
-module.exports = async(client) => {
+module.exports = async(client, prefix) => {
 let arr = []
 for await(const channel of member_channel.find().lean()){
     let data = channel.verificationIDs

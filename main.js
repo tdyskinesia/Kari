@@ -72,7 +72,7 @@ client.once('ready', async () =>{
         await streamHandler.bupdate(client)
     }, null, true, 'America/New_York');
 
-    memberRoles(client);
+    memberRoles(client, prefix);
     messageHandler.notify(client);
     setInterval(messageHandler.notify.bind(null, client), 1000 * 30);
     

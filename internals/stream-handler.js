@@ -204,9 +204,7 @@ module.exports = {
                         footer: {
                             text: 'Updated at:'
                         },
-                        thumbnail:{
-                            url: profileURL
-                        },
+                        //no thumbnail until they're stored in database
                         author: {
                             name: curTalent.name,
                             url: `https://www.youtube.com/channel/${curTalent.youtubeID}`
@@ -221,9 +219,7 @@ module.exports = {
                         footer: {
                             text: 'Updated at:'
                         },
-                        thumbnail:{
-                            url: profileURL
-                        },
+
                         author: {
                             name: curTalent.name,
                             url: `https://www.youtube.com/channel/${curTalent.youtubeID}`
