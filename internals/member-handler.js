@@ -35,31 +35,29 @@ const insertTalentMembership = async(guildID, talentName, inputMembership) => {
 }
 
 const memberRoleAssign = async(userID, talentName, guildID, client) => {
-    let tal = await talent.findOne({guildID: guildID, name:{ $regex: talentName, $options: 'i' }}).lean().exec()
+    try{
+    let tal = await talent.findOne({guildID: guildID, name:{ $regex: '.*'+ talentName + '.*', $options: 'i' }}).lean().exec()
     if(!tal.memberRoleID) return false;
     let roleID = tal.memberRoleID
     let guild = await client.guilds.cache.get(guildID)
-    try{
-    guild.members.fetch(userID)
-    .then((member)=>{
+    member = await guild.members.fetch(userID)
         rolesInit = member.roles.cache.size
         if(!member.roles.cache.has(roleID)){
-            member.roles.add(roleID)
-            .then((res)=>
-            {
-                if(res.roles.cache.size>rolesInit) {return true;}
-                else return false;
-            })
-            .catch(console.error)
+            res = await member.roles.add(roleID)
+            if(res.roles.cache.size>rolesInit) {
+                console.log("Role set")
+                return true
         } else {
-            console.log(member.user.username + " already had Role: " + member.roles.cache.get(roleID))
-            return false;
+            console.log("Role not given")
+            return false
         }
-    })
-    .catch(console.error)
+        } else {
+            console.log(member.user.username + " already had Role: " + member.roles.cache.get(roleID)) 
+        }
     }
     catch (e) {
         console.log(e)
+        if (e) return false
     }
     
 }
@@ -104,7 +102,7 @@ module.exports = {
     async callSub(message, args) {
         if(message.attachments.size>0){
         if(args.length==2){
-        talent.findOne({guildID: message.guildId, name:{ $regex: args[0], $options: 'i' } }, async(err, res)=>{
+        talent.findOne({guildID: message.guildId, name:{ $regex: '.*'+ args[0]+ '.*', $options: 'i' } }, async(err, res)=>{
             if(err) console.log(err)
             if(res){
                 if(res.memberRoleID){
@@ -270,19 +268,16 @@ module.exports = {
     },
     //removes a talent membership from given user ID
     //called with <talent name> <user ID>
-    async membershipRemove(message, prefix) {
-    var args = message.content.slice(prefix.length).split(/ +/)
-
+    async membershipRemove(message, args) {
         if(args.length==3){
-        
+        try{       
         let m = await message.guild.members.fetch(args[2])
-        .then(async(member) => {
-            let username = member.user.username
-            console.log(username)
-        try{
+        let username = m.user.username
+        console.log(username)
+
         let foundTalent = await talent.findOne({guildID: message.guild.id, name:{ $regex: args[1], $options: 'i' } }).lean().exec()
         if(foundTalent){
-            try{
+
                 let newTalent = await talent.findByIdAndUpdate(foundTalent._id,{
                     '$pull': {
                         'memberships': {'userID': args[2]}
@@ -291,7 +286,7 @@ module.exports = {
             if(foundTalent.memberships.length>newTalent.memberships.length){
             message.channel.send(username + " removed from " + foundTalent.name)
             } else message.channel.send(username + " not found in " + foundTalent.name + "'s data.")
-            try{
+
             let foundUser = await user.findOne({guildID: message.guild.id, userID: args[2]}).lean().exec()
             if(foundUser){
                 let newUser = await user.findByIdAndUpdate(foundUser._id,{
@@ -302,16 +297,17 @@ module.exports = {
                         message.channel.send(foundTalent.name + " removed from " + username + "'s membership data.")
                     } else message.channel.send("Could not find that membership")
                 } else message.channel.send("User not found in database.")
-                } catch (e) {console.log(e)}
-            } catch (e) {console.log(e)}    
         } else message.channel.send("Talent not found in database.")
         } catch (e) {console.log(e)}
-    }).catch(console.error);
 
     } else message.channel.send("Missing arguments.")
 },
     //will manually assign a member role DEBUGGING ONLY!!!
     async manualMembershipAssign(message, args){
+
+    },
+    //will automatically remove a membership when reaction event is called
+    async automatedMembershipRemove(){
 
     }
 }
