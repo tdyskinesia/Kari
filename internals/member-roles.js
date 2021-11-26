@@ -38,7 +38,9 @@ const iterateMembers = async(client) => {
     try{
         const date = new Date()
             for await (const member of user.find({memberships: { $exists: true }}).lean()){
-                for await (const membership of member.memberships){
+                let memberships = JSON.parse(JSON.stringify(member.memberships))
+                for (var i in memberships){
+                    let membership = memberships[i]
                     if(membership.expirationDate<date&&!membership.notifyFlag){
                         console.log("Notifying user.")
                         notifyUser(member, membership, client)
