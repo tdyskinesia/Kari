@@ -40,7 +40,8 @@ const membership = new mongoose.Schema({
         // required: false
     },
     member_channel_ID: {
-        type: {ObjectId, ref: 'member_channel'},
+        type: ObjectId, 
+        ref: 'member_channel',
         // required: false
     }
 })
@@ -175,7 +176,8 @@ const guild = new mongoose.Schema({
         required: false
     },
     member_channel_id:{
-        type: {ObjectId, ref: 'member_channel'},
+        type: ObjectId, 
+        ref: 'member_channel',
         required: false
     }
 })
