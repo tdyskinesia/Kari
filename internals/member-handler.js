@@ -74,6 +74,7 @@ const memberRoleAssign = async(userID, talentName, guildID, client) => {
                 }
         } else {
             console.log(member.user.username + " already had Role: " + member.roles.cache.get(roleID)) 
+            return false
         }
         }
     catch (e) {
