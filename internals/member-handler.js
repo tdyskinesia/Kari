@@ -229,7 +229,7 @@ module.exports = {
             let talentName = await findTalentName(args[1], guildID)
             let exDate = new Date(args[2])
             let member = await user.findOne({userID: authorID}).lean().exec()
-            let foundMembership = await iterateMemberships(member.membership_IDs, talentName)
+            let foundMembership = iterateMemberships(member.membership_IDs, talentName)
             if(foundMembership==null){
                 let memberChannel = await member_channel.findOne({guildID: guildID}).lean().exec()
                 let newMembership = await new membership({
@@ -239,7 +239,7 @@ module.exports = {
                     userID: authorID,
                     notifyFlag: false,
                     member_channel_ID: memberChannel._id
-                })
+                }).save()
                 let g = await models.guild.findOneAndUpdate({guildID: message.guild.id},{'$push' : {"membership_IDs": ObjectId(newMembership._id)}}, {new: true}).exec()
                     if (member==null){
                         let newUser = await new user({
@@ -507,5 +507,12 @@ module.exports = {
                 arr.join(", ")+ " and member role ID: " + tal.memberRoleID)
             } else message.channel.send("Insufficient args");
         } catch (e) {console.log(e)}
+    },
+    async migrate2(message, args){
+        try{
+            let u = await user.updateMany({}, {'$set': {}}).exec()
+            
+
+        } catch(e) {console.log(e)}
     }
 }
