@@ -356,8 +356,8 @@ module.exports = {
                         await membership.deleteOne({_id: foundMembership._id}).exec()
                         let newGuild = await models.guild.findOneAndUpdate({guildID: message.guild.id}, {'$pull': {"membership_IDs": ObjectId(foundMembership._id)}}, {new:true}).exec()
                             if(newTalent!=null&&newUser!=null&&newGuild!=null){
-                                let gMember = await message.guild.members.fetch(await client.users.fetch(foundUser.userID))
-                                let newMember = await gMember.roles.remove(foundTalent.memberRoleID)
+                                let gMember = await message.guild.members.fetch(await client.users.fetch(newUser.userID))
+                                let newMember = await gMember.roles.remove(newTalent.memberRoleID)
                                 if(newMember.roles.cache.size<gMember.roles.cache.size){
                                     message.channel.send("Role removed from " + gMember.user.username)
                                 } else message.channel.send("Could not remove role or user did not have that role.")
