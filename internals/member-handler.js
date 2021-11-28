@@ -394,7 +394,7 @@ module.exports = {
                     "membership_IDs" : ObjectId(mship._id)
                     }
             }).exec()
-            await guild.findOneAndUpdate({guildID: guildID}, {'$pull':{"membership_IDs": ObjectId(mship._id)}}).exec()
+            await models.guild.findOneAndUpdate({guildID: guildID}, {'$pull':{"membership_IDs": ObjectId(mship._id)}}).exec()
             return;
         } catch (e) {console.log(e)}  
     },
