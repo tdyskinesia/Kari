@@ -92,10 +92,7 @@ client.on('message', message =>{
     }
     if(message.member.permissions.has("BAN_MEMBERS")){
 
-    if(command === 'ping') {
-        client.commands.get('ping').execute(message, args);
-    }
-    else if(command === 'setup') {
+    if(command === 'setup') {
         client.commands.get('new setup').execute(message, args)  
     }
     else if(command === 'clearsub') {
@@ -128,6 +125,9 @@ client.on('message', message =>{
     else if(command === 'mtalentsetup'){
         memberHandler.subMembershipTalent(message, args)
     }
+    else if(command === 'brole'){
+        guildHandler.boosterRoleSet(message, args)
+    }
 }
     if (message.member.permissions.has("MENTION_EVERYONE")){
         if(command === 'timeset'){
@@ -144,40 +144,15 @@ client.on('message', message =>{
             streamHandler.displayStreams(message)
         }
     }
-    if(message.member.roles.cache.has('835813294152744982')||message.member.permissions.has("BAN_MEMBERS")){
 
-        if(command === 'seticon'){
-            
-            var image = message.attachments
-            if(image.first()!=null){
-            var link = image.first().url
 
-            if(image.first().size<256000){
-
-            if(message.member.roles.cache.has(args[0])&&message.member.roles.highest===message.member.roles.cache.get(args[0])){
-
-                if(message.guild.me.roles.highest.comparePositionTo(message.member.roles.cache.get(args[0]))>0){
-
-                    const role = message.guild.roles.cache.get(args[0])
-                    role.setIcon(link)
-                    message.channel.send("Role Icon Set")
-
-                } else {
-                    message.channel.send("Role is out of Kari's permission range.")
-                }
-
-            } else {
-                message.channel.send("You do not have that role ID, or it was not your highest role.")
-            }
-
-        } else {
-            message.channel.send("Image file size error (over 256kb).")
-        }
-    } else { message.channel.send("No file found.") }
-
-        }
+    if(command === 'seticon'){
+        guildHandler.setIcon(message, args)
     }
-    if(command === 'deeznuts'){
+    else if(command === 'ping') {
+        client.commands.get('ping').execute(message, args);
+    }
+    else if(command === 'deeznuts'){
         message.channel.send("deez nuts")
         message.delete()
     }
@@ -200,13 +175,14 @@ client.on('message', message =>{
         "*k!setup <talent name> <YouTube channel ID> <live channel ID> <roleID>* - subs talent to automatic updates\n"+
         "*k!clearmsgs* - clears all scheduled stream notifications\n"+
         "*k!bupdate <-o?>* - forces an update to the bulletin. the -o flag outputs the last saved data to the current channel without using any api requests\n"+
-        "*k!clearsub <live channel ID>* - clears a talent from live scheduling\n"+
+        "*k!clearsub <talent name>* - clears a talent from server database. BE CAREFUL WITH USE. MAY INVALIDATE MEMBERSHIP DATA.\n"+
         "*k!mrclear <roleID?> (or k!mroleclear)* - if no arguments given, clears talent's member role. otherwise changes the member role to given role ID\n"+
         "*k!mtlist <talent name>* - lists all members for given talent name\n"+
         "*k!mremove <talent name> <userID>* - manually removes membership for given user from given talent\n"+
         "*k!vchset <channelID>* - sets a verification channel\n"+
         "*k!mrole <talent name> <role ID>* - sets a member role for a talent\n"+
-        "*k!mtalentsetup <talent name> <membership role ID> <alias_1> <alias_2> ...* - Sets up talent only for membership handling. Alias searching not yet implemented for other languages.\n\n"+
+        "*k!mtalentsetup <talent name> <membership role ID> <alias_1> <alias_2> ...* - Sets up talent only for membership handling. Alias searching not yet implemented for other languages.\n"+
+        "*k!brole <roleID?>* - if roleID argument is found, sets roleID to the given value. otherwise clears booster role.\n\n"+
         
         "**Tagger Commands**\n"+
         "*k!timeset <video ID> <minutes>* - manually adds minutes to a previously scheduled notification (to use if a stream is manually rescheduled)\n"+

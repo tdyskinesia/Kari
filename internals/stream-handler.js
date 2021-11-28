@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
         
 const Discord = require('discord.js');
 
-const talentSchema = require('../data/models');
+const models = require('../data/models');
 
 const {google} = require('googleapis');
 
@@ -16,24 +16,14 @@ const yt = google.youtube({
 
 const moment = require('moment-timezone')
 
-const https = require('https');
+const {Types: {ObjectId}} = require('mongoose')
 
-const { parse } = require('node-html-parser')
-const fetch = require('node-fetch');
-const { stream } = require('../data/models');
-const cheerio = require('cheerio');
+// const https = require('https');
 
-//unused
-const queryAllUsers = () => {
-    //Where User is you mongoose user model
-    talentSchema.talent.find({} , (err, talents) => {
-        if(err) //do something...
-
-        talents.map(talent => {
-            console.log(talent.youtubeID)
-        })
-    })
-}
+// const { parse } = require('node-html-parser')
+// const fetch = require('node-fetch');
+// const { stream } = require('../data/models');
+// const cheerio = require('cheerio');
 
 const youtube = async(talent) => {
     var results = []
@@ -60,7 +50,7 @@ const youtube = async(talent) => {
                 response.data.items[i].id.videoId
             ] 
             }))
-            console.log(results[i])
+            // console.log(results[i])
         }
         //sort by 
         results.sort(function(a, b) {
@@ -73,15 +63,17 @@ const youtube = async(talent) => {
         for (var index in results){
                 //return([results[index].data.items[0].liveStreamingDetails.scheduledStartTime, results[index].data.items[0].snippet.title, results[index].data.items[0].id, results[index].data.items[0].snippet.thumbnails.default.url])
             if(new Date(results[index].data.items[0].liveStreamingDetails.scheduledStartTime) > now){
-            streams.push(talentSchema.stream({
+            let newStream = await models.stream.create({
                     streamName: results[index].data.items[0].snippet.title,
                     startTime: results[index].data.items[0].liveStreamingDetails.scheduledStartTime,
                     videoID: results[index].data.items[0].id,
-                    thumbnailUrl: results[index].data.items[0].snippet.thumbnails.high.url
-                }))
+                    thumbnailUrl: results[index].data.items[0].snippet.thumbnails.high.url,
+                    talent_id: ObjectId(talent._id)
+                })
+                streams.push(newStream._id)
             }
         } 
-        return streams;
+        return streams
     } else {return []}
 
 }
@@ -105,16 +97,15 @@ module.exports = {
         
         const channel = await client.channels.cache.get('908671236895305760')
         let embedArray = []
-        
         if(args == null){
         if(message!=null) await message.channel.send("Updating board now!")
-        for await (const talent of talentSchema.talent.find({guildID: '835723287714857031'})){
+        for await (const talent of models.talent.find({guildID: '835723287714857031'})){
             let fieldArray = []
-            console.log(talent.youtubeID)
-            talent.upcomingStreams = await youtube(talent)
+            talent.streams = await youtube(talent)
             let profileURL = await channelInfo(talent)
-            if(talent.upcomingStreams.length>0){
-                talent.upcomingStreams.forEach(async function(stream){
+            if(talent.streams.length>0){
+                talent.streams.forEach(async function(stream_id){
+                    let stream = await models.stream.findById(stream_id).exec()
                     let curStart = moment(stream.startTime)
                     fieldArray.push({
                         name: stream.streamName,
@@ -183,10 +174,11 @@ module.exports = {
         } else if (args[0]==='-o'){
             let embedArray = []
             await message.channel.send("Updating Board without Calling API")
-            for await (const curTalent of talentSchema.talent.find({guildID: message.guild.id})){
+            for await (const curTalent of models.talent.find({guildID: message.guild.id})){
                 let fieldArray = []
-                if(curTalent.upcomingStreams.length>0){
-                    curTalent.upcomingStreams.forEach(async function(stream){
+                if(curTalent.streams.length>0){
+                    curTalent.streams.forEach(async function(stream_id){
+                        let stream = await models.stream.findById(stream_id).exec()
                         let curStart = moment(stream.startTime)
                         fieldArray.push({
                             name: stream.streamName,
@@ -243,7 +235,7 @@ module.exports = {
     },
     async queryTalents(message, client) {
         let guild = await client.guilds.cache.get(message.guild.id)
-            for await (const talent of talentSchema.talent.find({guildID: message.guild.id})){
+            for await (const talent of models.talent.find({guildID: message.guild.id})){
                 if(talent.memberRoleID){
                 await message.channel.send(
                `NAME: ${talent.name} YTID: ${talent.youtubeID} LIVE CHANNEL: ${(await client.channels.cache.get(talent.liveChannelID)).toString()} ROLE: ${(await guild.roles.cache.get(talent.roleID)).name} MEMBER ROLE: ${(await guild.roles.cache.get(talent.memberRoleID)).name}`)
@@ -254,23 +246,29 @@ module.exports = {
             }
     },
     async displayStreams(message){
-        for await (const talent of talentSchema.talent.find({guildID: message.guild.id})){
-            if(talent.upcomingStreams.length>0){
-                await message.channel.send(talent.name + ":\n" + talent.upcomingStreams)
+        let strArr = []
+        for await (const talent of models.talent.find({guildID: message.guild.id})){
+            if(talent.streams.length>0){
+                for(var i in talent.streams){
+                    strArr.push(await models.stream.findById(talent.streams[i]).lean().exec())
+                }
+                let s = strArr.join("\n ")
+                await message.channel.send(talent.name + ":\n" + s.substring(0, s.length-1))
             } else {
                 await message.channel.send(talent.name + ":\nNo Upcoming Streams Found")
             }
         }
     },
     async timeChange(message, args){
-        for await (const talent of talentSchema.talent.find({guildID: message.guild.id})){
-            for await(const stream of talent.upcomingStreams){
+        for await (const talent of models.talent.find({guildID: message.guild.id})){
+            for await(const stream_id of talent.streams){
+                let stream = await models.stream.findById(stream_id).exec()
                 if(stream.videoID==args[0]){
                     await message.channel.send("Original ISO: "+stream.startTime)
                     let curDate = new Date(stream.startTime)
                     curDate.setMinutes(curDate.getMinutes() + parseInt(args[1]))
                     stream.startTime = curDate.toISOString()
-                    await talent.save()
+                    await stream.save()
                     await message.channel.send("Changed ISO: " + stream.startTime)
                 }
             }

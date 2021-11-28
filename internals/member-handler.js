@@ -341,7 +341,7 @@ module.exports = {
         let foundUser = await user.findOne({userID: args[1]}).lean().exec()
             if(foundTalent!=null){
                 if(foundUser!=null){
-                    let foundMembership = await membership.findOne({guildID: message.guild.id, userID: foundUser.userID, talentName: foundTalent.name})
+                    let foundMembership = await membership.findOne({userID: foundUser.userID, talentName: foundTalent.name}).lean().exec()
                         if(foundMembership!=null){
                         let newTalent = await talent.findByIdAndUpdate(foundTalent._id,{
                             '$pull': {

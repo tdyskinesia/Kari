@@ -51,9 +51,17 @@ const stream = new mongoose.Schema({
         type: String,
         // required: true
     },
+    //scheduled
     startTime: {
-        type: String,
+        type: Date,
         // required: true
+    },
+    //detected
+    dStart: {
+        type: Date
+    },
+    dEnd: {
+        type: Date
     },
     videoID: {
         type: String,
@@ -63,8 +71,8 @@ const stream = new mongoose.Schema({
         type: String,
         // required: true
     },
-    talent_id: 
-        [{type: ObjectId, ref: 'talent'}]
+    talent_id: {type: ObjectId, ref: 'talent'},
+
 })
 
 const talent = new mongoose.Schema({
@@ -111,6 +119,9 @@ const talent = new mongoose.Schema({
         type: String,
         // required: false
     },
+    streams: [{type: ObjectId, ref: 'stream'}],
+
+    //to remove
     upcomingStreams: {
         type: [stream],
         // required: false
@@ -156,6 +167,9 @@ const guild = new mongoose.Schema({
     },
     notificationsFlag: {
         type: Boolean
+    },
+    boosterRoleID:{
+        type: String
     },
     membership_IDs: [{type: ObjectId, ref: 'membership'}],
     user_IDs: [{type: ObjectId, ref: 'user'}],
