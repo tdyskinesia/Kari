@@ -86,17 +86,19 @@ const memberRoleAssign = async(userID, talentName, guildID, client) => {
  * Iterates through memberships of given queried user.
  * @param  {Array<mongoose.Types.ObjectId>} ids - Array of ObjectIds
  * @param  {String} talentName
- * @returns {mongoose.LeanDocument<>[]} Leandocument of membership
+ * @returns {mongoose.LeanDocument<>} Leandocument of membership
  * @todo deprecate
  */
 const iterateMemberships = async(ids, talentName)=>{
     try{
-        for(var i in ids){
-            let m = await membership.findById(ids[i]).lean().exec()
-            if((await membership.findById(ids[i]).exec()).talentName==talentName){
+        for await (const i of ids){
+            let m = await membership.findById(i).lean().exec()
+            if(m.talentName==talentName){
                 return m
             }
         }
+        return null
+
 } catch (e) {console.log(e)}
 }
 
@@ -229,7 +231,7 @@ module.exports = {
             let talentName = await findTalentName(args[1], guildID)
             let exDate = new Date(args[2])
             let member = await user.findOne({userID: authorID}).lean().exec()
-            let foundMembership = iterateMemberships(member.membership_IDs, talentName)
+            let foundMembership = await iterateMemberships(member.membership_IDs, talentName)
             if(foundMembership==null){
                 let memberChannel = await member_channel.findOne({guildID: guildID}).lean().exec()
                 let newMembership = await new membership({
@@ -510,7 +512,12 @@ module.exports = {
     },
     async migrate2(message, args){
         try{
-            let u = await user.updateMany({}, {'$set': {}}).exec()
+            let m = await membership.find().exec()
+            let u = await user.find().exec()
+            for(var e in m){
+                await user.findOneAndUpdate({userID: m[e].userID}, {'$push': {"membership_IDs": m[e]._id}}, {upsert: true})
+            }
+
             
 
         } catch(e) {console.log(e)}
