@@ -348,6 +348,7 @@ module.exports = {
                             '$pull': {
                                 'membership_IDs': ObjectId(foundMembership._id)
                             }}, {new: true}).exec()
+                        await membership.deleteOne({_id: foundMembership._id}).exec()
                         let newGuild = await models.guild.findOneAndUpdate({guildID: message.guild.id}, {'$pull': {"membership_IDs": ObjectId(foundMembership._id)}}, {new:true}).exec()
                             if(newTalent!=null&&newUser!=null&&newGuild!=null){
                                 let gMember = await message.guild.members.fetch(foundUser.userID)
@@ -395,6 +396,7 @@ module.exports = {
                     "membership_IDs" : ObjectId(mship._id)
                     }
             }).exec()
+            await membership.deleteOne({_id: mship._id}).exec()
             await models.guild.findOneAndUpdate({guildID: guildID}, {'$pull':{"membership_IDs": ObjectId(mship._id)}}).exec()
             return;
         } catch (e) {console.log(e)}  
@@ -513,17 +515,17 @@ module.exports = {
     },
     async migrate2(message, args){
         try{
-            let g = await guild.create({
+            await guild.create({
                 guildID: message.guild.id,
                 notificationsFlag: true,
                 membership_IDs: [],
                 user_IDs: [],
-                member_channel_id: []
+                talent_IDs: [],
+                member_channel_id: (await member_channel.findOne({guildID: message.guild.id}))._id
             })
-            let m = await membership.find().exec()
-            for(var e in m){
-                await user.findOneAndUpdate({userID: m[e].userID}, {'$push': {"membership_IDs": m[e]._id}}, {upsert: true}).exec()
-                await guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"membership_IDs": m[e]._id}}).exec()
+            for(const e of membership.find()){
+                await user.findOneAndUpdate({userID: e.userID}, {'$push': {"membership_IDs": e._id}}, {upsert: true}).exec()
+                await guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"membership_IDs": e._id}}).exec()
             }
             for(const t of talent.find()){
                 await guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"talent_IDs": t._id}}).exec()
