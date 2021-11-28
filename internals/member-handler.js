@@ -499,7 +499,7 @@ module.exports = {
         try{
             if(args.length > 1){ 
                 let arr = []
-                for(var i = 2; i < args.length; i++){
+                for(var i = 3; i < args.length; i++){
                     arr.push(args[i])
                 }
                 let tal = await talent.create({
