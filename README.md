@@ -9,9 +9,9 @@ Current Features:
 Upcoming Stream Bulletin w/ Timezones per Channel Sub  
 Stream Notifications 15 Minutes Before Detected Streams  
 Role Icon Set for Copa Roles  
+Membership Verification via Staff Reaction  
   
 Planned Features:  
-Membership Verification via Staff Reaction  
 Live Bulletin with Detection for Instant Lives  
 Analytics Data for Past Streams  
 Live Channel Automatic Name Changes  
