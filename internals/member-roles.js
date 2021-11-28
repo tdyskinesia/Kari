@@ -81,7 +81,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
                         await reaction.message.channel.send(`${reaction.message.author.username}, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
                         let member = await models.user.findOne({userID: reaction.message.author.id}).exec()
                         let args = reaction.message.content.slice(prefix.length).split(/ +/);
-                            for await (const mship of membership.find({userID: member.userID, guildID: reaction.message.guild.id, talentName: {$regex: '.*' + args[1] + '.*', $options: 'i'}})){
+                            for await (const mship of membership.find({userID: member.userID, talentName: {$regex: '.*' + args[1] + '.*', $options: 'i'}})){
                                 automatedMembershipRemove(member, mship, client)
                             }
                     } else if (reaction.emoji.name === '✅'){

@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 
-const {talent, stream, user, membership, member_channel} = require('../data/models');
+const {talent, stream, user, membership, member_channel, guild} = require('../data/models');
 
 const models = require('../data/models');
 
@@ -522,13 +522,13 @@ module.exports = {
             let m = await membership.find().exec()
             for(var e in m){
                 await user.findOneAndUpdate({userID: m[e].userID}, {'$push': {"membership_IDs": m[e]._id}}, {upsert: true}).exec()
-                guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"membership_IDs": m[e]._id}}).exec()
+                await guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"membership_IDs": m[e]._id}}).exec()
             }
             for(const t of talent.find()){
-                guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"talent_IDs": t._id}}).exec()
+                await guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"talent_IDs": t._id}}).exec()
             }
             for(const u of user.find()){
-                guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"user_IDs": u._id}}).exec()
+                await guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"user_IDs": u._id}}).exec()
             }
             
 
