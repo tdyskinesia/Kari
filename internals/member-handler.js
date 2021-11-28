@@ -523,14 +523,14 @@ module.exports = {
                 talent_IDs: [],
                 member_channel_id: (await member_channel.findOne({guildID: message.guild.id}))._id
             })
-            for(const e of membership.find()){
+            for await(const e of membership.find()){
                 await user.findOneAndUpdate({userID: e.userID}, {'$push': {"membership_IDs": e._id}}, {upsert: true}).exec()
                 await guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"membership_IDs": e._id}}).exec()
             }
-            for(const t of talent.find()){
+            for await(const t of talent.find()){
                 await guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"talent_IDs": t._id}}).exec()
             }
-            for(const u of user.find()){
+            for await(const u of user.find()){
                 await guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"user_IDs": u._id}}).exec()
             }
             
