@@ -60,14 +60,14 @@ const youtube = async(talent) => {
         
         for (var i in results){console.log(results[i].data.items[0].liveStreamingDetails.scheduledStartTime) }
         now = new Date()
-        for (var index in results){
+        for await (const index of results){
                 //return([results[index].data.items[0].liveStreamingDetails.scheduledStartTime, results[index].data.items[0].snippet.title, results[index].data.items[0].id, results[index].data.items[0].snippet.thumbnails.default.url])
-            if(new Date(results[index].data.items[0].liveStreamingDetails.scheduledStartTime) > now){
+            if(new Date(index.data.items[0].liveStreamingDetails.scheduledStartTime) > now){
             let newStream = await models.stream.create({
-                    streamName: results[index].data.items[0].snippet.title,
-                    startTime: results[index].data.items[0].liveStreamingDetails.scheduledStartTime,
-                    videoID: results[index].data.items[0].id,
-                    thumbnailUrl: results[index].data.items[0].snippet.thumbnails.high.url,
+                    streamName: index.data.items[0].snippet.title,
+                    startTime: index.data.items[0].liveStreamingDetails.scheduledStartTime,
+                    videoID: index.data.items[0].id,
+                    thumbnailUrl: index.data.items[0].snippet.thumbnails.high.url,
                     talent_id: ObjectId(talent._id)
                 })
                 streams.push(newStream._id)
@@ -103,6 +103,7 @@ module.exports = {
             let fieldArray = []
             talent.streams = await youtube(talent)
             let profileURL = await channelInfo(talent)
+            await talent.save();
             if(talent.streams.length>0){
                 for await (const i of talent.streams){
                     let stream = await models.stream.findById(i).exec()
