@@ -114,7 +114,7 @@ client.on('message', message =>{
         memberHandler.changeMemberRole(message, args)
     }
     else if(command === 'mremove'){
-        memberHandler.manualMembershipRemove(message, args)
+        memberHandler.manualMembershipRemove(message, args, client)
     }
     else if(command === 'mtlist'){
         memberHandler.talentMembers(message, args)
