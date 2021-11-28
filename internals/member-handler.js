@@ -473,7 +473,6 @@ module.exports = {
         }
         for await (const t of talent.find({guildID: message.guild.id})){
             await models.guild.findByIdAndUpdate(g._id,{'$push':{"talent_IDs": t._id}}).exec()
-            outArr.push(m._id)
             for await(const mship of membership.find({talentName: t.name})){
                 t.membership_IDs.push(ObjectId(mship._id))
                 outArr.push(mship._id)
