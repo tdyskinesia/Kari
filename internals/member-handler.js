@@ -333,6 +333,7 @@ module.exports = {
      * Removes a talent membership from given user ID. Called with [talent name] [user ID].
      * @param  {Discord.Message} message
      * @param  {Array<String>} args
+     * @param {Discord.Client} client
      */
     async manualMembershipRemove(message, args, client) {
     try{    
@@ -354,7 +355,7 @@ module.exports = {
                         await membership.deleteOne({_id: foundMembership._id}).exec()
                         let newGuild = await models.guild.findOneAndUpdate({guildID: message.guild.id}, {'$pull': {"membership_IDs": ObjectId(foundMembership._id)}}, {new:true}).exec()
                             if(newTalent!=null&&newUser!=null&&newGuild!=null){
-                                let gMember = await message.guild.members.fetch(await client.users.cache.fetch(foundUser.userID))
+                                let gMember = await message.guild.members.fetch(await client.users.fetch(foundUser.userID))
                                 let newMember = await gMember.roles.remove(foundTalent.memberRoleID)
                                 if(newMember.roles.cache.size<gMember.roles.cache.size){
                                     message.channel.send("Role removed from " + gMember.user.username)
