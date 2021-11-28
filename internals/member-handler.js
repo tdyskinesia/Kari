@@ -246,7 +246,7 @@ module.exports = {
                             memberships_IDs: [ObjectId(newMembership._id)],
                             userID: message.author.id,
                             guildIDs: [guildID]
-                        })
+                        }).save()
                         await g.user_IDs.push(ObjectId(newUser._id))
                         await g.save()
                         await models.guild.findOneAndUpdate({guildID: guildID}, {'$push' : {"membership_IDs" : ObjectId(newMembership._id), "user_IDs": newUser._id}, upsert: true}).exec()
@@ -446,7 +446,7 @@ module.exports = {
             user_IDs: [],
             talent_IDs: [],
             member_channel_id: mch._id
-        })
+        }).save()
         outArr.push(mch._id)
         for await(const member of user.find()){
             await models.guild.findByIdAndUpdate(g._id,{'$push':{"user_IDs": member._id}}).exec()
@@ -460,7 +460,7 @@ module.exports = {
                         userID: member.memberships[i].userID,
                         notifyFlag: member.memberships[i].notifyFlag,
                         member_channel_ID: mch._id
-                    })
+                    }).save()
                     await models.guild.findByIdAndUpdate(g._id,{'$push':{"membership_IDs": m._id}}).exec()
                     outArr.push(m._id)
                     m.member_channel_ID = mch._id
@@ -502,7 +502,7 @@ module.exports = {
                     memberRoleID: args[1],
                     guildName: message.guild.name,
                     guildID: message.guild.id
-                })
+                }).save()
                 message.channel.send("New membership talent " + tal.name +" subbed for " + tal.guildName + " with aliases " + 
                 arr.join(", ")+ " and member role ID: " + tal.memberRoleID)
             } else message.channel.send("Insufficient args");
