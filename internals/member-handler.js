@@ -339,11 +339,11 @@ module.exports = {
     async manualMembershipRemove(message, args, client) {
     try{    
         if(args.length==2){   
-        let foundTalent = await talent.findOne({guildID: message.guild.id, name:{ $regex: '.*'+ args[0]+ '.*', $options: 'i' } }).lean().exec()
-        let foundUser = await user.findOne({userID: args[1]}).lean().exec()
+        let foundTalent = await talent.findOne({guildID: message.guild.id, name:{ $regex: '.*'+ args[0]+ '.*', $options: 'i' } })
+        let foundUser = await user.findOne({userID: args[1]})
             if(foundTalent!=null){
                 if(foundUser!=null){
-                    let foundMembership = await membership.findOne({userID: foundUser.userID, talentName: foundTalent.name}).lean().exec()
+                    let foundMembership = await membership.findOne({userID: foundUser.userID, talentName: foundTalent.name})
                         if(foundMembership!=null){
                         let newTalent = await talent.findByIdAndUpdate(foundTalent._id,{
                             '$pull': {
