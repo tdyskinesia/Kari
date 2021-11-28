@@ -119,14 +119,17 @@ client.on('message', message =>{
     else if(command === 'mtlist'){
         memberHandler.talentMembers(message, args)
     }
-    else if(command === 'migrate'){
-        memberHandler.migrateData(message)
-    }
+    // else if(command === 'migrate'){
+    //     memberHandler.migrateData(message)
+    // }
     else if(command === 'mtalentsetup'){
         memberHandler.subMembershipTalent(message, args)
     }
     else if(command === 'brole'){
         guildHandler.boosterRoleSet(message, args)
+    }
+    else if (command === 'fix'){
+        memberHandler.fix(message, args)
     }
 }
     if (message.member.permissions.has("MENTION_EVERYONE")){

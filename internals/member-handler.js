@@ -545,5 +545,20 @@ module.exports = {
             
 
         } catch(e) {console.log(e)}
+    },
+    /**
+     * @param  {Discord.Message} message
+     * @param  {} args
+     */
+    async fix(message, args){
+        try{
+            for await(const mship of membership.find()){
+                let m = await message.guild.members.fetch(membership.userID)
+                let role = await message.guild.roles.fetch((await talent.findOne({guildID: message.guild.id, name: mship.talentName})).memberRoleID)
+                await m.roles.add(role)
+                await message.channel.send(m.user.username + ": " + role.id)
+            }
+
+        } catch(e) {console.log(e)}
     }
 }
