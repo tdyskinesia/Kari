@@ -231,7 +231,8 @@ module.exports = {
             let talentName = await findTalentName(args[1], guildID)
             let exDate = new Date(args[2])
             let member = await user.findOne({userID: authorID}).lean().exec()
-            let foundMembership = await iterateMemberships(member.membership_IDs, talentName)
+            if(member.membership_IDs!=null){
+            let foundMembership = await iterateMemberships(member.membership_IDs, talentName)}
             if(foundMembership==null){
                 let memberChannel = await member_channel.findOne({guildID: guildID}).lean().exec()
                 let newMembership = await membership.create({
@@ -260,7 +261,7 @@ module.exports = {
                     } else {
                         let newUser = await user.findOneAndUpdate({userID: authorID },{'$push': {"membership_IDs" : ObjectId(newMembership._id)}},{new: true, upsert: true}).lean().exec()
                         await models.guild.findOneAndUpdate({guildID: guildID}, {'$push' : {"membership_IDs" : ObjectId(newMembership._id), "user_IDs": newUser._id}, upsert: true}).exec()
-                        await message.channel.send(`Added a membership to ${talentName} for ${(message.guild.members.cache.get(authorID)).user.username}! (Verified: ${message.guild.members.cache.get(staff)})`)
+                        await message.channel.send(`Added a membership to ${talentName} for ${(message.guild.members.cache.get(authorID)).user.username}! (Verified: ${message.guild.members.cache.get(staff).user.username})`)
                         if(memberRoleAssign(authorID, talentName, guildID, client)){
                             await message.channel.send("Role assigned."); return
                         } else await message.channel.send("User already had role assigned."); return
@@ -269,6 +270,7 @@ module.exports = {
                 await membership.findByIdAndUpdate(foundMembership._id, {'$set': {"expiration" : exDate}}).exec()
                 await message.channel.send(message.author.username + " is already verified for " + talentName +". Changed expiration to " + exDate.toDateString()); return;
             }
+        
         } catch (e) {console.log(e)}
     },
     /**
@@ -498,19 +500,21 @@ module.exports = {
     async subMembershipTalent(message, args){
         try{
             if(args.length > 1){ 
-                let arr = []
-                for(var i = 3; i < args.length; i++){
-                    arr.push(args[i])
-                }
-                let tal = await talent.create({
-                    name: args[0]+ " " + args[1],
-                    aliases: arr,
-                    memberRoleID: args[2],
-                    guildName: message.guild.name,
-                    guildID: message.guild.id
-                })
-                message.channel.send("New membership talent " + tal.name +" subbed for " + tal.guildName + " with aliases " + 
-                arr.join(", ")+ " and member role ID: " + tal.memberRoleID)
+                if(talent.findOne({guildID: message.guild.id, name:{$regex: ".*" + args[0] + ".*", $options: 'i'}})){
+                    let arr = []
+                    for(var i = 3; i < args.length; i++){
+                        arr.push(args[i])
+                    }
+                    let tal = await talent.create({
+                        name: args[0]+ " " + args[1],
+                        aliases: arr,
+                        memberRoleID: args[2],
+                        guildName: message.guild.name,
+                        guildID: message.guild.id
+                    })
+                    message.channel.send("New membership talent " + tal.name +" subbed for " + tal.guildName + " with aliases " + 
+                    arr.join(", ")+ " and member role ID: " + tal.memberRoleID)
+                } else message.channel.send("Talent already subbed.")
             } else message.channel.send("Insufficient args");
         } catch (e) {console.log(e)}
     },
