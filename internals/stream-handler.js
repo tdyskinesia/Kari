@@ -104,8 +104,8 @@ module.exports = {
             talent.streams = await youtube(talent)
             let profileURL = await channelInfo(talent)
             if(talent.streams.length>0){
-                for(var i in talent.streams){
-                    let stream = await models.stream.findById(talent.streams[i]).exec()
+                for await (const i of talent.streams){
+                    let stream = await models.stream.findById(i).exec()
                     let curStart = moment(stream.startTime)
                     fieldArray.push({
                         name: stream.streamName,
