@@ -375,7 +375,8 @@ module.exports = {
      */
     async automatedMembershipRemove(member, mship, client){
         try{
-            let guildID = mship.guildID
+            let mCh = await member_channel.findById(mship.member_channel_ID).exec()
+            let guildID = mCh.guildID
             let userID = mship.userID
             let guild = await client.guilds.fetch(guildID)
             let gMember = await guild.members.fetch(userID)
