@@ -227,12 +227,13 @@ module.exports = {
         try{
             let args = message.content.slice(prefix.length).split(/ +/)
             let guildID = message.guild.id
+            let foundMembership = null
             console.log(guildID +  " "  + args[1])
             let talentName = await findTalentName(args[1], guildID)
             let exDate = new Date(args[2])
             let member = await user.findOne({userID: authorID}).lean().exec()
             if(member!=null){
-            let foundMembership = await iterateMemberships(member.membership_IDs, talentName)} else let foundMembership = null
+            foundMembership = await iterateMemberships(member.membership_IDs, talentName)} else foundMembership = null
             if(foundMembership==null){
                 let memberChannel = await member_channel.findOne({guildID: guildID}).lean().exec()
                 let newMembership = await membership.create({
