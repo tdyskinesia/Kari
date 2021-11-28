@@ -450,7 +450,7 @@ module.exports = {
     async migrateData(message){
     try{
         let outArr = []
-        let mch = await member_channel.findOne({guildID: message.guild.id}).exec()
+        let mch = await member_channel.findOne({guildID: message.guild.id})
         let g = await models.guild.create({
             guildID: message.guild.id,
             membership_IDs: [],
