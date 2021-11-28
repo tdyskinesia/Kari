@@ -232,7 +232,7 @@ module.exports = {
             let exDate = new Date(args[2])
             let member = await user.findOne({userID: authorID}).lean().exec()
             if(member!=null){
-            let foundMembership = await iterateMemberships(member.membership_IDs, talentName)}
+            let foundMembership = await iterateMemberships(member.membership_IDs, talentName)} else let foundMembership = null
             if(foundMembership==null){
                 let memberChannel = await member_channel.findOne({guildID: guildID}).lean().exec()
                 let newMembership = await membership.create({
