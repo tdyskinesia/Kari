@@ -39,6 +39,8 @@ const messageHandler = require('./internals/message-handler.js')
 
 const memberHandler = require('./internals/member-handler.js')
 
+const guildHandler = require('./internals/guild-handler.js')
+
 const talentSchema  = require('./data/models.js')
 
 const memberRoles = require('./internals/member-roles.js')
@@ -82,13 +84,19 @@ client.on('message', message =>{
     if(!message.content.startsWith(prefix) || message.author.bot) return;
     const args = message.content.slice(prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
+    if(message.member.permissions.has("ADMINISTRATOR")){
+
+    if(command === 'guildsetup'){
+        guildHandler.setupGuild(message, args)
+    }
+    }
     if(message.member.permissions.has("BAN_MEMBERS")){
 
     if(command === 'ping') {
         client.commands.get('ping').execute(message, args);
     }
     else if(command === 'setup') {
-        client.commands.get('new setup').execute(message, args)
+        client.commands.get('new setup').execute(message, args)  
     }
     else if(command === 'clearsub') {
         talentHandler.deleteTalent(message, args)
@@ -105,9 +113,6 @@ client.on('message', message =>{
     else if(command === 'mrole'||command === 'mr') {
         memberHandler.subMemberRole(message, args)
     }
-    //for now only for staff to debug
-    
-    
     else if(command === 'mrclear'||command === 'mroleclear'){
         memberHandler.changeMemberRole(message, args)
     }
@@ -116,6 +121,12 @@ client.on('message', message =>{
     }
     else if(command === 'mtlist'){
         memberHandler.talentMembers(message, args)
+    }
+    else if(command === 'migrate'){
+        memberHandler.migrateData(message)
+    }
+    else if(command === 'mtalentsetup'){
+        memberHandler.subMembershipTalent(message, args)
     }
 }
     if (message.member.permissions.has("MENTION_EVERYONE")){
@@ -174,10 +185,12 @@ client.on('message', message =>{
         memberHandler.callSub(message, args)
     }
     else if(command === 'mlist'){
-        memberHandler.getMemberships(message, args)
+        memberHandler.getMemberships(message)
     }
     else if(command === 'help'){
         message.channel.send("__**Kari Commands**__\n\n"+
+        "**Administrator Commands**\n"+
+        "*k!guildsetup <-n?>* - Initial command for setting up server. Use -n flag to disable notifications. (For later features.)\n\n"+
 
         "**Mod Commands**\n"+
         "*k!setup <talent name> <YouTube channel ID> <live channel ID> <roleID>* - subs talent to automatic updates\n"+
@@ -188,7 +201,8 @@ client.on('message', message =>{
         "*k!mtlist <talent name>* - lists all members for given talent name\n"+
         "*k!mremove <talent name> <userID>* - manually removes membership for given user from given talent\n"+
         "*k!vchset <channelID>* - sets a verification channel\n"+
-        "*k!mrole <talent name> <role ID>* - sets a member role for a talent\n\n"+
+        "*k!mrole <talent name> <role ID>* - sets a member role for a talent\n"+
+        "*k!mtalentsetup <talent name> <membership role ID> <alias_1> <alias_2> ...* - Sets up talent only for membership handling. Alias searching not yet implemented for other languages.\n\n"+
         
         "**Tagger Commands**\n"+
         "*k!timeset <video ID> <minutes>* - manually adds minutes to a previously scheduled notification (to use if a stream is manually rescheduled)\n"+

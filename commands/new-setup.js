@@ -8,15 +8,13 @@ module.exports = {
 
         const talentSchema = require('../data/models');
    
-        talentSchema.talent.create({
+        await new talentSchema.talent({
             name: args[0] + " " + args[1],
             youtubeID: args[2],
             liveChannelID: args[3],
             roleID: args[4],
             guildName: message.guild.name,
             guildID: message.guild.id
-        }, function(err, small){
-            if (err) return handleError(err);
         })
         let liveChannel = await message.guild.channels.cache.get(args[3])
         let role = await message.guild.roles.cache.get(args[4])

@@ -1,0 +1,490 @@
+[{
+  "_id": {
+    "$oid": "61a0c63ec85cf4c6aad16fbd"
+  },
+  "memberships": [
+    {
+      "talentName": "Charlotte Suzu",
+      "expiration": {
+        "$date": "2021-12-09T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "201198863669919744",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a11817104dedfec4ff3fd6"
+      }
+    },
+    {
+      "talentName": "Shee Icho",
+      "expiration": {
+        "$date": "2021-12-09T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "201198863669919744",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a121d76d5c161eaefcc578"
+      }
+    }
+  ],
+  "userID": "201198863669919744",
+  "guildID": "835723287714857031",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a0e6da104dedfec4fef30d"
+  },
+  "memberships": [
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "368283096094867467",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0e6da104dedfec4fef30c"
+      }
+    }
+  ],
+  "userID": "368283096094867467",
+  "guildID": "835723287714857031",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a0e71c104dedfec4fef347"
+  },
+  "memberships": [
+    {
+      "talentName": "Isla Coleman",
+      "expiration": {
+        "$date": "2021-12-06T00:00:00Z"
+      },
+      "staffID": "166555212537004032",
+      "userID": "207294350852358144",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0e71c104dedfec4fef346"
+      }
+    },
+    {
+      "talentName": "Reina Sun",
+      "expiration": {
+        "$date": "2021-12-06T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "207294350852358144",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0e732104dedfec4fef367"
+      }
+    }
+  ],
+  "userID": "207294350852358144",
+  "guildID": "835723287714857031",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a0eb4a104dedfec4fef74a"
+  },
+  "memberships": [
+    {
+      "talentName": "Reina Sun",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "401749252742709249",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a2640aa3f6867617305da6"
+      }
+    },
+    {
+      "talentName": "Charlotte Suzu",
+      "expiration": {
+        "$date": "2021-12-03T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "401749252742709249",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a26413a3f6867617305de8"
+      }
+    }
+  ],
+  "userID": "401749252742709249",
+  "guildID": "835723287714857031",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a0eba6104dedfec4fef7bf"
+  },
+  "memberships": [
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "706842644025704569",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0eba6104dedfec4fef7be"
+      }
+    }
+  ],
+  "userID": "706842644025704569",
+  "guildID": "835723287714857031",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a0f09e104dedfec4fefd23"
+  },
+  "memberships": [
+    {
+      "talentName": "Nene Amano",
+      "expiration": {
+        "$date": "2021-12-12T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "186687125641494530",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0f09e104dedfec4fefd22"
+      }
+    }
+  ],
+  "userID": "186687125641494530",
+  "guildID": "835723287714857031",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a0f3ac104dedfec4ff00b6"
+  },
+  "memberships": [
+    {
+      "talentName": "Isla Coleman",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "237733162824761358",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0f3ac104dedfec4ff00b5"
+      }
+    }
+  ],
+  "userID": "237733162824761358",
+  "guildID": "835723287714857031",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a0f40e104dedfec4ff0155"
+  },
+  "memberships": [
+    {
+      "talentName": "Isla Coleman",
+      "expiration": {
+        "$date": "2021-12-25T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "329639903547752448",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0f40e104dedfec4ff0154"
+      }
+    }
+  ],
+  "userID": "329639903547752448",
+  "guildID": "835723287714857031",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a0f41b104dedfec4ff0164"
+  },
+  "memberships": [
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "143102496313835521",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0f41b104dedfec4ff0163"
+      }
+    }
+  ],
+  "userID": "143102496313835521",
+  "guildID": "835723287714857031",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a0f886104dedfec4ff079e"
+  },
+  "memberships": [
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "217305038995980289",
+      "userID": "394773418572120064",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0f886104dedfec4ff079d"
+      }
+    }
+  ],
+  "userID": "394773418572120064",
+  "guildID": "835723287714857031",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a0f949104dedfec4ff08de"
+  },
+  "memberships": [
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "217305038995980289",
+      "userID": "150747151062794240",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0f949104dedfec4ff08dd"
+      }
+    }
+  ],
+  "userID": "150747151062794240",
+  "guildID": "835723287714857031",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a0f966104dedfec4ff091a"
+  },
+  "memberships": [
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "213564908430688256",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0f966104dedfec4ff0919"
+      }
+    }
+  ],
+  "userID": "213564908430688256",
+  "guildID": "835723287714857031",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a0fa83104dedfec4ff0b10"
+  },
+  "memberships": [
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "217305038995980289",
+      "userID": "269631044133715969",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0fa83104dedfec4ff0b0f"
+      }
+    }
+  ],
+  "userID": "269631044133715969",
+  "guildID": "835723287714857031",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a0fbdf104dedfec4ff0d74"
+  },
+  "memberships": [
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "217305038995980289",
+      "userID": "187911129035440129",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0fbdf104dedfec4ff0d73"
+      }
+    }
+  ],
+  "userID": "187911129035440129",
+  "guildID": "835723287714857031",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a0fea0104dedfec4ff1255"
+  },
+  "memberships": [
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "217305038995980289",
+      "userID": "472318163019890704",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0fea0104dedfec4ff1254"
+      }
+    }
+  ],
+  "userID": "472318163019890704",
+  "guildID": "835723287714857031",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a1148c104dedfec4ff3936"
+  },
+  "memberships": [
+    {
+      "talentName": "Charlotte Suzu",
+      "expiration": {
+        "$date": "2021-12-09T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "384951110995279874",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a124dc3401f882faaf2cb9"
+      }
+    }
+  ],
+  "userID": "384951110995279874",
+  "guildID": "835723287714857031",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a13426113191d548676269"
+  },
+  "memberships": [
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "183969757236559872",
+      "userID": "183746208244826112",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a13426113191d548676268"
+      }
+    },
+    {
+      "talentName": "Reina Sun",
+      "expiration": {
+        "$date": "2021-12-25T00:00:00Z"
+      },
+      "staffID": "166555212537004032",
+      "userID": "183746208244826112",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a134f6113191d5486763fe"
+      }
+    }
+  ],
+  "userID": "183746208244826112",
+  "guildID": "835723287714857031",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a14e81113191d5486796a1"
+  },
+  "memberships": [
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "166555212537004032",
+      "userID": "180846239309496320",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a14e81113191d5486796a0"
+      }
+    }
+  ],
+  "userID": "180846239309496320",
+  "guildID": "835723287714857031",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a28cdaa3f686761730b53a"
+  },
+  "memberships": [
+    {
+      "talentName": "Isla Coleman",
+      "expiration": {
+        "$date": "2021-12-25T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "571493268387528725",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a28cdaa3f686761730b539"
+      }
+    }
+  ],
+  "userID": "571493268387528725",
+  "guildID": "835723287714857031",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a2c7c9a3f6867617313a02"
+  },
+  "memberships": [
+    {
+      "talentName": "Charlotte Suzu",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "183969757236559872",
+      "userID": "229387823562620928",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a2c7c9a3f6867617313a01"
+      }
+    }
+  ],
+  "userID": "229387823562620928",
+  "guildID": "835723287714857031",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61a2d1e6a3f68676173151a6"
+  },
+  "memberships": [
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-27T00:00:00Z"
+      },
+      "staffID": "183969757236559872",
+      "userID": "359722271914590209",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a2d1e6a3f68676173151a5"
+      }
+    }
+  ],
+  "userID": "359722271914590209",
+  "guildID": "835723287714857031",
+  "__v": 0
+}]

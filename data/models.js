@@ -1,126 +1,182 @@
 const mongoose = require('mongoose');
+require('mongoose-long/index.js')(mongoose);
+const {Schema: {Types: {Long, ObjectId}}} = mongoose;
 
 const Discord = require('discord.js');
 
 const stream = new mongoose.Schema({
     streamName: {
         type: String,
-        required: true
+        // required: true
     },
     startTime: {
         type: String,
-        required: true
+        // required: true
     },
     videoID: {
         type: String,
-        required: true
+        // required: true
     },
     thumbnailUrl: {
         type: String,
-        required: true
+        // required: true
+    },
+    talent_id: {
+        type: [{ObjectId, ref: 'talent'}],
+        required: false
     }
 })
 
 const membership = new mongoose.Schema({
     talentName:{
         type: String,
-        required: true
+        // required: true
     },
     expiration:{
         type: Date,
-        required: true
+        // required: true
     },
     staffID: {
         type: String,
-        required: true
+        // required: true
     },
     userID: {
         type: String,
-        required: true
+        // required: true
     },
     notifyFlag:{
         type: Boolean,
-        required: false
+        // required: false
+    },
+    member_channel_ID: {
+        type: {ObjectId, ref: 'member_channel'},
+        // required: false
     }
 })
 
 const talent = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        // required: true
+    },
+    aliases: {
+        type: [String],
+        // required: false
     },
     youtubeID: {
         type: String,
-        required: true
+        // required: true
     },
     liveChannelID: {
         type: String,
-        required: true
+        // required: true
     },
     roleID: {
         type: String,
-        required: true
+        // required: true
     },
     guildName: {
         type: String,
-        required: true
+        // required: true
     },
     guildID: {
         type: String,
-        required: true
+        // required: true
     },
+    //to remove
     memberships: {
         type: [membership],
         required: false
     },
+    membership_IDs: {
+        type: [{ObjectId, ref: 'membership'}],
+        // required: false
+    },
     memberRoleID: {
         type: String,
-        required: false
+        // required: false
     },
     profileURL: {
         type: String,
-        required: false
+        // required: false
     },
     upcomingStreams: {
         type: [stream],
-        required: false
+        // required: false
     },
     liveStream: {
         type: stream,
-        required: false
+        // required: false
     },
     pastStreams: {
         type: [stream],
-        required: false
+        // required: false
     }
 })
 
 const user = new mongoose.Schema({
+    membership_IDs:{
+        type: [{ObjectId, ref: 'membership'}],
+        // required: true
+    },
+    //to remove
     memberships:{
         type: [membership],
         required: false
     },
     userID:{
         type: String,
-        required: true
+        // required: true
     },
+    //to remove
     guildID: {
         type: String, 
         required: true
-    }
+    },
+    guildIDs: {
+        type: [String], 
+        // required: true
+    },
+
 })
 
 const member_channel = new mongoose.Schema({
     guildID: {
         type: String,
-        required: true
+        // required: true
     },
     channelID: {
         type: String, 
-        required: true
+        // required: true
     },
     verificationIDs: {
         type: [String],
+        // required: true
+    }
+})
+
+const guild = new mongoose.Schema({
+    guildID: {
+        type: String,
+        // required: true
+    },
+    notificationsFlag: {
+        type: Boolean
+    },
+    membership_IDs: {
+        type: [{ObjectId, ref: 'membership'}],
+        required: false
+    },
+    user_IDs: {
+        type: [{ObjectId, ref: 'user'}],
+        required: false
+    },
+    talent_IDs: {
+        type: [{ObjectId, ref: 'talent'}],
+        required: false
+    },
+    member_channel_id:{
+        type: {ObjectId, ref: 'member_channel'},
         required: false
     }
 })
@@ -130,5 +186,6 @@ talent: mongoose.model('talent', talent),
 stream: mongoose.model('stream', stream),
 user: mongoose.model('user', user),
 membership: mongoose.model('membership', membership),
-member_channel: mongoose.model('member_channel', member_channel)
+member_channel: mongoose.model('member_channel', member_channel),
+guild: mongoose.model('guild', guild)
 }

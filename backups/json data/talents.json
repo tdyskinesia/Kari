@@ -1,0 +1,534 @@
+[{
+  "_id": {
+    "$oid": "619e01eb0ed6d2688c45abac"
+  },
+  "name": "Reina Sun",
+  "youtubeID": "UCKJexadCeNo3lu0U20skmNg",
+  "liveChannelID": "835786395346927646",
+  "roleID": "835747738393116692",
+  "guildName": "Kawaiifans",
+  "guildID": "835723287714857031",
+  "upcomingStreams": [],
+  "pastStreams": [],
+  "__v": 1,
+  "memberships": [
+    {
+      "talentName": "Reina Sun",
+      "expiration": {
+        "$date": "2021-12-06T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "207294350852358144",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0e732104dedfec4fef367"
+      }
+    },
+    {
+      "talentName": "Reina Sun",
+      "expiration": {
+        "$date": "2021-12-25T00:00:00Z"
+      },
+      "staffID": "166555212537004032",
+      "userID": "183746208244826112",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a134f6113191d5486763fe"
+      }
+    },
+    {
+      "talentName": "Reina Sun",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "401749252742709249",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a2640aa3f6867617305da6"
+      }
+    }
+  ],
+  "memberRoleID": "835747735633133638"
+},{
+  "_id": {
+    "$oid": "619e02810ed6d2688c45abaf"
+  },
+  "name": "Isla Coleman",
+  "youtubeID": "UCuaDidGk4HNLOnQE9wzMMeQ",
+  "liveChannelID": "835786359783817226",
+  "roleID": "835747725865779230",
+  "guildName": "Kawaiifans",
+  "guildID": "835723287714857031",
+  "upcomingStreams": [
+    {
+      "streamName": "【Drawing Stream/お絵描き配信】Redrawing old art! (Pokémon edition)",
+      "startTime": "2021-11-28T14:00:00Z",
+      "videoID": "tv7S_Leli2M",
+      "thumbnailUrl": "https://i.ytimg.com/vi/tv7S_Leli2M/hqdefault_live.jpg",
+      "_id": {
+        "$oid": "61a2e2a0a3f6867617317966"
+      }
+    }
+  ],
+  "pastStreams": [],
+  "__v": 26,
+  "memberships": [
+    {
+      "talentName": "Isla Coleman",
+      "expiration": {
+        "$date": "2021-12-06T00:00:00Z"
+      },
+      "staffID": "166555212537004032",
+      "userID": "207294350852358144",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0e71c104dedfec4fef341"
+      }
+    },
+    {
+      "talentName": "Isla Coleman",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "237733162824761358",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0f3ac104dedfec4ff00b0"
+      }
+    },
+    {
+      "talentName": "Isla Coleman",
+      "expiration": {
+        "$date": "2021-12-25T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "329639903547752448",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0f40e104dedfec4ff014f"
+      }
+    },
+    {
+      "talentName": "Isla Coleman",
+      "expiration": {
+        "$date": "2021-12-25T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "571493268387528725",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a28cdaa3f686761730b534"
+      }
+    }
+  ],
+  "memberRoleID": "835747722115809290"
+},{
+  "_id": {
+    "$oid": "619e028c0ed6d2688c45abb1"
+  },
+  "name": "Charlotte Suzu",
+  "youtubeID": "UCoAw3SML_09dF-7yhQU8wFQ",
+  "liveChannelID": "835786555347697704",
+  "roleID": "835747713038680125",
+  "guildName": "Kawaiifans",
+  "guildID": "835723287714857031",
+  "upcomingStreams": [
+    {
+      "streamName": "【members only】 charlotte suzu roast stream",
+      "startTime": "2021-12-02T03:00:00Z",
+      "videoID": "USKfU-5pmf4",
+      "thumbnailUrl": "https://i.ytimg.com/vi/USKfU-5pmf4/hqdefault_live.jpg",
+      "_id": {
+        "$oid": "61a2e2a1a3f686761731796e"
+      }
+    }
+  ],
+  "pastStreams": [],
+  "__v": 32,
+  "memberships": [
+    {
+      "talentName": "Charlotte Suzu",
+      "expiration": {
+        "$date": "2021-12-06T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "201198863669919744",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a11817104dedfec4ff3fd6"
+      }
+    },
+    {
+      "talentName": "Charlotte Suzu",
+      "expiration": {
+        "$date": "2021-12-09T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "384951110995279874",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a124dc3401f882faaf2cb9"
+      }
+    },
+    {
+      "talentName": "Charlotte Suzu",
+      "expiration": {
+        "$date": "2021-12-03T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "401749252742709249",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a26413a3f6867617305de8"
+      }
+    },
+    {
+      "talentName": "Charlotte Suzu",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "183969757236559872",
+      "userID": "229387823562620928",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a2c7c9a3f68676173139fc"
+      }
+    }
+  ],
+  "memberRoleID": "835747708597698593"
+},{
+  "_id": {
+    "$oid": "619e02900ed6d2688c45abb3"
+  },
+  "name": "Nene Amano",
+  "youtubeID": "UCu1INzefw3R7M9-3QEHYmMQ",
+  "liveChannelID": "835786515803144202",
+  "roleID": "835747732261830706",
+  "guildName": "Kawaiifans",
+  "guildID": "835723287714857031",
+  "upcomingStreams": [
+    {
+      "streamName": "[Skyrim] FUS RO DAH",
+      "startTime": "2021-11-28T13:30:00Z",
+      "videoID": "LvhMzyuHK-M",
+      "thumbnailUrl": "https://i.ytimg.com/vi/LvhMzyuHK-M/hqdefault_live.jpg",
+      "_id": {
+        "$oid": "61a2e2a1a3f6867617317975"
+      }
+    },
+    {
+      "streamName": "JJBA Part 6 Stone Ocean FULL Watchalong!!",
+      "startTime": "2021-12-01T13:30:00Z",
+      "videoID": "XzqIBmCkDiU",
+      "thumbnailUrl": "https://i.ytimg.com/vi/XzqIBmCkDiU/hqdefault_live.jpg",
+      "_id": {
+        "$oid": "61a2e2a1a3f6867617317976"
+      }
+    },
+    {
+      "streamName": "Free Space (VTuber Nene Amano Stream Schedule)",
+      "startTime": "2023-11-26T05:25:00Z",
+      "videoID": "233G1I0mJYo",
+      "thumbnailUrl": "https://i.ytimg.com/vi/233G1I0mJYo/hqdefault_live.jpg",
+      "_id": {
+        "$oid": "61a2e2a1a3f6867617317977"
+      }
+    }
+  ],
+  "pastStreams": [],
+  "__v": 38,
+  "memberships": [
+    {
+      "talentName": "Nene Amano",
+      "expiration": {
+        "$date": "2021-12-12T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "186687125641494530",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0f09e104dedfec4fefd1d"
+      }
+    }
+  ],
+  "memberRoleID": "835747729325948968"
+},{
+  "_id": {
+    "$oid": "619e02940ed6d2688c45abb5"
+  },
+  "name": "Aruru Gray",
+  "youtubeID": "UC3IEz9Vohkw1PLZR7fx8zqQ",
+  "liveChannelID": "904407515507343430",
+  "roleID": "904407162720251924",
+  "guildName": "Kawaiifans",
+  "guildID": "835723287714857031",
+  "upcomingStreams": [
+    {
+      "streamName": "【Call of Duty: Vanguard】Zombies with Shee. uwu",
+      "startTime": "2021-11-29T01:00:00Z",
+      "videoID": "YfV-Yd2rE_c",
+      "thumbnailUrl": "https://i.ytimg.com/vi/YfV-Yd2rE_c/hqdefault_live.jpg",
+      "_id": {
+        "$oid": "61a2e2a2a3f686761731797d"
+      }
+    }
+  ],
+  "pastStreams": [],
+  "__v": 26,
+  "memberships": []
+},{
+  "_id": {
+    "$oid": "619e02990ed6d2688c45abb7"
+  },
+  "name": "Lua Asuka",
+  "youtubeID": "UCV-9dgtVXHmqvzY9qdvoGYA",
+  "liveChannelID": "904407682897817612",
+  "roleID": "904408462291779624",
+  "guildName": "Kawaiifans",
+  "guildID": "835723287714857031",
+  "upcomingStreams": [],
+  "pastStreams": [],
+  "__v": 31,
+  "memberships": []
+},{
+  "_id": {
+    "$oid": "619e029e0ed6d2688c45abb9"
+  },
+  "name": "Neena Makurano",
+  "youtubeID": "UCtxY8FW7NsYLggrczfoI-1w",
+  "liveChannelID": "904407651423780904",
+  "roleID": "904404947813163018",
+  "guildName": "Kawaiifans",
+  "guildID": "835723287714857031",
+  "upcomingStreams": [
+    {
+      "streamName": "【Little Nightmares 2】We in a big world over here...【Neena Makurano】",
+      "startTime": "2021-11-28T12:30:00Z",
+      "videoID": "Hd3DIMTGDEw",
+      "thumbnailUrl": "https://i.ytimg.com/vi/Hd3DIMTGDEw/hqdefault_live.jpg",
+      "_id": {
+        "$oid": "61a2e2a2a3f6867617317992"
+      }
+    }
+  ],
+  "pastStreams": [],
+  "__v": 38,
+  "memberships": [
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "368283096094867467",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0e6da104dedfec4fef307"
+      }
+    },
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "166555212537004032",
+      "userID": "401749252742709249",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0eb4a104dedfec4fef744"
+      }
+    },
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "706842644025704569",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0eba6104dedfec4fef7b9"
+      }
+    },
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "143102496313835521",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0f41b104dedfec4ff015e"
+      }
+    },
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "217305038995980289",
+      "userID": "394773418572120064",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0f886104dedfec4ff0798"
+      }
+    },
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "217305038995980289",
+      "userID": "150747151062794240",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0f949104dedfec4ff08d8"
+      }
+    },
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "213564908430688256",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0f966104dedfec4ff0914"
+      }
+    },
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "217305038995980289",
+      "userID": "269631044133715969",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0fa83104dedfec4ff0b0a"
+      }
+    },
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "217305038995980289",
+      "userID": "187911129035440129",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0fbdf104dedfec4ff0d6e"
+      }
+    },
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "217305038995980289",
+      "userID": "472318163019890704",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a0fea0104dedfec4ff124f"
+      }
+    },
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "183969757236559872",
+      "userID": "183746208244826112",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a13426113191d548676263"
+      }
+    },
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-26T00:00:00Z"
+      },
+      "staffID": "166555212537004032",
+      "userID": "180846239309496320",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a14e81113191d54867969b"
+      }
+    },
+    {
+      "talentName": "Neena Makurano",
+      "expiration": {
+        "$date": "2021-12-27T00:00:00Z"
+      },
+      "staffID": "183969757236559872",
+      "userID": "359722271914590209",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a2d1e6a3f68676173151a0"
+      }
+    }
+  ],
+  "memberRoleID": "904554473370812427"
+},{
+  "_id": {
+    "$oid": "619e02a20ed6d2688c45abbb"
+  },
+  "name": "Namiji Freesia",
+  "youtubeID": "UC2gPbOjo_NM2QeroArW8Yeg",
+  "liveChannelID": "904407560692568074",
+  "roleID": "904407796462780436",
+  "guildName": "Kawaiifans",
+  "guildID": "835723287714857031",
+  "upcomingStreams": [],
+  "pastStreams": [],
+  "__v": 12,
+  "memberships": []
+},{
+  "_id": {
+    "$oid": "619e02a60ed6d2688c45abbd"
+  },
+  "name": "Shee Icho",
+  "youtubeID": "UCYadZR9mRignx4RKvPow44g",
+  "liveChannelID": "904407600173555842",
+  "roleID": "904408049781993572",
+  "guildName": "Kawaiifans",
+  "guildID": "835723287714857031",
+  "upcomingStreams": [],
+  "pastStreams": [],
+  "__v": 11,
+  "memberships": [
+    {
+      "talentName": "Shee Icho",
+      "expiration": {
+        "$date": "2021-12-09T00:00:00Z"
+      },
+      "staffID": "201198863669919744",
+      "userID": "201198863669919744",
+      "notifyFlag": false,
+      "_id": {
+        "$oid": "61a121d76d5c161eaefcc578"
+      }
+    }
+  ],
+  "memberRoleID": "904559220219838514"
+},{
+  "_id": {
+    "$oid": "61a0f867104dedfec4ff0768"
+  },
+  "name": "Reina Sun",
+  "youtubeID": "UCKJexadCeNo3lu0U20skmNg",
+  "liveChannelID": "905973973999820800",
+  "roleID": "905976120351002664",
+  "guildName": "emote server",
+  "guildID": "838711689125822474",
+  "memberships": [],
+  "upcomingStreams": [],
+  "pastStreams": [],
+  "__v": 0,
+  "memberRoleID": "901416772157186078"
+}]
