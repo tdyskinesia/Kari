@@ -63,10 +63,8 @@ const stream = new mongoose.Schema({
         type: String,
         // required: true
     },
-    talent_id: {
-        type: [{type: ObjectId, ref: 'talent'}],
-        required: false
-    }
+    talent_id: 
+        [{type: ObjectId, ref: 'talent'}]
 })
 
 const talent = new mongoose.Schema({
@@ -103,10 +101,8 @@ const talent = new mongoose.Schema({
         type: [membership],
         required: false
     },
-    membership_IDs: {
-        type: [{type: ObjectId, ref: 'membership'}]
-        // required: false
-    },
+    membership_IDs: [{type: ObjectId, ref: 'membership'}],
+
     memberRoleID: {
         type: String,
         // required: false
@@ -131,10 +127,8 @@ const talent = new mongoose.Schema({
 
 
 const user = new mongoose.Schema({
-    membership_IDs:{
-        type: [{type: ObjectId, ref: 'membership'}],
-        // required: true
-    },
+    membership_IDs:[{type: ObjectId, ref: 'membership'}],
+
     //to remove
     memberships:{
         type: [membership],
@@ -164,18 +158,9 @@ const guild = new mongoose.Schema({
     notificationsFlag: {
         type: Boolean
     },
-    membership_IDs: {
-        type: [{type: ObjectId, ref: 'membership'}],
-        required: false
-    },
-    user_IDs: {
-        type: [{type: ObjectId, ref: 'user'}],
-        required: false
-    },
-    talent_IDs: {
-        type: [{type: ObjectId, ref: 'talent'}],
-        required: false
-    },
+    membership_IDs: [{type: ObjectId, ref: 'membership'}],
+    user_IDs: [{type: ObjectId, ref: 'user'}],
+    talent_IDs: [{type: ObjectId, ref: 'talent'}],
     member_channel_id:{
         type: ObjectId, 
         ref: 'member_channel',
