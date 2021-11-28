@@ -497,7 +497,7 @@ module.exports = {
      */
     async subMembershipTalent(message, args){
         try{
-            if(args > 1){ 
+            if(args < 1){ 
                 let arr = []
                 for(var i = 2; i < args.length; i++){
                     arr.push(args[i])
