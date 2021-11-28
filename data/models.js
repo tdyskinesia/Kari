@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-require('mongoose-long/index.js')(mongoose);
-const {Schema: {Types: {Long, ObjectId}}} = mongoose;
+const {Schema: {Types: {ObjectId}}} = mongoose;
 
 const Discord = require('discord.js');
 
