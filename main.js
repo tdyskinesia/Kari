@@ -120,7 +120,7 @@ client.on('message', message =>{
         memberHandler.talentMembers(message, args)
     }
     else if(command === 'migrate'){
-        memberHandler.migrate2(message, args)
+        memberHandler.migrateData(message, args)
     }
     else if(command === 'mtalentsetup'){
         memberHandler.subMembershipTalent(message, args)
