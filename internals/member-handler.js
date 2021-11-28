@@ -503,9 +503,9 @@ module.exports = {
                     arr.push(args[i])
                 }
                 let tal = await talent.create({
-                    name: args[0],
+                    name: args[0]+ " " + args[1],
                     aliases: arr,
-                    memberRoleID: args[1],
+                    memberRoleID: args[2],
                     guildName: message.guild.name,
                     guildID: message.guild.id
                 })
