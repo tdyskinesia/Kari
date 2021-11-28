@@ -122,7 +122,7 @@ module.exports = {
                         channelID: args[0],
                         verificationIDs: []
                     })
-                    await models.guild.findOneAndUpdate({guildID: message.guild.id}, {'$set': {"member_channel_id": ObjectId(res._id)}}).exec()
+                    await models.guild.findOneAndUpdate({guildID: message.guild.id}, {'$set': {"member_channel_id": ObjectId(res._id)}}, {upsert: true}).exec()
                     await message.channel.send(`No sub found. Sub created in ${targetChannel.toString()}.`); return
                 } else {
                     let prev = await member_channel.findOneAndUpdate({_id: res._id},
@@ -131,7 +131,7 @@ module.exports = {
                                 "channelID" : args[0]
                             }
                         }).exec()
-                    await models.guild.findOneAndUpdate({guildID: message.guild.id}, {'$set': {"member_channel_id": ObjectId(prev._id)}}).exec()
+                    await models.guild.findOneAndUpdate({guildID: message.guild.id}, {'$set': {"member_channel_id": ObjectId(prev._id)}}, {upsert: true}).exec()
                     await message.channel.send(`Previous sub found at ${message.guild.channels.cache.get(prev.channelID).toString()}. Changed member channel sub to ${targetChannel.toString()}.`); return
                 }
         } else { message.channel.send("Too many arguments or no argument found for channel sub."); return }

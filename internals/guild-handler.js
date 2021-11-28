@@ -17,7 +17,7 @@ module.exports = {
             notificationsFlag: true,
             membership_IDs: [],
             user_IDs: [],
-            member_channel_id: []
+            talent_IDs: []
         }).save()
         if(args.includes("-n")){
             g.notificationsFlag = false
