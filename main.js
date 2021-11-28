@@ -188,7 +188,11 @@ client.on('message', message =>{
         memberHandler.getMemberships(message)
     }
     else if(command === 'help'){
-        message.channel.send("__**Kari Commands**__\n\n"+
+        message.channel.send({embeds:[{
+        type: "rich",
+        title: "__**Kari Commands**__",
+        color: 'fff0f5',
+        description:
         "**Administrator Commands**\n"+
         "*k!guildsetup <-n?>* - Initial command for setting up server. Use -n flag to disable notifications. (For later features.)\n\n"+
 
@@ -218,7 +222,7 @@ client.on('message', message =>{
         "*k!mlist* - displays your current memberships and the staff who verified them\n"+
         "*k!member <talent name> <MM/DD/YYYY> <attachment>* - adds you to the verification queue. one day before expiration you will recieve a DM notification to update your verification\n"+
         "*k!ping* - pong\n"+
-        "*k!deeznuts* - what do you think this does?")
+        "*k!deeznuts* - what do you think this does?"}]})
     }
     else if(command === 'github'){
         message.channel.send("https://github.com/tdyskinesia/Kari")
