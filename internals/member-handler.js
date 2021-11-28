@@ -450,7 +450,7 @@ module.exports = {
     async migrateData(message){
     try{
         let outArr = []
-        let mch = await member_channel.findOne({guildID: message.guild.id})
+        let mch = await member_channel.findOne({guildID: message.guild.id}).exec()
         let g = await models.guild.create({
             guildID: message.guild.id,
             membership_IDs: [],
@@ -463,21 +463,20 @@ module.exports = {
             await models.guild.findByIdAndUpdate(g._id,{'$push':{"user_IDs": member._id}}).exec()
             outArr.push(member._id)
             if(member.memberships!=null){
-                for(var i in member.memberships){
+                for await (const i of member.memberships){
                     let m = await membership.create({
-                        talentName: member.memberships[i].talentName,
-                        expiration: member.memberships[i].expiration,
-                        staffID: member.memberships[i].staffID,
-                        userID: member.memberships[i].userID,
-                        notifyFlag: member.memberships[i].notifyFlag,
+                        talentName: i.talentName,
+                        expiration: i.expiration,
+                        staffID: i.staffID,
+                        userID: i.userID,
+                        notifyFlag: i.notifyFlag,
                         member_channel_ID: mch._id
                     })
                     await models.guild.findByIdAndUpdate(g._id,{'$push':{"membership_IDs": m._id}}).exec()
                     outArr.push(m._id)
-                    m.member_channel_ID = mch._id
                     member.membership_IDs.push(ObjectId(m._id))
                     let tal = await talent.findOneAndUpdate({guildID: message.guild.id, name: m.talentName}, {'$push': {"membership_IDs": ObjectId(m._id)}}, {new: true, upsert: true}).exec()
-                    await m.save()
+                    await member.save()
                 }
             }
         }
@@ -487,6 +486,7 @@ module.exports = {
                 t.membership_IDs.push(ObjectId(mship._id))
                 outArr.push(mship._id)
             }
+            await t.save()
         }
         await message.channel.send(outArr.join(', '))
         await g.save()
