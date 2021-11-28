@@ -122,9 +122,9 @@ client.on('message', message =>{
     else if(command === 'mtlist'){
         memberHandler.talentMembers(message, args)
     }
-    else if(command === 'migrate'){
-        memberHandler.migrate2(message, args)
-    }
+    // else if(command === 'migrate'){
+    //     memberHandler.migrate2(message, args)
+    // }
     else if(command === 'mtalentsetup'){
         memberHandler.subMembershipTalent(message, args)
     }

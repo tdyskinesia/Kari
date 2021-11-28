@@ -162,7 +162,7 @@ module.exports = {
                                             "verificationIDs" : message.id
                                         }
                                     }).exec()
-                                await message.channel.send(message.id + " added to verification queue."+ message.author.username +", your request to verify membership to " + tal.name + " has been accepted.")
+                                await message.channel.send(message.id + " added to verification queue. "+ message.author.username +", your request to verify membership to " + tal.name + " has been accepted.")
                                 await message.react('✅')
                                 await message.react('❌')
                                 return
@@ -331,7 +331,7 @@ module.exports = {
      * @param  {Discord.Message} message
      * @param  {Array<String>} args
      */
-    async manualMembershipRemove(message, args) {
+    async manualMembershipRemove(message, args, client) {
     try{    
         if(args.length==2){   
         let foundTalent = await talent.findOne({guildID: message.guild.id, name:{ $regex: '.*'+ args[0]+ '.*', $options: 'i' } }).lean().exec()
@@ -351,7 +351,7 @@ module.exports = {
                         await membership.deleteOne({_id: foundMembership._id}).exec()
                         let newGuild = await models.guild.findOneAndUpdate({guildID: message.guild.id}, {'$pull': {"membership_IDs": ObjectId(foundMembership._id)}}, {new:true}).exec()
                             if(newTalent!=null&&newUser!=null&&newGuild!=null){
-                                let gMember = await message.guild.members.fetch(foundUser.userID)
+                                let gMember = await message.guild.members.fetch(await client.users.cache.fetch(foundUser.userID))
                                 let newMember = await gMember.roles.remove(foundTalent.memberRoleID)
                                 if(newMember.roles.cache.size<gMember.roles.cache.size){
                                     message.channel.send("Role removed from " + gMember.user.username)
@@ -436,7 +436,8 @@ module.exports = {
             for await (const m of mships){
                 s += message.guild.members.cache.get(m.userID).user.username + ",\n"
             }
-            await message.channel.send(mships[0].talentName+" Memberships: "+s); return
+            s = s.substring(0, s.length-1)
+            await message.channel.send(mships[0].talentName+" Memberships: \n"+s); return
         } else await message.channel.send("Incorrect # of args."); return
     } catch (e)
     {console.log(e)}
