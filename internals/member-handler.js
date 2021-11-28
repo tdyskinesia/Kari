@@ -97,7 +97,6 @@ const iterateMemberships = async(ids, talentName)=>{
                 return m
             }
         }
-    return null
 } catch (e) {console.log(e)}
 }
 
@@ -230,7 +229,7 @@ module.exports = {
             let talentName = await findTalentName(args[1], guildID)
             let exDate = new Date(args[2])
             let member = await user.findOne({userID: authorID}).lean().exec()
-            let foundMembership = iterateMemberships(member.membership_IDs, talentName)
+            let foundMembership = await iterateMemberships(member.membership_IDs, talentName)
             if(foundMembership==null){
                 let memberChannel = await member_channel.findOne({guildID: guildID}).lean().exec()
                 let newMembership = await new membership({
