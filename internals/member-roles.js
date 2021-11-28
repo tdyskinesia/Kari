@@ -81,10 +81,10 @@ client.on('messageReactionAdd', async (reaction, user) => {
                 if(member.permissions.has("BAN_MEMBERS")){
                     if (reaction.emoji.name === '❌') {
                         await reaction.message.channel.send(`${reaction.message.author.username}, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
-                        let member = await models.user.findOne({userID: reaction.message.author.id}).exec()
+                        // let member = await models.user.findOne({userID: reaction.message.author.id}).exec()
                         let args = reaction.message.content.slice(prefix.length).split(/ +/);
-                            for await (const mship of membership.find({userID: member.userID, talentName: {$regex: '.*' + args[1] + '.*', $options: 'i'}})){
-                                automatedMembershipRemove(member, mship, client)
+                            for await (const mship of membership.find({userID: reaction.message.author.id, talentName: {$regex: '.*' + args[1] + '.*', $options: 'i'}})){
+                                automatedMembershipRemove(mship, client)
                             }
                     } else if (reaction.emoji.name === '✅'){
                         await reaction.message.channel.send(`${reaction.message.author.username}, ${user.username} has marked your membership as valid.`)

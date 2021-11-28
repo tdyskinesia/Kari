@@ -231,7 +231,7 @@ module.exports = {
             let talentName = await findTalentName(args[1], guildID)
             let exDate = new Date(args[2])
             let member = await user.findOne({userID: authorID}).lean().exec()
-            if(member.membership_IDs!=null){
+            if(member!=null){
             let foundMembership = await iterateMemberships(member.membership_IDs, talentName)}
             if(foundMembership==null){
                 let memberChannel = await member_channel.findOne({guildID: guildID}).lean().exec()
@@ -376,7 +376,7 @@ module.exports = {
      * @param  {mongoose.Query} membership
      * @param  {Discord.Client} client
      */
-    async automatedMembershipRemove(member, mship, client){
+    async automatedMembershipRemove(mship, client){
         try{
             let mCh = await member_channel.findById(mship.member_channel_ID).exec()
             let guildID = mCh.guildID
