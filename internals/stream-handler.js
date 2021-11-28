@@ -104,8 +104,8 @@ module.exports = {
             talent.streams = await youtube(talent)
             let profileURL = await channelInfo(talent)
             if(talent.streams.length>0){
-                talent.streams.forEach(async function(stream_id){
-                    let stream = await models.stream.findById(stream_id).exec()
+                for(var i in talent.streams){
+                    let stream = await models.stream.findById(talent.streams[i]).exec()
                     let curStart = moment(stream.startTime)
                     fieldArray.push({
                         name: stream.streamName,
@@ -113,7 +113,8 @@ module.exports = {
                         curStart.tz('America/Los_Angeles').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('America/New_York').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('Asia/Tokyo').format('MM/DD/YYYY HH:mm z') + "\n"+
                         "[**Waiting Room**](https://www.youtube.com/watch?v=" + stream.videoID +")"
                     })
-                });
+                }
+
                 embedArray.push(new Discord.MessageEmbed({
                     type: "rich",
                     title: "UPCOMING STREAMS",
