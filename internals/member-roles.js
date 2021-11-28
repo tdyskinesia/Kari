@@ -16,6 +16,7 @@ const {inputMember, membershipRemove, automatedMembershipRemove, notifyUser} = r
 module.exports = async(client, prefix) => {
     try{
         for await(const channel of member_channel.find().lean()){
+            if(channel.verificationIDs!=null){
             let data = channel.verificationIDs
                 for(var i in data){
                     let ch = client.channels.cache.get(channel.channelID)
@@ -32,6 +33,7 @@ module.exports = async(client, prefix) => {
                     }
                 }
             }
+        }
     }
     catch (e){
         console.log(e)
