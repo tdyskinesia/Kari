@@ -128,9 +128,9 @@ client.on('message', message =>{
     else if(command === 'brole'){
         guildHandler.boosterRoleSet(message, args)
     }
-    else if (command === 'fix'){
-        memberHandler.fix(message, args)
-    }
+    // else if (command === 'fix'){
+    //     memberHandler.fix(message, args)
+    // }
 }
     if (message.member.permissions.has("MENTION_EVERYONE")){
         if(command === 'timeset'){

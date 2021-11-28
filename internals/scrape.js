@@ -8,7 +8,7 @@ const {talent, stream, user, membership, member_channel, guild} = require('../da
 
 const ex = async(talent)=>{
     //fetch live redirect
-    const response = await fetch(`https://youtube.com/channel/${talent[1]}/live`)
+    const response = await fetch(`https://youtube.com/channel/${talent.youtubeID}/live`)
     const text = await response.text()
     const html = parse(text, {blockTextElements: {
         script: true,	
@@ -23,18 +23,13 @@ const ex = async(talent)=>{
     const isStreaming = canonicalURL.includes('/watch?v=')
     if(isStreaming){
         //pass stream into selenium
-        if(await build(canonicalURL)){
-            console.log(talent[0] + " IS CURRENTLY STREAMING AT\n" + canonicalURL)
-        } else {
-            console.log(talent[0] + " IS NOT LIVE")
-        }
-        
-    }
+        return canonicalURL
+    } else return null
 }
 
 
 
-const build = async(url)=>{
+const build = async()=>{
     //initialize build
     const opt = new chrome.Options()
     .setChromeBinaryPath('C:/Program Files (x86)/Google/Chrome/Application/chrome.exe')
@@ -51,25 +46,38 @@ const build = async(url)=>{
     .forBrowser('chrome')
     .setChromeOptions(opt)
     .build();
-    
+
+    return driver
+}
+
+const getPage = async(driver, url)=>{
     //fetch page
     await driver.get(url)
 
     //scrape
-    el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text"), 5000))
+    let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text"), 5000))
 
     inner = await el[0].getText()
     if(inner.includes("Started streaming")){
-        await driver.quit()
-        console.log(inner)
-        return true;
+        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-contents"), 5000));
     } else {
-        await driver.quit()
-        console.log(inner)
         return false;
     }
-              
+             
 }
+const iterateTalents = async()=>{
+    try{
+        let driver = await build()
+        for await(const t of talent.find({youtubeID: {$exists: true}})){
+            let url = await ex(t)
+            if(url!=null){
+                await getPage(driver, url)
+            } else console.log("No upcoming or live stream for " + t.name)
+        }
+    } catch (e){console.log(e)}
+}
+setInterval(iterateTalents, 1000 * 100)
+
 
 module.exports =  {
 

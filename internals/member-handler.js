@@ -438,12 +438,14 @@ module.exports = {
     try{
         if(args.length==1){
             let mships = await membership.find({guildID: message.guild.id, talentName: { $regex: '.*'+ args[0]+ '.*', $options: 'i' }}).lean().exec()
+            if(mships!=null){
             let s = ""
             for await (const m of mships){
                 s += message.guild.members.cache.get(m.userID).user.username + ",\n"
             }
             s = s.substring(0, s.length-1)
             await message.channel.send(mships[0].talentName+" Memberships: \n"+s); return
+        } else message.channel.send("Could not find memberships for " + args[0])
         } else await message.channel.send("Incorrect # of args."); return
     } catch (e)
     {console.log(e)}
