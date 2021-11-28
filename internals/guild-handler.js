@@ -12,19 +12,20 @@ module.exports = {
 
     async setupGuild(message, args){
     try{
-        let g = await new guild({
-            guildID: message.guild.id,
-            notificationsFlag: true,
-            membership_IDs: [],
-            user_IDs: [],
-            talent_IDs: []
-        }).save()
-        if(args.includes("-n")){
-            g.notificationsFlag = false
-            await message.channel.send("Notifications flag set to false.")
-        }
-        await g.save()
-        await message.channel.send("Guild set with " + args.length + " additional parameters.")
+            if((await guild.findOne({guildID: message.guild.id}).exec())==null){
+            await guild.create({
+                guildID: message.guild.id,
+                notificationsFlag: true,
+                membership_IDs: [],
+                user_IDs: [],
+                talent_IDs: []
+            }).save()
+            if(args.includes("-n")){
+                await guild.findOneAndUpdate({guildID: message.guild.id}, {'$set': {"notificationsFlag": false}}).exec()
+                await message.channel.send("Notifications flag set to false.")
+            }
+            await message.channel.send("Guild set with " + args.length + " additional parameters.")
+        } else message.channel.send("Guild already set.")
     } catch (e) {console.log(e)}
     }
 }
