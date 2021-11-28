@@ -49,10 +49,10 @@ const automatedMembershipIteration = async(client) => {
             let d = new Date(mship.expiration)
             if(d<date&&mship.notifyFlag==false){
                 console.log("Notifying user.")
-                await notifyUser(await user.findOne({userID: mship.userID}).exec(), mship, client); return
+                await notifyUser(await user.findOne({userID: mship.userID}).exec(), mship, client);
             }
             else if(date>d.setDate(d.getDate()+1)){
-                await automatedMembershipRemove(mship, client); return
+                await automatedMembershipRemove(mship, client);
             }
         }
     } catch (e){
