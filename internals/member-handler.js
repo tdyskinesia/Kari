@@ -347,14 +347,14 @@ module.exports = {
                         if(foundMembership!=null){
                         let newTalent = await talent.findByIdAndUpdate(foundTalent._id,{
                             '$pull': {
-                                'membership_IDs': ObjectId(foundMembership._id)
+                                'membership_IDs': foundMembership._id
                             }}, {new: true}).lean().exec()
                         let newUser = await user.findByIdAndUpdate(foundUser._id,{
                             '$pull': {
-                                'membership_IDs': ObjectId(foundMembership._id)
+                                'membership_IDs': foundMembership._id
                             }}, {new: true}).exec()
                         await membership.deleteOne({_id: foundMembership._id}).exec()
-                        let newGuild = await models.guild.findOneAndUpdate({guildID: message.guild.id}, {'$pull': {"membership_IDs": ObjectId(foundMembership._id)}}, {new:true}).exec()
+                        let newGuild = await models.guild.findOneAndUpdate({guildID: message.guild.id}, {'$pull': {"membership_IDs": foundMembership._id}}, {new:true}).exec()
                             if(newTalent!=null&&newUser!=null&&newGuild!=null){
                                 let gMember = await message.guild.members.fetch(await client.users.fetch(newUser.userID))
                                 let newMember = await gMember.roles.remove(newTalent.memberRoleID)
