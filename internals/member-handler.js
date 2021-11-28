@@ -553,7 +553,8 @@ module.exports = {
     async fix(message, args){
         try{
             for await(const mship of membership.find()){
-                let m = await message.guild.members.fetch(membership.userID)
+
+                let m = await message.guild.members.fetch(mship.userID)
                 let role = await message.guild.roles.fetch((await talent.findOne({guildID: message.guild.id, name: mship.talentName})).memberRoleID)
                 await m.roles.add(role)
                 await message.channel.send(m.user.username + ": " + role.id)
