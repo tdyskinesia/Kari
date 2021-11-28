@@ -18,7 +18,7 @@ module.exports = {
             membership_IDs: [],
             user_IDs: [],
             member_channel_id: []
-        })
+        }).save()
         if(args.includes("-n")){
             g.notificationsFlag = false
             await message.channel.send("Notifications flag set to false.")

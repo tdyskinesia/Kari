@@ -234,21 +234,21 @@ module.exports = {
             let foundMembership = await iterateMemberships(member.membership_IDs, talentName)
             if(foundMembership==null){
                 let memberChannel = await member_channel.findOne({guildID: guildID}).lean().exec()
-                let newMembership = await new membership({
+                let newMembership = await membership.create({
                     talentName: talentName,
                     expiration: exDate,
                     staffID: staff,
                     userID: authorID,
                     notifyFlag: false,
                     member_channel_ID: memberChannel._id
-                }).save()
+                })
                 let g = await models.guild.findOneAndUpdate({guildID: message.guild.id},{'$push' : {"membership_IDs": ObjectId(newMembership._id)}}, {new: true}).exec()
                     if (member==null){
-                        let newUser = await new user({
+                        let newUser = await user.create({
                             memberships_IDs: [ObjectId(newMembership._id)],
                             userID: message.author.id,
                             guildIDs: [guildID]
-                        }).save()
+                        })
                         await g.user_IDs.push(ObjectId(newUser._id))
                         await g.save()
                         await models.guild.findOneAndUpdate({guildID: guildID}, {'$push' : {"membership_IDs" : ObjectId(newMembership._id), "user_IDs": newUser._id}, upsert: true}).exec()
@@ -348,7 +348,7 @@ module.exports = {
                             '$pull': {
                                 'membership_IDs': ObjectId(foundMembership._id)
                             }}, {new: true}).exec()
-                        let newGuild = new models.guild.findOneAndUpdate({guildID: message.guild.id}, {'$pull': {"membership_IDs": ObjectId(foundMembership._id)}}, {new:true}).exec()
+                        let newGuild = await models.guild.findOneAndUpdate({guildID: message.guild.id}, {'$pull': {"membership_IDs": ObjectId(foundMembership._id)}}, {new:true}).exec()
                             if(newTalent!=null&&newUser!=null&&newGuild!=null){
                                 let gMember = await message.guild.members.fetch(foundUser.userID)
                                 let newMember = await gMember.roles.remove(foundTalent.memberRoleID)
@@ -442,27 +442,27 @@ module.exports = {
     try{
         let outArr = []
         let mch = await member_channel.findOne({guildID: message.guild.id})
-        let g = await new models.guild({
+        let g = await models.guild.create({
             guildID: message.guild.id,
             membership_IDs: [],
             user_IDs: [],
             talent_IDs: [],
             member_channel_id: mch._id
-        }).save()
+        })
         outArr.push(mch._id)
         for await(const member of user.find()){
             await models.guild.findByIdAndUpdate(g._id,{'$push':{"user_IDs": member._id}}).exec()
             outArr.push(member._id)
             if(member.memberships!=null){
                 for(var i in member.memberships){
-                    let m = await new membership({
+                    let m = await membership.create({
                         talentName: member.memberships[i].talentName,
                         expiration: member.memberships[i].expiration,
                         staffID: member.memberships[i].staffID,
                         userID: member.memberships[i].userID,
                         notifyFlag: member.memberships[i].notifyFlag,
                         member_channel_ID: mch._id
-                    }).save()
+                    })
                     await models.guild.findByIdAndUpdate(g._id,{'$push':{"membership_IDs": m._id}}).exec()
                     outArr.push(m._id)
                     m.member_channel_ID = mch._id
@@ -498,13 +498,13 @@ module.exports = {
                 for(var i = 2; i < args.length; i++){
                     arr.push(args[i])
                 }
-                let tal = await new talent({
+                let tal = await talent.create({
                     name: args[0],
                     aliases: arr,
                     memberRoleID: args[1],
                     guildName: message.guild.name,
                     guildID: message.guild.id
-                }).save()
+                })
                 message.channel.send("New membership talent " + tal.name +" subbed for " + tal.guildName + " with aliases " + 
                 arr.join(", ")+ " and member role ID: " + tal.memberRoleID)
             } else message.channel.send("Insufficient args");
@@ -512,12 +512,24 @@ module.exports = {
     },
     async migrate2(message, args){
         try{
+            let g = await guild.create({
+                guildID: message.guild.id,
+                notificationsFlag: true,
+                membership_IDs: [],
+                user_IDs: [],
+                member_channel_id: []
+            })
             let m = await membership.find().exec()
-            let u = await user.find().exec()
             for(var e in m){
-                await user.findOneAndUpdate({userID: m[e].userID}, {'$push': {"membership_IDs": m[e]._id}}, {upsert: true})
+                await user.findOneAndUpdate({userID: m[e].userID}, {'$push': {"membership_IDs": m[e]._id}}, {upsert: true}).exec()
+                guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"membership_IDs": m[e]._id}}).exec()
             }
-
+            for(const t of talent.find()){
+                guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"talent_IDs": t._id}}).exec()
+            }
+            for(const u of user.find()){
+                guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"user_IDs": u._id}}).exec()
+            }
             
 
         } catch(e) {console.log(e)}
