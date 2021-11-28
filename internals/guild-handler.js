@@ -19,7 +19,7 @@ module.exports = {
                 membership_IDs: [],
                 user_IDs: [],
                 talent_IDs: []
-            }).save()
+            })
             if(args.includes("-n")){
                 await guild.findOneAndUpdate({guildID: message.guild.id}, {'$set': {"notificationsFlag": false}}).exec()
                 await message.channel.send("Notifications flag set to false.")
