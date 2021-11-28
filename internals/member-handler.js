@@ -161,7 +161,7 @@ module.exports = {
                                             "verificationIDs" : message.id
                                         }
                                     }).exec()
-                                await message.channel.send(message.id + " added to verification queue."+ message.user.username +", your request to verify membership to " + tal.name + " has been accepted.")
+                                await message.channel.send(message.id + " added to verification queue."+ message.author.username +", your request to verify membership to " + tal.name + " has been accepted.")
                                 await message.react('✅')
                                 await message.react('❌')
                                 return
