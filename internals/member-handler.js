@@ -479,6 +479,7 @@ module.exports = {
             }
         }
         await message.channel.send(outArr.join(', '))
+        await g.save()
         await message.channel.send("Data successfully migrated.")
     } catch(e) {
         console.log(e)
