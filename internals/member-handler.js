@@ -466,7 +466,7 @@ module.exports = {
                     outArr.push(m._id)
                     m.member_channel_ID = mch._id
                     member.membership_IDs.push(ObjectId(m._id))
-                    let tal = await findOneAndUpdate({guildID: message.guild.id, name: m.talentName}, {'$push': {"membership_IDs": ObjectId(m._id)}}, {new: true, upsert: true}).exec()
+                    let tal = await talent.findOneAndUpdate({guildID: message.guild.id, name: m.talentName}, {'$push': {"membership_IDs": ObjectId(m._id)}}, {new: true, upsert: true}).exec()
                     await m.save()
                 }
             }
