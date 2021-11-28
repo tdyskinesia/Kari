@@ -141,7 +141,6 @@ const user = new mongoose.Schema({
     //to remove
     guildID: {
         type: String, 
-        required: true
     },
     guildIDs: {
         type: [String], 
