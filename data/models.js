@@ -46,6 +46,29 @@ const membership = new mongoose.Schema({
     }
 })
 
+const stream = new mongoose.Schema({
+    streamName: {
+        type: String,
+        // required: true
+    },
+    startTime: {
+        type: String,
+        // required: true
+    },
+    videoID: {
+        type: String,
+        // required: true
+    },
+    thumbnailUrl: {
+        type: String,
+        // required: true
+    },
+    talent_id: {
+        type: [{type: ObjectId, ref: 'talent'}],
+        required: false
+    }
+})
+
 const talent = new mongoose.Schema({
     name: {
         type: String,
@@ -81,7 +104,7 @@ const talent = new mongoose.Schema({
         required: false
     },
     membership_IDs: {
-        type: [{ObjectId, ref: 'membership'}],
+        type: [{type: ObjectId, ref: 'membership'}]
         // required: false
     },
     memberRoleID: {
@@ -106,32 +129,10 @@ const talent = new mongoose.Schema({
     }
 })
 
-const stream = new mongoose.Schema({
-    streamName: {
-        type: String,
-        // required: true
-    },
-    startTime: {
-        type: String,
-        // required: true
-    },
-    videoID: {
-        type: String,
-        // required: true
-    },
-    thumbnailUrl: {
-        type: String,
-        // required: true
-    },
-    talent_id: {
-        type: [{ObjectId, ref: 'talent'}],
-        required: false
-    }
-})
 
 const user = new mongoose.Schema({
     membership_IDs:{
-        type: [{ObjectId, ref: 'membership'}],
+        type: [{type: ObjectId, ref: 'membership'}],
         // required: true
     },
     //to remove
@@ -164,15 +165,15 @@ const guild = new mongoose.Schema({
         type: Boolean
     },
     membership_IDs: {
-        type: [{ObjectId, ref: 'membership'}],
+        type: [{type: ObjectId, ref: 'membership'}],
         required: false
     },
     user_IDs: {
-        type: [{ObjectId, ref: 'user'}],
+        type: [{type: ObjectId, ref: 'user'}],
         required: false
     },
     talent_IDs: {
-        type: [{ObjectId, ref: 'talent'}],
+        type: [{type: ObjectId, ref: 'talent'}],
         required: false
     },
     member_channel_id:{
