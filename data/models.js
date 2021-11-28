@@ -4,26 +4,18 @@ const {Schema: {Types: {Long, ObjectId}}} = mongoose;
 
 const Discord = require('discord.js');
 
-const stream = new mongoose.Schema({
-    streamName: {
+const member_channel = new mongoose.Schema({
+    guildID: {
         type: String,
         // required: true
     },
-    startTime: {
-        type: String,
+    channelID: {
+        type: String, 
         // required: true
     },
-    videoID: {
-        type: String,
+    verificationIDs: {
+        type: [String],
         // required: true
-    },
-    thumbnailUrl: {
-        type: String,
-        // required: true
-    },
-    talent_id: {
-        type: [{ObjectId, ref: 'talent'}],
-        required: false
     }
 })
 
@@ -114,6 +106,29 @@ const talent = new mongoose.Schema({
     }
 })
 
+const stream = new mongoose.Schema({
+    streamName: {
+        type: String,
+        // required: true
+    },
+    startTime: {
+        type: String,
+        // required: true
+    },
+    videoID: {
+        type: String,
+        // required: true
+    },
+    thumbnailUrl: {
+        type: String,
+        // required: true
+    },
+    talent_id: {
+        type: [{ObjectId, ref: 'talent'}],
+        required: false
+    }
+})
+
 const user = new mongoose.Schema({
     membership_IDs:{
         type: [{ObjectId, ref: 'membership'}],
@@ -138,21 +153,6 @@ const user = new mongoose.Schema({
         // required: true
     },
 
-})
-
-const member_channel = new mongoose.Schema({
-    guildID: {
-        type: String,
-        // required: true
-    },
-    channelID: {
-        type: String, 
-        // required: true
-    },
-    verificationIDs: {
-        type: [String],
-        // required: true
-    }
 })
 
 const guild = new mongoose.Schema({
