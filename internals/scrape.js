@@ -59,7 +59,8 @@ const getPage = async(driver, url)=>{
 
     inner = await el.getText()
     if(inner.includes("Started streaming")){
-        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("div#info-contents>div#container>h1>yt-formatted-string"), 5000));
+        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-contents>#container>h1>yt-formatted-string"), 5000));
+        console.log(await t.getText())
         return await t.getText()
     } else {
         return null;
