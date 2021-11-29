@@ -7,23 +7,14 @@ const mongoose = require('mongoose');
 const iterate = async(client) => {
     let guild = await client.guilds.cache.get('835723287714857031')
     for await(const talent of talentSchema.talent.find({guildID: '835723287714857031'})){
-        talent.upcomingStreams.forEach(async function(stream){
-            let curDate = new Date(stream.startTime) 
+        for await (const str of talentSchema.stream.find({talent_id: talent._id})){
+            let curDate = new Date(str.startTime) 
             if(curDate.setMinutes(curDate.getMinutes()-15) < new Date()){
-                await (await guild.channels.cache.get(talent.liveChannelID)).send(`Hey <@&${talent.roleID}>! ${talent.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${stream.videoID}`)
-                await talentSchema.talent.findOneAndUpdate({'_id': talent.id}, {
-                    '$pull': {
-                        'upcomingStreams':{ '_id': stream.id } 
-                    }, function (error, result){
-                        if(err){
-                            console.log(error)
-                        } else {
-                        console.log(result)
-                        }
-                    }
-                })
+                await (await guild.channels.cache.get(talent.liveChannelID)).send(`Hey <@&${talent.roleID}>! ${talent.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${str.videoID}`)
+                await talentSchema.stream.deleteOne({_id: str._id})
+                
             }
-        });
+        }
         await talent.save();
    }
 }
