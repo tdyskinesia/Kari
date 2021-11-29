@@ -33,19 +33,20 @@ let strArr = await sc()
 let vidIDs = []
 if(strArr!=null&&strArr.length>0){
     for await(const str of strArr){
-        await stream.deleteMany({videoID: str[2].substring(str[2].length-11), startTime: {$exists: true}}).exec()
-            if((await stream.find({videoID: str[2].substring(str[2].length-11), dStart: {$exists: true}}).exec()).length==0){
+        let vidID = str[2].substring(str[2].length-11)
+        await stream.deleteMany({videoID: vidID, startTime: {$exists: true}}).exec()
+            if((await stream.find({videoID: vidID, dStart: {$exists: true}}).exec()).length==0){
                 for await (const dupe of talent.find({name: str[0]})){
                     s = await stream.create({
                         streamName: str[1],
                         dStart: new Date(),
-                        videoID: str[2].substring(str[2].length-11),
+                        videoID: vidID,
                         talent_id: dupe._id
                     })
                     await dupe.streams.push(ObjectId(s._id))
                     await dupe.save()
                 }
-        vidIDs.push(str[2].substring(str[2].length-11))
+        vidIDs.push(vidID)
         }
     }
 
