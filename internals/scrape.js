@@ -30,6 +30,7 @@ const ex = async(talent)=>{
 
 
 const build = async()=>{
+    try{
     //initialize build
     const opt = new chrome.Options()
     //.setChromeBinaryPath('C:/Program Files (x86)/Google/Chrome/Application/chrome.exe')
@@ -48,6 +49,7 @@ const build = async()=>{
     .build();
 
     return driver
+    } catch (e) {console.log(e)}
 }
 
 const getPage = async(driver, url)=>{
@@ -60,7 +62,7 @@ const getPage = async(driver, url)=>{
 
     inner = await el.getText()
     if(inner.includes("Started streaming")){
-        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-contents")))
+        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-contents>#container>h1>")))
         console.log(await t.getText())
         return await t.getText()
     } else {
