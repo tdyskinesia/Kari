@@ -13,6 +13,7 @@ it(client); return
  * @param  {Discord.Client} client
  */
 const it = async(client) => {
+try{
 const sc = require('./scrape.js')
 
 const statusOptions = [
@@ -118,6 +119,7 @@ console.log(strArr)
 }
 
 updateStatus()
+} catch (e) {console.log(e)}
 }
     
 module.exports = async(client)=>{ 
