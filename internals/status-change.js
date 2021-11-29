@@ -29,13 +29,14 @@ const statusOptions = [
 
 
 
-let strArr = await sc()
+const strArr = await sc()
+console.log(strArr)
 let vidIDs = []
 if(strArr!=null&&strArr.length>0){
     for await(const str of strArr){
         let vidID = str[2].substring(str[2].length-11)
-        await stream.deleteMany({videoID: vidID, startTime: {"$exists": true}}).exec()
-            if((await stream.find({videoID: vidID, dStart: {"$exists": true}}).exec()).length==0){
+        await stream.deleteMany({videoID: vidID, startTime: {$exists: true}}).exec()
+            if((await stream.find({videoID: vidID, dStart: {$exists: true}}).exec()).length==0){
                 for await (const dupe of talent.find({name: str[0]})){
                     s = await stream.create({
                         streamName: str[1],
@@ -52,24 +53,24 @@ if(strArr!=null&&strArr.length>0){
     console.log(vidIDs)
 
 
-    for await (const str of stream.find({videoID: {"$nin": vidIDs}, dStart: {"$exists": true}})){
+    for await (const str of stream.find({videoID: {$nin: vidIDs}, dStart: {$exists: true}})){
         let tal = await talent.findById(str.talent_id)
         if(tal.liveChannelID!=null){
             let ch = await (await client.guilds.fetch(tal.guildID)).channels.fetch(tal.liveChannelID)
-            if(ch.name.substring(0,1)=='▶'){
+            if(ch.name.includes('🎆')){
                 await ch.setName(ch.name.substring(1))
             }
         }
     }
 
-    await stream.deleteMany({videoID: {"$nin": vidIDs}, dStart: {"$exists": true}}).exec()
+    await stream.deleteMany({videoID: {$nin: vidIDs}, dStart: {$exists: true}}).exec()
 
-    for await(const str of stream.find({dStart: {"$exists": true}, videoID: {"$in": vidIDs}})){
+    for await(const str of stream.find({dStart: {$exists: true}, videoID: {$in: vidIDs}})){
         let tal = await talent.findById(str.talent_id)
         if(tal.liveChannelID!=null){
             let ch = await (await client.guilds.fetch(tal.guildID)).channels.fetch(tal.liveChannelID)
-            if(ch.name.substring(0,1)!='▶'){
-                await ch.setName('▶'.concat(ch.name))
+            if(!ch.name.includes('🎆')){
+                await ch.setName('🎆'.concat(ch.name))
             }
         }
     }
@@ -79,6 +80,7 @@ let counter = 0
 let counter2 = 0
 
 const updateStatus = async() => {
+console.log(strArr)
     if(strArr.length!=0){
     client.user.setPresence({
         status: 'online',
@@ -115,12 +117,9 @@ const updateStatus = async() => {
     setTimeout(updateStatus, 1000 * 15)
 }
 
-    
-
-
 updateStatus()
 }
     
 module.exports = async(client)=>{ 
-next(client); return
+it(client);
 }
