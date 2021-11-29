@@ -30,7 +30,7 @@ const statusOptions = [
 
 
 
-const strArr = await sc()
+const strArr = await sc.f(d)
 let vidIDs = []
 if(strArr!=null&&strArr.length>0){
     for await(const str of strArr){
