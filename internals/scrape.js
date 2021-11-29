@@ -65,12 +65,12 @@ const ex = async(talent)=>{
 } catch (e) {console.log(e)}
 }
 
-const user = new UserAgent(/Chrome/, {platform: 'Win32', deviceCategory: 'desktop'})
+const agent = new UserAgent(/Chrome/, {platform: 'Win32', deviceCategory: 'desktop'})
 
 const build = async()=>{
     try{
     let np = p[Math.random()*(1 - 30) + 1]
-    let newAgent = user.random();
+    let newAgent = agent.random();
     //initialize build
     const opt = new chrome.Options()
     //.setChromeBinaryPath('C:/Program Files (x86)/Google/Chrome/Application/chrome.exe')
