@@ -65,12 +65,13 @@ const getPage = async(driver, url)=>{
     await driver.get(url)
 
     //scrape
-    let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text")), 5000)
+    // let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text")), 5000)
+    let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.xpath(`/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/h1/yt-formatted-string`)), 8000)
     // console.log(await el.getText())
 
     inner = await el.getText()
     if(inner.includes("Started streaming")){
-        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#container > h1")), 5000)
+        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.xpath(`/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/h1/yt-formatted-string`)), 8000)
         // console.log(await t.getText())
         // let a = (await t.getText()).split('\n')[0]
         // if (a.includes("#")) a = (await t.getText()).split('\n')[1]
