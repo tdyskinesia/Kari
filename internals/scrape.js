@@ -83,7 +83,7 @@ const build = async()=>{
         '--whitelisted-ips',
         '--user-agent=' + newAgent.toString(),
         '--proxy-server=http://'+ np])
-
+    
     //var driver = chrome.Driver.createSession(opt, new chrome.ServiceBuilder().build());
     let driver = await new webdriver.Builder()
     .withCapabilities({
@@ -98,15 +98,15 @@ const build = async()=>{
     .setChromeOptions(opt)
     .build();
 
-    const seleniumStealth = new SeleniumStealth(driver)
-    await seleniumStealth.stealth({
-    languages: ["en-US", "en"],
-    vendor: "Google Inc.",
-    platform: "Win32",
-    webglVendor: "Intel Inc.",
-    renderer: "Intel Iris OpenGL Engine",
-    fixHairline: true
-})
+//     const seleniumStealth = new SeleniumStealth(driver)
+//     await seleniumStealth.stealth({
+//     languages: ["en-US", "en"],
+//     vendor: "Google Inc.",
+//     platform: "Win32",
+//     webglVendor: "Intel Inc.",
+//     renderer: "Intel Iris OpenGL Engine",
+//     fixHairline: true
+// })
     return driver
     } catch (e) {console.log(e)}
 }
