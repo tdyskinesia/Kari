@@ -65,6 +65,7 @@ const youtube = async(talent) => {
         for await (const index of results){
                 //return([results[index].data.items[0].liveStreamingDetails.scheduledStartTime, results[index].data.items[0].snippet.title, results[index].data.items[0].id, results[index].data.items[0].snippet.thumbnails.default.url])
             if(new Date(index.data.items[0].liveStreamingDetails.scheduledStartTime) > now){
+            await models.stream.deleteMany({videoID: index.data.items[0].id}).exec()
             let newStream = await models.stream.create({
                     streamName: index.data.items[0].snippet.title,
                     startTime: index.data.items[0].liveStreamingDetails.scheduledStartTime,
@@ -72,7 +73,6 @@ const youtube = async(talent) => {
                     thumbnailUrl: index.data.items[0].snippet.thumbnails.high.url,
                     talent_id: ObjectId(talent._id)
                 })
-            await models.stream.deleteMany({videoID: index.data.items[0].id}).exec()
             streams.push(newStream._id)
             }
         } 
