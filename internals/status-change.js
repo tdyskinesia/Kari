@@ -31,7 +31,6 @@ const statusOptions = [
 
 
 const strArr = await sc()
-console.log(strArr)
 let vidIDs = []
 if(strArr!=null&&strArr.length>0){
     for await(const str of strArr){
@@ -51,7 +50,6 @@ if(strArr!=null&&strArr.length>0){
         }
         vidIDs.push(vidID)
     }
-    console.log(vidIDs)
 
 
     for await (const str of stream.find({videoID: {$nin: vidIDs}, dStart: {$exists: true}})){
@@ -81,7 +79,6 @@ let counter = 0
 let counter2 = 0
 
 const updateStatus = async() => {
-console.log(strArr)
     if(strArr.length!=0){
     client.user.setPresence({
         status: 'online',

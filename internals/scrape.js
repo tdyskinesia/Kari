@@ -66,12 +66,12 @@ const getPage = async(driver, url)=>{
 
     //scrape
     let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text")), 5000)
-    console.log(await el.getText())
+    // console.log(await el.getText())
 
     inner = await el.getText()
     if(inner.includes("Started streaming")){
         let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#container > h1")), 5000)
-        console.log(await t.getText())
+        // console.log(await t.getText())
         // let a = (await t.getText()).split('\n')[0]
         // if (a.includes("#")) a = (await t.getText()).split('\n')[1]
         return await t.getText()
@@ -88,14 +88,15 @@ const iterateTalents = async()=>{
         for await(const t of talent.find({youtubeID: {$exists: true}})){
             let url = await ex(t)
             if(url!=null){
-                console.log(t.name + " in")
+                // console.log(t.name + " in")
                 let title = await getPage(driver, url)
-                console.log(t.name + " out")
+                // console.log(t.name + " out")
                 if(title!=null){
-                    console.log(t.name + " pushed")
+                    // console.log(t.name + " pushed")
                     strArr.push([t.name, title, url])
                 }
-            } else console.log("No upcoming or live stream for " + t.name)
+            } 
+            //else console.log("No upcoming or live stream for " + t.name)
         }
         
         await driver.quit()
