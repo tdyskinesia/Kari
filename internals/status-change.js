@@ -46,8 +46,8 @@ if(strArr!=null&&strArr.length>0){
                     await dupe.streams.push(ObjectId(s._id))
                     await dupe.save()
                 }
-        vidIDs.push(vidID)
         }
+        vidIDs.push(vidID)
     }
     console.log(vidIDs)
 
