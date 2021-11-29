@@ -45,11 +45,11 @@ const updateStatus = async() => {
     
     if(++counter >= strArr.length&&strArr.length>0){
         counter = 0;
-        this(client); return
+        it(client); return
     }
     else if (++counter2 >= statusOptions.length){
         counter = 0;
-        this(client); return
+        it(client); return
     }
 }
 
