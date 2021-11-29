@@ -77,6 +77,7 @@ if(strArr!=null&&strArr.length>0){
 
 let counter = 0
 let counter2 = 0
+let counter3 = 0
 
 const updateStatus = async() => {
     if(strArr.length!=0){
@@ -102,8 +103,14 @@ const updateStatus = async() => {
             ]
         })
     }
-    
-    if(++counter >= strArr.length&&strArr.length>0){
+    if(strArr.length==1){
+        if(++counter3>=3){
+            counter = 0;
+            next(client); return
+        }
+
+    }
+    else if(++counter >= strArr.length&&strArr.length>0){
         counter = 0;
         next(client); return
 
