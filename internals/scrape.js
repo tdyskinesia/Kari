@@ -7,7 +7,7 @@ const {talent, stream, user, membership, member_channel, guild} = require('../da
 const mongoose = require('mongoose');
 const {Types: {ObjectId}} = mongoose;
 const UserAgent = require('user-agents')
-const SeleniumStealth = require("selenium_stealth");
+const SeleniumStealth = require("selenium-stealth");
 
 module.exports = async() => {
 
