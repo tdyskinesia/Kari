@@ -58,9 +58,10 @@ const updateStatus = async() => {
         counter = 0;
         next(client); return
     }
+    setTimeout(updateStatus, 1000 * 17)
 }
 
-setInterval(updateStatus, 1000 * 17)    
+    
 
 
 updateStatus()
