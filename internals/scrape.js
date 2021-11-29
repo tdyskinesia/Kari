@@ -81,7 +81,7 @@ const build = async()=>{
         '--headless',
         //'--remote-debugging-port=5554',
         //'--whitelisted-ips',
-        '--user-agent=' + newAgent.toString(),)
+        '--user-agent=' + newAgent.toString()])
         //'--proxy-server=http://'+ np])
     
     //var driver = chrome.Driver.createSession(opt, new chrome.ServiceBuilder().build());
