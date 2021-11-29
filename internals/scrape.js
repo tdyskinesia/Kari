@@ -56,16 +56,17 @@ const getPage = async(driver, url)=>{
 
     //scrape
     let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text"), 5000))
+    console.log(await el.getText())
 
     inner = await el.getText()
     if(inner.includes("Started streaming")){
-        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-contents>#container>h1>yt-formatted-string"), 5000));
+        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-content"), 5000)));
         console.log(await t.getText())
         return await t.getText()
     } else {
         return null;
     }
-             
+    // "#info-contents>#container>h1>yt-formatted-string"
 }
 const iterateTalents = async()=>{
     try{
