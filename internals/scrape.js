@@ -60,12 +60,12 @@ const getPage = async(driver, url)=>{
     await driver.get(url)
 
     //scrape
-    let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text")))
+    let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text")), 5000)
     console.log(await el.getText())
 
     inner = await el.getText()
     if(inner.includes("Started streaming")){
-        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-contents")))
+        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-contents")), 5000)
         console.log(await t.getText())
         return await t.first.getText()
     } else {
