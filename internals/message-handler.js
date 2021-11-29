@@ -18,7 +18,7 @@ const iterate = async(client) => {
                             await ch.setName('🔔'.concat(ch.name.substring(1)))
                         }
                     }
-                await talentSchema.stream.deleteOne({_id: str._id})
+                await talentSchema.stream.deleteOne({_id: str._id}).exec()
             }
         }
         await talent.save();
