@@ -2,9 +2,11 @@ const  { parse } = require('node-html-parser')
 const fetch = require ('node-fetch')
 const webdriver = require('selenium-webdriver')
 const chrome = require ('selenium-webdriver/chrome.js')
+const DesiredCapabilities = require('selenium-webdriver/')
 const {talent, stream, user, membership, member_channel, guild} = require('../data/models');
 const mongoose = require('mongoose');
 const {Types: {ObjectId}} = mongoose;
+const UserAgent = require('user-agents')
 
 module.exports = async() => {
 
@@ -31,10 +33,11 @@ const ex = async(talent)=>{
 } catch (e) {console.log(e)}
 }
 
-
+const user = new UserAgent(/Chrome/, {platform: 'Win32', deviceCategory: 'desktop'})
 
 const build = async()=>{
     try{
+    let newAgent = user.random();
     //initialize build
     const opt = new chrome.Options()
     //.setChromeBinaryPath('C:/Program Files (x86)/Google/Chrome/Application/chrome.exe')
@@ -44,7 +47,8 @@ const build = async()=>{
         '--disable-dev-shm-usage',
         '--headless',
         '--remote-debugging-port=9994',
-        '--whitelisted-ips'])
+        '--whitelisted-ips',
+        'user-agent=' + newAgent.toString()])
 
     //var driver = chrome.Driver.createSession(opt, new chrome.ServiceBuilder().build());
     let driver = await new webdriver.Builder()
