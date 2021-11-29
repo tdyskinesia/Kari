@@ -15,7 +15,7 @@ const iterate = async(client) => {
                     if(tal.liveChannelID!=null){
                         let ch = await (await client.guilds.fetch(tal.guildID)).channels.fetch(tal.liveChannelID)
                         if(ch.name.includes('🔊')||ch.name.includes('🛑')){
-                            await ch.setName('⏰'.concat(ch.name.substring(1)))
+                            await ch.setName('🔔'.concat(ch.name.substring(1)))
                         }
                     }
                 await talentSchema.stream.deleteOne({_id: str._id})
