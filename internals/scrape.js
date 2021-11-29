@@ -158,8 +158,7 @@ const iterateTalents = async(driver)=>{
             //else console.log("No upcoming or live stream for " + t.name)
         }
         
-        await driver.quit()
-        return strArr
+        return [strArr, driver]
     } catch (e){console.log(e)}
 }
 // setInterval(iterateTalents, 1000 * 100)
