@@ -68,7 +68,7 @@ client.once('ready', async () =>{
         useNewUrlParser: true,
         keepAlive: true
     }).then(console.log("Connected to mongodb"));
-    statusChange(client);
+    statusChange.it(client);
     // setInterval(statusChange.bind(null, client), 1000 * 2);
 
     var initialJob = new CronJob('0 */3 * * *', async function() {
