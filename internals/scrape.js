@@ -3,6 +3,8 @@ const fetch = require ('node-fetch')
 const webdriver = require('selenium-webdriver')
 const chrome = require ('selenium-webdriver/chrome.js')
 const {talent, stream, user, membership, member_channel, guild} = require('../data/models');
+const mongoose = require('mongoose');
+const {Types: {ObjectId}} = mongoose;
 
 module.exports = async() => {
 
@@ -95,6 +97,7 @@ const iterateTalents = async()=>{
                 }
             } else console.log("No upcoming or live stream for " + t.name)
         }
+        
         await driver.quit()
         return strArr
     } catch (e){console.log(e)}

@@ -234,7 +234,7 @@ module.exports = {
             let exDate = new Date(args[2])
             let member = await user.findOne({userID: authorID}).lean().exec()
             if(member!=null){
-            foundMembership = await iterateMemberships(member.membership_IDs, talentName)} else foundMembership = null
+            foundMembership = await iterateMemberships(member.membership_IDs, talentName)}
             if(foundMembership==null){
                 let memberChannel = await member_channel.findOne({guildID: guildID}).lean().exec()
                 let newMembership = await membership.create({
@@ -245,15 +245,13 @@ module.exports = {
                     notifyFlag: false,
                     member_channel_ID: memberChannel._id
                 })
-                let g = await models.guild.findOneAndUpdate({guildID: message.guild.id},{'$push' : {"membership_IDs": ObjectId(newMembership._id)}}, {new: true}).exec()
                     if (member==null){
                         let newUser = await user.create({
                             memberships_IDs: [ObjectId(newMembership._id)],
                             userID: message.author.id,
                             guildIDs: [guildID]
                         })
-                        await g.user_IDs.push(ObjectId(newUser._id))
-                        await g.save()
+                        await talent.findOneAndUpdate({guildID: guildID, name: talentName}, {'$push': {"membership_IDs" : ObjectId(newMembership._id)}}, {upsert: true}).exec()
                         await models.guild.findOneAndUpdate({guildID: guildID}, {'$push' : {"membership_IDs" : ObjectId(newMembership._id), "user_IDs": newUser._id}, upsert: true}).exec()
                         await message.channel.send(`User created with their first membership to ${talentName}! Thanks ${message.author.username}! (Verified: ${message.guild.members.cache.get(staff)})`)
                         if(memberRoleAssign(authorID, talentName, guildID, client)){
@@ -261,7 +259,8 @@ module.exports = {
                         } else await message.channel.send("User already had role assigned."); return
                         
                     } else {
-                        let newUser = await user.findOneAndUpdate({userID: authorID },{'$push': {"membership_IDs" : ObjectId(newMembership._id)}},{new: true, upsert: true}).lean().exec()
+                        await talent.findOneAndUpdate({guildID: guildID, name: talentName}, {'$push': {"membership_IDs" : ObjectId(newMembership._id)}}, {upsert: true}).exec()
+                        let newUser = await user.findOneAndUpdate({userID: authorID },{'$push': {"membership_IDs" : ObjectId(newMembership._id), "guildIDs" : message.guild.id}},{new: true, upsert: true}).lean().exec()
                         await models.guild.findOneAndUpdate({guildID: guildID}, {'$push' : {"membership_IDs" : ObjectId(newMembership._id), "user_IDs": newUser._id}, upsert: true}).exec()
                         await message.channel.send(`Added a membership to ${talentName} for ${(message.guild.members.cache.get(authorID)).user.username}! (Verified: ${message.guild.members.cache.get(staff).user.username})`)
                         if(memberRoleAssign(authorID, talentName, guildID, client)){
