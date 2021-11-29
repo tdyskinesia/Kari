@@ -24,6 +24,8 @@ const mongoose = require('mongoose');
 
 const {talent, stream, user, membership, member_channel} = require('./data/models');
 
+const sc = require('./internals/scrape.js')
+
 const { Client, Intents } = require('discord.js');
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES],
@@ -67,9 +69,9 @@ client.once('ready', async () =>{
         useNewUrlParser: true,
         keepAlive: true
     }).then(console.log("Connected to mongodb"));
-    statusChange(client);
+    let d = await sc.build()
+    statusChange(client, d);
     // setInterval(statusChange.bind(null, client), 1000 * 2);
-
     var initialJob = new CronJob('0 */3 * * *', async function() {
         await streamHandler.bupdate(client)
     }, null, true, 'America/New_York');

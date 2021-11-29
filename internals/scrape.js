@@ -9,7 +9,7 @@ const {Types: {ObjectId}} = mongoose;
 const UserAgent = require('user-agents')
 // const SeleniumStealth = require("selenium-stealth");
 
-module.exports = async() => {
+
 
 const p = ['129.205.200.89:47309',
 '111.231.86.149:7890',
@@ -139,10 +139,11 @@ const getPage = async(driver, url)=>{
 } catch(e) {console.log(e)}
     // "#info-contents>#container>h1>yt-formatted-string"
 }
-const iterateTalents = async()=>{
+
+const iterateTalents = async(driver)=>{
     try{
         let strArr = []
-        let driver = await build()
+        // let driver = await build()
         for await(const t of talent.find({youtubeID: {$exists: true}})){
             let url = await ex(t)
             if(url!=null){
@@ -162,8 +163,12 @@ const iterateTalents = async()=>{
     } catch (e){console.log(e)}
 }
 // setInterval(iterateTalents, 1000 * 100)
+module.exports = {
+    build: build,
 
-return await iterateTalents();
+    async f(driver){
+        return await iterateTalents(driver)
+    }
 
-
+    
 }
