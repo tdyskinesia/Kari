@@ -45,11 +45,12 @@ const updateStatus = async() => {
     
     if(++counter >= strArr.length&&strArr.length>0){
         counter = 0;
-        it(client); return
+        return next(client);
+
     }
     else if (++counter2 >= statusOptions.length){
         counter = 0;
-        it(client); return
+        return next(client)
     }
 }
 
@@ -59,5 +60,8 @@ setInterval(updateStatus, 1000 * 17)
 updateStatus()
 
     
+},
+async next(client){
+    await it(client)
 }
 }
