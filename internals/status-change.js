@@ -68,7 +68,7 @@ if(strArr!=null&&strArr.length>0){
         if(tal.liveChannelID!=null){
             let ch = await (await client.guilds.fetch(tal.guildID)).channels.fetch(tal.liveChannelID)
             if(ch.name.substring(0,1)!='▶'){
-                await ch.setName('▶'.concat(ch))
+                await ch.setName('▶'.concat(ch.name))
             }
         }
     }
