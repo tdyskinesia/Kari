@@ -18,6 +18,7 @@ let counter = 0
 let counter2 = 0
 
 const updateStatus = async() => {
+    if(strArr.length!=0){
     await client.user.setPresence({
         status: 'online',
         activities: [
@@ -28,6 +29,7 @@ const updateStatus = async() => {
             }
         ]
     })
+}
     if(strArr.length==0){
         await client.user.setPresence({
             status: 'online',
