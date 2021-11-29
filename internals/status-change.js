@@ -1,6 +1,6 @@
 
 const next = async(client)=>{
-    await it(client)
+    it(client)
 }
 
  const it = async(client) => {
@@ -67,5 +67,5 @@ updateStatus()
 }
     
 module.exports = async(client)=>{ 
-await next(client)
+next(client)
 }
