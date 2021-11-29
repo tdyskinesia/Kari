@@ -1,20 +1,20 @@
 # Kari
-Discord youtube stream notification bot for small communities who like a heads up ahead of time.  
+Discord youtube stream notification bot for small communities who like a heads up ahead of time. Also handles membership verification via staff reaction and role icon set for boosters. Created for vtuber fanservers but functionality extends to just about anyone. Much more functionality planned.  
   
-Not public yet but planning on it.  
+DM dyskinesia#5199 if interested in the Kari project and her capabilities.  
   
-Will soon scrape instead of using youtube api.  
+Because of youtube api limits Kari currently works off of a selenium web scrape to determine stream info. It is an ongoing project.   
   
 Current Features:  
 Upcoming Stream Bulletin w/ Timezones per Channel Sub  
 Stream Notifications 15 Minutes Before Detected Streams  
 Role Icon Set for Copa Roles  
 Membership Verification via Staff Reaction  
+Live Channel Automatic Name Changes  
   
 Planned Features:  
 Live Bulletin with Detection for Instant Lives  
 Analytics Data for Past Streams  
-Live Channel Automatic Name Changes  
   
 -----Help-----  
 Kari Commands  
