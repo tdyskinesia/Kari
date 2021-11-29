@@ -7,7 +7,7 @@ const {talent, stream, user, membership, member_channel, guild} = require('../da
 const mongoose = require('mongoose');
 const {Types: {ObjectId}} = mongoose;
 const UserAgent = require('user-agents')
-const SeleniumStealth = require("selenium-stealth");
+// const SeleniumStealth = require("selenium-stealth");
 
 module.exports = async() => {
 
@@ -121,9 +121,10 @@ const getPage = async(driver, url)=>{
     await driver.manage().deleteAllCookies()
 
     //scrape
-    // let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text")), 5000)
+    let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text")), 5000)
+    console.log(await el.getText())
     let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.xpath(`/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/h1/yt-formatted-string`)), 8000)
-    // console.log(await el.getText())
+    console.log(await el.getText())
 
     inner = await el.getText()
     if(inner.includes("Started streaming")){
