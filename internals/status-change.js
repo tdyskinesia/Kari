@@ -1,6 +1,6 @@
 
 const next = async(client)=>{
-    it(client)
+    await it(client); return
 }
 
  const it = async(client) => {
@@ -51,12 +51,12 @@ const updateStatus = async() => {
     
     if(++counter >= strArr.length&&strArr.length>0){
         counter = 0;
-        next(client);
+        await next(client); return
 
     }
     else if (++counter2 >= statusOptions.length){
         counter = 0;
-        next(client)
+        await next(client); return
     }
 }
 
@@ -67,5 +67,5 @@ updateStatus()
 }
     
 module.exports = async(client)=>{ 
-next(client)
+await next(client); return
 }

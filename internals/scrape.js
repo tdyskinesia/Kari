@@ -7,6 +7,7 @@ const {talent, stream, user, membership, member_channel, guild} = require('../da
 module.exports = async() => {
 
 const ex = async(talent)=>{
+    try{
     //fetch live redirect
     const response = await fetch(`https://youtube.com/channel/${talent.youtubeID}/live`)
     const text = await response.text()
@@ -25,6 +26,7 @@ const ex = async(talent)=>{
         //pass stream into selenium
         return canonicalURL
     } else return null
+} catch (e) {console.log(e)}
 }
 
 
@@ -56,6 +58,7 @@ const build = async()=>{
  * @param  {String} url
  */
 const getPage = async(driver, url)=>{
+    try{
     //fetch page
     await driver.get(url)
 
@@ -73,6 +76,7 @@ const getPage = async(driver, url)=>{
     } else {
         return null;
     }
+} catch(e) {console.log(e)}
     // "#info-contents>#container>h1>yt-formatted-string"
 }
 const iterateTalents = async()=>{
