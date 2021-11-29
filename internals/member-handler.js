@@ -118,12 +118,12 @@ module.exports = {
             args[0].replace(/\D/g,'')
             let res = await member_channel.findOne({guildID: message.guildId}).exec()
                 if(res==null){
-                    await member_channel.create({
+                    let r = await member_channel.create({
                         guildID: message.guildId,
                         channelID: args[0],
                         verificationIDs: []
                     })
-                    await models.guild.findOneAndUpdate({guildID: message.guild.id}, {'$set': {"member_channel_id": ObjectId(res._id)}}, {upsert: true}).exec()
+                    await models.guild.findOneAndUpdate({guildID: message.guild.id}, {'$set': {"member_channel_id": ObjectId(r._id)}}, {upsert: true}).exec()
                     await message.channel.send(`No sub found. Sub created in ${targetChannel.toString()}.`); return
                 } else {
                     let prev = await member_channel.findOneAndUpdate({_id: res._id},
@@ -437,7 +437,7 @@ module.exports = {
     async talentMembers(message, args){
     try{
         if(args.length==1){
-            let mships = await membership.find({guildID: message.guild.id, talentName: { $regex: '.*'+ args[0]+ '.*', $options: 'i' }}).lean().exec()
+            let mships = await membership.find({guildID: message.guild.id, talentName: { $regex: '.*'+ args[0]+ '.*', $options: 'i' }}).exec()
             if(mships!=null){
             let s = ""
             for await (const m of mships){

@@ -26,6 +26,7 @@ const {Types: {ObjectId}} = require('mongoose')
 // const cheerio = require('cheerio');
 
 const youtube = async(talent) => {
+    try {
     var results = []
     var streams = []
     var response = await yt.search.list({
@@ -60,6 +61,7 @@ const youtube = async(talent) => {
         
         for (var i in results){console.log(results[i].data.items[0].liveStreamingDetails.scheduledStartTime) }
         now = new Date()
+        let strArr = models.stream.find()
         for await (const index of results){
                 //return([results[index].data.items[0].liveStreamingDetails.scheduledStartTime, results[index].data.items[0].snippet.title, results[index].data.items[0].id, results[index].data.items[0].snippet.thumbnails.default.url])
             if(new Date(index.data.items[0].liveStreamingDetails.scheduledStartTime) > now){
@@ -70,11 +72,13 @@ const youtube = async(talent) => {
                     thumbnailUrl: index.data.items[0].snippet.thumbnails.high.url,
                     talent_id: ObjectId(talent._id)
                 })
-                streams.push(newStream._id)
+            await models.stream.deleteMany({videoID: index.data.items[0].id}).exec()
+            streams.push(newStream._id)
             }
         } 
         return streams
     } else {return []}
+} catch(e) {console.log(e)}
 
 }
 

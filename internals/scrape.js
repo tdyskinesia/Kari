@@ -4,7 +4,7 @@ const webdriver = require('selenium-webdriver')
 const chrome = require ('selenium-webdriver/chrome.js')
 const {talent, stream, user, membership, member_channel, guild} = require('../data/models');
 
-
+module.exports = async() => {
 
 const ex = async(talent)=>{
     //fetch live redirect
@@ -32,7 +32,7 @@ const ex = async(talent)=>{
 const build = async()=>{
     //initialize build
     const opt = new chrome.Options()
-    .setChromeBinaryPath('C:/Program Files (x86)/Google/Chrome/Application/chrome.exe')
+    //.setChromeBinaryPath('C:/Program Files (x86)/Google/Chrome/Application/chrome.exe')
     .addArguments([
         '--disable-gpu', 
         '--no-sandbox',
@@ -57,28 +57,35 @@ const getPage = async(driver, url)=>{
     //scrape
     let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text"), 5000))
 
-    inner = await el[0].getText()
+    inner = await el.getText()
     if(inner.includes("Started streaming")){
-        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-contents"), 5000));
+        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("div#info-contents>div#container>h1>yt-formatted-string"), 5000));
+        return await t.getText()
     } else {
-        return false;
+        return null;
     }
              
 }
 const iterateTalents = async()=>{
     try{
+        let strArr = []
         let driver = await build()
         for await(const t of talent.find({youtubeID: {$exists: true}})){
             let url = await ex(t)
             if(url!=null){
-                await getPage(driver, url)
+                let title = await getPage(driver, url)
+                if(title!=null){
+                    strArr.push([t.name, title, url])
+                }
             } else console.log("No upcoming or live stream for " + t.name)
         }
+        await driver.quit()
+        return strArr
     } catch (e){console.log(e)}
 }
-setInterval(iterateTalents, 1000 * 100)
+// setInterval(iterateTalents, 1000 * 100)
 
+return await iterateTalents();
 
-module.exports =  {
 
 }

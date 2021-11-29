@@ -1,4 +1,6 @@
-module.exports = (client) => {
+module.exports = async(client) => {
+const sc = require('./scrape.js')
+
 const statusOptions = [
     'Reina Sun',
     'Nene Amano',
@@ -11,26 +13,45 @@ const statusOptions = [
     'Neena Makurano'
 ]
 
-
+let strArr = await sc()
 let counter = 0
+let counter2 = 0
 
 const updateStatus = async() => {
     await client.user.setPresence({
         status: 'online',
         activities: [
             {
-                name: statusOptions[counter],
-                type: 'WATCHING'
+                name: strArr[counter][0] + ": " + strArr[counter][1],
+                type: 'WATCHING',
+                url: strArr[counter][2]
             }
         ]
     })
-    if(++counter >= statusOptions.length){
+    if(strArr.length==0){
+        await client.user.setPresence({
+            status: 'online',
+            activities: [
+                {
+                    name: statusOptions[counter],
+                    type: 'WATCHING'
+                }
+            ]
+        })
+    }
+    
+    if(++counter >= strArr.length&&strArr.length>0){
         counter = 0;
+        this(); return
+    }
+    else if (++counter2 >= statusOptions.length){
+        counter = 0;
+        this(); return
     }
 }
 
-    
-    setInterval(updateStatus, 1000 * 20)
+setInterval(updateStatus, 1000 * 17)    
+
 
 updateStatus()
 
