@@ -55,12 +55,12 @@ const getPage = async(driver, url)=>{
     await driver.get(url)
 
     //scrape
-    let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text"), 5000))
+    let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text")))
     console.log(await el.getText())
 
     inner = await el.getText()
     if(inner.includes("Started streaming")){
-        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-content"), 5000));
+        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-contents")))
         console.log(await t.getText())
         return await t.getText()
     } else {
@@ -75,8 +75,11 @@ const iterateTalents = async()=>{
         for await(const t of talent.find({youtubeID: {$exists: true}})){
             let url = await ex(t)
             if(url!=null){
+                console.log(t.name + " in")
                 let title = await getPage(driver, url)
+                console.log(t.name + " out")
                 if(title!=null){
+                    console.log(t.name + " pushed")
                     strArr.push([t.name, title, url])
                 }
             } else console.log("No upcoming or live stream for " + t.name)
