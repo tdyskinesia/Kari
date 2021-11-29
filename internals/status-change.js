@@ -1,5 +1,9 @@
-module.exports = {
-   async it(client) {
+
+const next = async(client)=>{
+    await it(client)
+}
+
+ const it = async(client) => {
 const sc = require('./scrape.js')
 
 const statusOptions = [
@@ -13,6 +17,8 @@ const statusOptions = [
     'Lua Asuka',
     'Neena Makurano'
 ]
+
+
 
 let strArr = await sc()
 let counter = 0
@@ -45,12 +51,12 @@ const updateStatus = async() => {
     
     if(++counter >= strArr.length&&strArr.length>0){
         counter = 0;
-        return next(client);
+        next(client);
 
     }
     else if (++counter2 >= statusOptions.length){
         counter = 0;
-        return next(client)
+        next(client)
     }
 }
 
@@ -58,10 +64,8 @@ setInterval(updateStatus, 1000 * 17)
 
 
 updateStatus()
-
-    
-},
-async next(client){
-    await it(client)
 }
+    
+module.exports = async(client)=>{ 
+await next(client)
 }
