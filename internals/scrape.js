@@ -127,7 +127,7 @@ const getPage = async(driver, url)=>{
     inner = await el.getText()
     if(inner.includes("Started streaming")){
         let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#container > h1 > yt-formatted-string")), 8000)
-        console.log(await el.getText())
+        console.log(await t.getText())
         //let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.xpath(`/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/h1/yt-formatted-string`)), 8000)
         //console.log(await t.getText())
         // let a = (await t.getText()).split('\n')[0]
@@ -150,7 +150,7 @@ const iterateTalents = async()=>{
                 let title = await getPage(driver, url)
                 console.log(t.name + " out")
                 if(title!=null){
-                    onsole.log(t.name + " pushed")
+                    console.log(t.name + " pushed")
                     strArr.push([t.name, title, url])
                 }
             } 
