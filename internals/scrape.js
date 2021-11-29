@@ -51,7 +51,10 @@ const build = async()=>{
     return driver
     } catch (e) {console.log(e)}
 }
-
+/**
+ * @param  {webdriver.WebDriver} driver
+ * @param  {String} url
+ */
 const getPage = async(driver, url)=>{
     //fetch page
     await driver.get(url)
@@ -62,9 +65,9 @@ const getPage = async(driver, url)=>{
 
     inner = await el.getText()
     if(inner.includes("Started streaming")){
-        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-contents>#container>h1>")))
+        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-contents")))
         console.log(await t.getText())
-        return await t.getText()
+        return await t.first.getText()
     } else {
         return null;
     }
