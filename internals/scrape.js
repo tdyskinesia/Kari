@@ -60,7 +60,7 @@ const getPage = async(driver, url)=>{
 
     inner = await el.getText()
     if(inner.includes("Started streaming")){
-        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-content"), 5000)));
+        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-content"), 5000));
         console.log(await t.getText())
         return await t.getText()
     } else {
