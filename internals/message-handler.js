@@ -10,8 +10,8 @@ const iterate = async(client) => {
         for await (const str of talentSchema.stream.find({talent_id: talent._id})){
             let curDate = new Date(str.startTime) 
             if(curDate.setMinutes(curDate.getMinutes()-15) < new Date()){
-                await (await guild.channels.cache.get(talent.liveChannelID)).send(`Hey <@&${talent.roleID}>! ${talent.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${str.videoID}`)
-                let tal = await talent.findById(str.talent_id)
+                await (await guild.channels.cache.get(talent.liveChannelID)).send(`Hey <\@\&${talent.roleID}>! ${talent.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${str.videoID}`)
+                let tal = await talentSchema.talent.findById(str.talent_id)
                     if(tal.liveChannelID!=null){
                         let ch = await (await client.guilds.fetch(tal.guildID)).channels.fetch(tal.liveChannelID)
                         if(ch.name.includes('🔊')||ch.name.includes('🛑')){
