@@ -121,15 +121,15 @@ const getPage = async(driver, url)=>{
     await driver.manage().deleteAllCookies()
 
     //scrape
-    let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text")), 5000)
-    console.log(await el.getText())
-    el = await driver.wait(webdriver.until.elementLocated(webdriver.By.xpath(`/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/h1/yt-formatted-string`)), 8000)
-    console.log(await el.getText())
+    let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text")), 8000)
+    //el = await driver.wait(webdriver.until.elementLocated(webdriver.By.xpath(`/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/h1/yt-formatted-string`)), 8000)
 
     inner = await el.getText()
     if(inner.includes("Started streaming")){
-        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.xpath(`/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/h1/yt-formatted-string`)), 8000)
-        // console.log(await t.getText())
+        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#container > h1 > yt-formatted-string")), 8000)
+        console.log(await el.getText())
+        //let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.xpath(`/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/h1/yt-formatted-string`)), 8000)
+        //console.log(await t.getText())
         // let a = (await t.getText()).split('\n')[0]
         // if (a.includes("#")) a = (await t.getText()).split('\n')[1]
         return await t.getText()
@@ -146,11 +146,11 @@ const iterateTalents = async()=>{
         for await(const t of talent.find({youtubeID: {$exists: true}})){
             let url = await ex(t)
             if(url!=null){
-                // console.log(t.name + " in")
+                console.log(t.name + " in")
                 let title = await getPage(driver, url)
-                // console.log(t.name + " out")
+                console.log(t.name + " out")
                 if(title!=null){
-                    // console.log(t.name + " pushed")
+                    onsole.log(t.name + " pushed")
                     strArr.push([t.name, title, url])
                 }
             } 
