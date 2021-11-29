@@ -47,9 +47,6 @@ const memberRoles = require('./internals/member-roles.js')
 
 const prefix = 'k!';
 
-const express = require('express');
-const { createProxyMiddleware } = require('http-proxy-middleware');
-
 const fs = require('fs');
 const { id } = require('date-fns/locale');
 
