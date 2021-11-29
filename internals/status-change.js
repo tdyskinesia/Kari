@@ -57,8 +57,8 @@ if(strArr!=null&&strArr.length>0){
         let tal = await talent.findById(str.talent_id)
         if(tal.liveChannelID!=null){
             let ch = await (await client.guilds.fetch(tal.guildID)).channels.fetch(tal.liveChannelID)
-            if(ch.name.includes('🎆')){
-                await ch.setName(ch.name.substring(1))
+            if(ch.name.includes('🔊')||ch.name.includes('⏰')){
+                await ch.setName('🛑'.concat(ch.name.substring(1)))
             }
         }
     }
@@ -69,8 +69,8 @@ if(strArr!=null&&strArr.length>0){
         let tal = await talent.findById(str.talent_id)
         if(tal.liveChannelID!=null){
             let ch = await (await client.guilds.fetch(tal.guildID)).channels.fetch(tal.liveChannelID)
-            if(!ch.name.includes('🎆')){
-                await ch.setName('🎆'.concat(ch.name))
+            if(ch.name.includes('🛑')||ch.name.includes('⏰')){
+                await ch.setName('🔊'.concat(ch.name.substring(1)))
             }
         }
     }
