@@ -119,6 +119,7 @@ const getPage = async(driver, url)=>{
     //fetch page
     await driver.get(url)
     await driver.manage().deleteAllCookies()
+    await driver.wait(300)
 
     //scrape
     let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text")), 8000)
