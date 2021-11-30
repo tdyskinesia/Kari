@@ -71,6 +71,9 @@ const stream = new mongoose.Schema({
         type: String,
         // required: true
     },
+    description: {
+        type: String
+    },
     talent_id: {type: ObjectId, ref: 'talent'},
 
 })

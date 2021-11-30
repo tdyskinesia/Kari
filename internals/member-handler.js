@@ -5,8 +5,7 @@ const {talent, stream, user, membership, member_channel, guild} = require('../da
 const models = require('../data/models');
 
 const mongoose = require('mongoose');
-require('mongoose-long/index.js')(mongoose);
-const {Types: {Long, Number, ObjectId}} = mongoose;
+const {Types: {ObjectId}} = mongoose;
 
 /**
  * Finds talent with given guild and name.
@@ -449,54 +448,54 @@ module.exports = {
     } catch (e)
     {console.log(e)}
     },
-    async migrateData(message){
-    try{
-        let outArr = []
-        let mch = await member_channel.findOne({guildID: message.guild.id})
-        let g = await models.guild.create({
-            guildID: message.guild.id,
-            membership_IDs: [],
-            user_IDs: [],
-            talent_IDs: [],
-            member_channel_id: mch._id
-        })
-        outArr.push(mch._id)
-        for await(const member of user.find()){
-            await models.guild.findByIdAndUpdate(g._id,{'$push':{"user_IDs": member._id}}).exec()
-            outArr.push(member._id)
-            if(member.memberships!=null){
-                for await (const i of member.memberships){
-                    let m = await membership.create({
-                        talentName: i.talentName,
-                        expiration: i.expiration,
-                        staffID: i.staffID,
-                        userID: i.userID,
-                        notifyFlag: i.notifyFlag,
-                        member_channel_ID: mch._id
-                    })
-                    await models.guild.findByIdAndUpdate(g._id,{'$push':{"membership_IDs": m._id}}).exec()
-                    outArr.push(m._id)
-                    member.membership_IDs.push(ObjectId(m._id))
-                    let tal = await talent.findOneAndUpdate({guildID: message.guild.id, name: m.talentName}, {'$push': {"membership_IDs": ObjectId(m._id)}}, {new: true, upsert: true}).exec()
-                    await member.save()
-                }
-            }
-        }
-        for await (const t of talent.find({guildID: message.guild.id})){
-            await models.guild.findByIdAndUpdate(g._id,{'$push':{"talent_IDs": t._id}}).exec()
-            for await(const mship of membership.find({talentName: t.name})){
-                t.membership_IDs.push(ObjectId(mship._id))
-                outArr.push(mship._id)
-            }
-            await t.save()
-        }
-        await message.channel.send(outArr.join(', '))
-        await g.save()
-        await message.channel.send("Data successfully migrated.")
-    } catch(e) {
-        console.log(e)
-    }
-    },
+    // async migrateData(message){
+    // try{
+    //     let outArr = []
+    //     let mch = await member_channel.findOne({guildID: message.guild.id})
+    //     let g = await models.guild.create({
+    //         guildID: message.guild.id,
+    //         membership_IDs: [],
+    //         user_IDs: [],
+    //         talent_IDs: [],
+    //         member_channel_id: mch._id
+    //     })
+    //     outArr.push(mch._id)
+    //     for await(const member of user.find()){
+    //         await models.guild.findByIdAndUpdate(g._id,{'$push':{"user_IDs": member._id}}).exec()
+    //         outArr.push(member._id)
+    //         if(member.memberships!=null){
+    //             for await (const i of member.memberships){
+    //                 let m = await membership.create({
+    //                     talentName: i.talentName,
+    //                     expiration: i.expiration,
+    //                     staffID: i.staffID,
+    //                     userID: i.userID,
+    //                     notifyFlag: i.notifyFlag,
+    //                     member_channel_ID: mch._id
+    //                 })
+    //                 await models.guild.findByIdAndUpdate(g._id,{'$push':{"membership_IDs": m._id}}).exec()
+    //                 outArr.push(m._id)
+    //                 member.membership_IDs.push(ObjectId(m._id))
+    //                 let tal = await talent.findOneAndUpdate({guildID: message.guild.id, name: m.talentName}, {'$push': {"membership_IDs": ObjectId(m._id)}}, {new: true, upsert: true}).exec()
+    //                 await member.save()
+    //             }
+    //         }
+    //     }
+    //     for await (const t of talent.find({guildID: message.guild.id})){
+    //         await models.guild.findByIdAndUpdate(g._id,{'$push':{"talent_IDs": t._id}}).exec()
+    //         for await(const mship of membership.find({talentName: t.name})){
+    //             t.membership_IDs.push(ObjectId(mship._id))
+    //             outArr.push(mship._id)
+    //         }
+    //         await t.save()
+    //     }
+    //     await message.channel.send(outArr.join(', '))
+    //     await g.save()
+    //     await message.channel.send("Data successfully migrated.")
+    // } catch(e) {
+    //     console.log(e)
+    // }
+    // },
     /**
      * Subs a talent to membership handling. 
      * @param  {Discord.Message} message
@@ -523,44 +522,44 @@ module.exports = {
             } else message.channel.send("Insufficient args");
         } catch (e) {console.log(e)}
     },
-    async migrate2(message, args){
-        try{
-            await guild.create({
-                guildID: message.guild.id,
-                notificationsFlag: true,
-                membership_IDs: [],
-                user_IDs: [],
-                talent_IDs: [],
-                member_channel_id: (await member_channel.findOne({guildID: message.guild.id}))._id
-            })
-            for await(const e of membership.find()){
-                await user.findOneAndUpdate({userID: e.userID}, {'$push': {"membership_IDs": e._id}}, {upsert: true}).exec()
-                await guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"membership_IDs": e._id}}).exec()
-            }
-            for await(const t of talent.find()){
-                await guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"talent_IDs": t._id}}).exec()
-            }
-            for await(const u of user.find()){
-                await guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"user_IDs": u._id}}).exec()
-            }
+    // async migrate2(message, args){
+    //     try{
+    //         await guild.create({
+    //             guildID: message.guild.id,
+    //             notificationsFlag: true,
+    //             membership_IDs: [],
+    //             user_IDs: [],
+    //             talent_IDs: [],
+    //             member_channel_id: (await member_channel.findOne({guildID: message.guild.id}))._id
+    //         })
+    //         for await(const e of membership.find()){
+    //             await user.findOneAndUpdate({userID: e.userID}, {'$push': {"membership_IDs": e._id}}, {upsert: true}).exec()
+    //             await guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"membership_IDs": e._id}}).exec()
+    //         }
+    //         for await(const t of talent.find()){
+    //             await guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"talent_IDs": t._id}}).exec()
+    //         }
+    //         for await(const u of user.find()){
+    //             await guild.findOneAndUpdate({guildID: message.guild.id}, {'$push': {"user_IDs": u._id}}).exec()
+    //         }
             
 
-        } catch(e) {console.log(e)}
-    },
-    /**
-     * @param  {Discord.Message} message
-     * @param  {} args
-     */
-    async fix(message, args){
-        try{
-            for await(const mship of membership.find()){
+    //     } catch(e) {console.log(e)}
+    // },
+    // /**
+    //  * @param  {Discord.Message} message
+    //  * @param  {} args
+    //  */
+    // async fix(message, args){
+    //     try{
+    //         for await(const mship of membership.find()){
 
-                let m = await message.guild.members.fetch(mship.userID)
-                let role = await message.guild.roles.fetch((await talent.findOne({guildID: message.guild.id, name: mship.talentName})).memberRoleID)
-                await m.roles.add(role)
-                await message.channel.send(m.user.username + ": " + role.id)
-            }
+    //             let m = await message.guild.members.fetch(mship.userID)
+    //             let role = await message.guild.roles.fetch((await talent.findOne({guildID: message.guild.id, name: mship.talentName})).memberRoleID)
+    //             await m.roles.add(role)
+    //             await message.channel.send(m.user.username + ": " + role.id)
+    //         }
 
-        } catch(e) {console.log(e)}
-    }
+    //     } catch(e) {console.log(e)}
+    // }
 }

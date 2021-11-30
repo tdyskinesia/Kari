@@ -1,11 +1,8 @@
 const  { parse } = require('node-html-parser')
 const fetch = require ('node-fetch')
-const webdriver = require('selenium-webdriver')
-const chrome = require ('selenium-webdriver/chrome.js')
 const {talent, stream, user, membership, member_channel, guild} = require('../data/models');
 const mongoose = require('mongoose');
 const {Types: {ObjectId}} = mongoose;
-const UserAgent = require('user-agents')
 const {google} = require('googleapis');
 const yt = google.youtube({
     version: 'v3',
@@ -36,70 +33,70 @@ const ex = async(talent)=>{
 } catch (e) {console.log(e)}
 }
 
-const agent = new UserAgent(/Chrome/, {platform: 'Win32', deviceCategory: 'desktop'})
+// const agent = new UserAgent(/Chrome/, {platform: 'Win32', deviceCategory: 'desktop'})
 
-const build = async()=>{
-    try{
-    let np = p[Math.random()*(1 - 30) + 1]
-    let newAgent = agent.random();
-    //initialize build
-    const opt = new chrome.Options()
-    //.setChromeBinaryPath('C:/Program Files (x86)/Google/Chrome/Application/chrome.exe')
-    .addArguments([
-        '--disable-gpu', 
-        '--no-sandbox',
-        '--disable-dev-shm-usage',
-        '--headless',
-        //'--remote-debugging-port=5554',
-        //'--whitelisted-ips',
-        '--user-agent=' + newAgent.toString()])
-        //'--proxy-server=http://'+ np])
+// const build = async()=>{
+//     try{
+//     let np = p[Math.random()*(1 - 30) + 1]
+//     let newAgent = agent.random();
+//     //initialize build
+//     const opt = new chrome.Options()
+//     //.setChromeBinaryPath('C:/Program Files (x86)/Google/Chrome/Application/chrome.exe')
+//     .addArguments([
+//         '--disable-gpu', 
+//         '--no-sandbox',
+//         '--disable-dev-shm-usage',
+//         '--headless',
+//         //'--remote-debugging-port=5554',
+//         //'--whitelisted-ips',
+//         '--user-agent=' + newAgent.toString()])
+//         //'--proxy-server=http://'+ np])
     
-    //var driver = chrome.Driver.createSession(opt, new chrome.ServiceBuilder().build());
-    let driver = await new webdriver.Builder()
-    .withCapabilities({
-        'goog:chromeOptions': {
-            excludeSwitches: [
-                'enable-automation',
-                'useAutomationExtension',
-            ],
-        },
-    })
-    .forBrowser('chrome')
-    .setChromeOptions(opt)
-    .build();
-    return driver
-    } catch (e) {console.log(e)}
-}
-/**
- * @param  {webdriver.WebDriver} driver
- * @param  {String} url
- */
-const getPage = async(driver, url)=>{
-    try{
-    //fetch page
-    await driver.get(url)
-    await driver.manage().deleteAllCookies()
-    await driver.sleep(1000)
-    //scrape
-    let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text")), 8000)
-    //el = await driver.wait(webdriver.until.elementLocated(webdriver.By.xpath(`/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/h1/yt-formatted-string`)), 8000)
+//     //var driver = chrome.Driver.createSession(opt, new chrome.ServiceBuilder().build());
+//     let driver = await new webdriver.Builder()
+//     .withCapabilities({
+//         'goog:chromeOptions': {
+//             excludeSwitches: [
+//                 'enable-automation',
+//                 'useAutomationExtension',
+//             ],
+//         },
+//     })
+//     .forBrowser('chrome')
+//     .setChromeOptions(opt)
+//     .build();
+//     return driver
+//     } catch (e) {console.log(e)}
+// }
+// /**
+//  * @param  {webdriver.WebDriver} driver
+//  * @param  {String} url
+//  */
+// const getPage = async(driver, url)=>{
+//     try{
+//     //fetch page
+//     await driver.get(url)
+//     await driver.manage().deleteAllCookies()
+//     await driver.sleep(1000)
+//     //scrape
+//     let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text")), 8000)
+//     //el = await driver.wait(webdriver.until.elementLocated(webdriver.By.xpath(`/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/h1/yt-formatted-string`)), 8000)
 
-    inner = await el.getText()
-    if(inner.includes("Started streaming")){
-        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#container > h1 > yt-formatted-string")), 8000)
-        console.log(await t.getText())
-        //let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.xpath(`/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/h1/yt-formatted-string`)), 8000)
-        //console.log(await t.getText())
-        // let a = (await t.getText()).split('\n')[0]
-        // if (a.includes("#")) a = (await t.getText()).split('\n')[1]
-        return await t.getText()
-    } else {
-        return null;
-    }
-} catch(e) {console.log(e)}
-    // "#info-contents>#container>h1>yt-formatted-string"
-}
+//     inner = await el.getText()
+//     if(inner.includes("Started streaming")){
+//         let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#container > h1 > yt-formatted-string")), 8000)
+//         console.log(await t.getText())
+//         //let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.xpath(`/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/h1/yt-formatted-string`)), 8000)
+//         //console.log(await t.getText())
+//         // let a = (await t.getText()).split('\n')[0]
+//         // if (a.includes("#")) a = (await t.getText()).split('\n')[1]
+//         return await t.getText()
+//     } else {
+//         return null;
+//     }
+// } catch(e) {console.log(e)}
+//     // "#info-contents>#container>h1>yt-formatted-string"
+// }
 
 /**
  * @param  {Array<Array<String>>} names
@@ -122,12 +119,12 @@ const vidInfo = async(names, url) => {
             let curStreamDetails = JSON.stringify(str.liveStreamingDetails)
             if(curStreamDetails.includes("actualStartTime")&&!curStreamDetails.includes("actualEndTime")){
                 //titArr.push([str.snippet.title, str.id])
-                console.log(str.snippet.title + ": " + str.id)
+                //console.log(str.snippet.title + ": " + str.id)
                 for await(const name of names){
-                    console.log(name[1].substring(name[1].length-11))
+                    //console.log(name[1].substring(name[1].length-11))
                     if(name[1].substring(name[1].length-11)==str.id){
-                        finArr.push([name[0], str.snippet.title, name[1], str.snippet.thumbnails.maxres.url])
-                        console.log(name[0], str.snippet.title, str.id, str.snippet.thumbnails.maxres.url)
+                        finArr.push([name[0], str.snippet.title, name[1], str.snippet.thumbnails.maxres.url, str.snippet.description])
+                        //console.log(name[0], str.snippet.title, str.id, str.snippet.thumbnails.maxres.url, str.snippet.description)
                     }
                 }
             }
@@ -162,12 +159,9 @@ const iterateTalents = async()=>{
     } catch (e){console.log(e)}
 }
 // setInterval(iterateTalents, 1000 * 100)
-module.exports = {
-    build: build,
+module.exports = ()=>{
 
-    async f(){
-        return await iterateTalents()
-    }
-
+return await iterateTalents()
     
 }
+

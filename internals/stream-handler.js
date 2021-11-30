@@ -106,8 +106,11 @@ module.exports = {
         for await (const talent of models.talent.find({guildID: '835723287714857031'})){
             let fieldArray = []
             talent.streams = await youtube(talent)
-            let profileURL = await channelInfo(talent)
             await talent.save();
+            if(talent.profileURL==null){
+            let profileURL = await channelInfo(talent)
+            await models.talent.findByIdAndUpdate(talent._id, {"$set": {profileURL: profileURL}}, {upsert: true})
+            }
             if(talent.streams.length>0){
                 for await (const i of talent.streams){
                     let stream = await models.stream.findById(i).exec()
@@ -129,7 +132,7 @@ module.exports = {
                         text: 'Updated at:'
                     },
                     thumbnail:{
-                        url: profileURL
+                        url: talent.profileURL
                     },
                     author: {
                         name: talent.name,
@@ -146,7 +149,7 @@ module.exports = {
                         text: 'Updated at:'
                     },
                     thumbnail:{
-                        url: profileURL
+                        url: talent.profileURL
                     },
                     author: {
                         name: talent.name,
@@ -279,7 +282,53 @@ module.exports = {
                 }
             }
         }
-    }
+    },
+    async displayLive(message){
+        try{ 
+            let a = await models.stream.find({guildID: message.guild.id, dStart: {$exists: true}}).lean().exec()
+            let embedArr = []
+            for await(const stream of a){
+            let tal = await models.talent.findById(stream.talent_id).lean().exec()
+                if(stream.thumbnailUrl!=null&&stream.description!=null)
+                {
+                    embedArr.push(new Discord.MessageEmbed({
+                        type: "rich",
+                        title: stream.streamName,
+                        description: stream.description,
+                        color: "e6a595",
+                        image: {
+                            url: stream.thumbnailUrl
+                        },
+                        author: {
+                            name: tal.name,
+                            icon_url: tal.profileURL,
+                            url: "https://www.youtube.com/channel/"+tal.youtubeID
+                        },
+                        url: "https://www.youtube.com/watch?v="+stream.videoID
+                    }))
+                    // strArr.push((await models.talent.findById(stream.talent_id)).name+": "+stream.streamName + " <https://www.youtube.com/watch?v="+stream.videoID+">" +
+                    // stream.thumbnailUrl)
+                } 
+                else 
+                {
+                    embedArr.push(new Discord.MessageEmbed({
+                        type: "rich",
+                        title: stream.streamName,
+                        color: "e6a595",
+                        author: {
+                            name: tal.name,
+                            icon_url: tal.profileURL,
+                            url: "https://www.youtube.com/channel/"+tal.youtubeID
+                        },
+                        url: "https://www.youtube.com/watch?v="+stream.videoID
+                    }))
+                // strArr.push((await models.talent.findById(stream.talent_id)).name+": "+stream.streamName + " <https://www.youtube.com/watch?v="+stream.videoID+">")
+                }
+            }
+            message.channel.send({embeds: embedArr})
+        } catch (e) {console.log(e)}
+    
+        }
 
 }
 

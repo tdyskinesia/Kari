@@ -30,7 +30,7 @@ const statusOptions = [
 
 
 
-let strArr = await sc.f()
+let strArr = await sc()
 let vidIDs = []
 if(strArr!=null&&strArr.length>0){
     for await(const str of strArr){
@@ -43,6 +43,7 @@ if(strArr!=null&&strArr.length>0){
                         dStart: new Date(),
                         videoID: vidID,
                         thumbnailUrl: str[3],
+                        description: str[4],
                         talent_id: dupe._id
                     })
                     await dupe.streams.push(ObjectId(s._id))

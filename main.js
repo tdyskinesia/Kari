@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
 dotenv.config(); 
 
-const sqlite = require('sqlite3').verbose();
+// const sqlite = require('sqlite3').verbose();
 
 const {google} = require('googleapis');
 
@@ -24,7 +24,7 @@ const mongoose = require('mongoose');
 
 const {talent, stream, user, membership, member_channel} = require('./data/models');
 
-const sc = require('./internals/scrape.js')
+// const sc = require('./internals/scrape.js')
 
 const { Client, Intents } = require('discord.js');
 
@@ -43,7 +43,7 @@ const memberHandler = require('./internals/member-handler.js')
 
 const guildHandler = require('./internals/guild-handler.js')
 
-const models = require('./data/models.js')
+// const models = require('./data/models.js')
 
 const memberRoles = require('./internals/member-roles.js')
 
@@ -158,14 +158,7 @@ client.on('messageCreate', async(message) =>{
         client.commands.get('ping').execute(message, args);
     }
     else if (command === 'live'){
-        let a = await models.stream.find({guildID: message.guild.id, dStart: {$exists: true}}).lean().exec()
-        let strArr = []
-        for await(const stream of a){
-            if(stream.thumbnailUrl!=null){
-                strArr.push((await models.talent.findById(stream.talent_id)).name+": "+stream.streamName + " <https://www.youtube.com/watch?v="+stream.videoID+">" +
-                stream.thumbnailUrl)
-            } else strArr.push((await models.talent.findById(stream.talent_id)).name+": "+stream.streamName + " <https://www.youtube.com/watch?v="+stream.videoID+">")
-        }
+        
         message.channel.send(strArr.join("\n"))
     }
     else if(command === 'deeznuts'){

@@ -5,8 +5,7 @@ const {talent, stream, user, membership, member_channel, guild} = require('../da
 const models = require('../data/models');
 
 const mongoose = require('mongoose');
-require('mongoose-long/index.js')(mongoose);
-const {Types: {Long, Number, ObjectId}} = mongoose;
+const {Types: {ObjectId}} = mongoose;
 
 module.exports = {
 
