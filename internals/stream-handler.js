@@ -116,8 +116,9 @@ module.exports = {
         }
             let streams = await models.stream.find({'$query': {talent_id: talent._id}, '$orderby': {date: -1}}).lean().exec()
             if(streams.length>0){
+                let counter = 0
                 for await (const stream of streams){
-                    let now = new Date()
+                    if(++counter<5){
                     if(stream.startTime!=null){
                     let curStart = moment(stream.startTime)
 
@@ -136,6 +137,7 @@ module.exports = {
                             "[**Come Watch With Us!**](https://www.youtube.com/watch?v=" + stream.videoID +")"
                         })
                     }
+                    }
                 }
 
                 embedArray.push(new Discord.MessageEmbed({
@@ -144,7 +146,7 @@ module.exports = {
                     color: '2b7d14',
                     fields: fieldArray,
                     footer: {
-                        text: 'Updated at:'
+                        text: 'Updated at'
                     },
                     thumbnail:{
                         url: talent.profileURL
@@ -161,7 +163,7 @@ module.exports = {
                     color: '911c1c',
                     description: "NO UPCOMING STREAM FOUND",
                     footer: {
-                        text: 'Updated at:'
+                        text: 'Updated at'
                     },
                     thumbnail:{
                         url: talent.profileURL
