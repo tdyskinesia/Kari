@@ -132,6 +132,7 @@ const getPage = async(driver, url)=>{
         //console.log(await t.getText())
         // let a = (await t.getText()).split('\n')[0]
         // if (a.includes("#")) a = (await t.getText()).split('\n')[1]
+        await driver.close()
         return await t.getText()
     } else {
         return null;
