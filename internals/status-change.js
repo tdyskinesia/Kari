@@ -54,7 +54,7 @@ if(strArr!=null&&strArr.length>0){
         vidIDs.push(vidID)
     }
 
-
+}
     for await (const str of stream.find({videoID: {$nin: vidIDs}, dStart: {$exists: true}})){
         let tal = await talent.findById(str.talent_id)
         if(tal.liveChannelID!=null){
@@ -76,7 +76,7 @@ if(strArr!=null&&strArr.length>0){
             }
         }
     }
-}
+
 
 let counter = 0
 let counter2 = 0
@@ -109,6 +109,7 @@ const updateStatus = async() => {
     if(strArr.length<4){
         if(++counter>=strArr.length){
             counter=0
+            counter3++
         }
         if(++counter3>=5){
             counter3 = 0;
