@@ -159,7 +159,7 @@ client.on('messageCreate', async(message) =>{
     }
     else if (command === 'live'){
         
-        message.channel.send(strArr.join("\n"))
+        streamHandler.displayLive(message)
     }
     else if(command === 'deeznuts'){
         message.channel.send("deez nuts")
