@@ -100,7 +100,7 @@ const updateStatus = async() => {
             status: 'online',
             activities: [
                 {
-                    name: statusOptions[counter],
+                    name: statusOptions[counter2],
                     type: 'WATCHING'
                 }
             ]
