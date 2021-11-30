@@ -117,13 +117,25 @@ module.exports = {
             let streams = await models.stream.find({'$query': {talent_id: talent._id}, '$orderby': {date: -1}}).lean().exec()
             if(streams.length>0){
                 for await (const stream of streams){
+                    let now = new Date()
+                    if(stream.startTime!=null){
                     let curStart = moment(stream.startTime)
-                    fieldArray.push({
-                        name: stream.streamName,
-                        value: "In "+ (Math.round(Math.abs(new Date()-new Date(stream.startTime))/3600000)) + " Hours\n"+
-                        curStart.tz('America/Los_Angeles').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('America/New_York').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('Asia/Tokyo').format('MM/DD/YYYY HH:mm z') + "\n"+
-                        "[**Waiting Room**](https://www.youtube.com/watch?v=" + stream.videoID +")"
-                    })
+
+                        fieldArray.push({
+                            name: stream.streamName,
+                            value: "In "+ (Math.round(Math.abs(new Date()-new Date(stream.startTime))/3600000)) + " Hours\n"+
+                            curStart.tz('America/Los_Angeles').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('America/New_York').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('Asia/Tokyo').format('MM/DD/YYYY HH:mm z') + "\n"+
+                            "[**Waiting Room**](https://www.youtube.com/watch?v=" + stream.videoID +")"
+                        })
+                    } else {
+                        let curStart = moment(stream.dStart)
+                        fieldArray.push({
+                            name: stream.streamName,
+                            value: "Currently Live!"+
+                            curStart.tz('America/Los_Angeles').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('America/New_York').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('Asia/Tokyo').format('MM/DD/YYYY HH:mm z') + "\n"+
+                            "[**Come Watch With Us!**](https://www.youtube.com/watch?v=" + stream.videoID +")"
+                        })
+                    }
                 }
 
                 embedArray.push(new Discord.MessageEmbed({
