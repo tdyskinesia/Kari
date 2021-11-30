@@ -97,7 +97,7 @@ const channelInfo = async(talent)=>{
 
 
 module.exports = {
-    async bupdate(client, message, args){
+    async bupdate(client, bool, message, args){
         if(args==null) args=[]
         const channel = await client.channels.cache.get('908671236895305760')
         let embedArray = []
@@ -105,12 +105,14 @@ module.exports = {
         if(message!=null) await message.channel.send("Updating board now!")
         for await (const talent of models.talent.find({guildID: '835723287714857031'})){
             let fieldArray = []
+            if(bool==true){
             talent.streams = await youtube(talent)
             await talent.save();
             if(talent.profileURL==null){
             let profileURL = await channelInfo(talent)
             await models.talent.findByIdAndUpdate(talent._id, {"$set": {profileURL: profileURL}}, {upsert: true})
             }
+        }
             if(talent.streams.length>0){
                 for await (const i of talent.streams){
                     let stream = await models.stream.findById(i).exec()

@@ -72,10 +72,12 @@ client.once('ready', async () =>{
     //let d = await sc.build()
     statusChange(client);
     // setInterval(statusChange.bind(null, client), 1000 * 2);
-    var initialJob = new CronJob('0 */3 * * *', async function() {
-        await streamHandler.bupdate(client)
+    new CronJob('0 */3 * * *', async function() {
+        await streamHandler.bupdate(client, true)
     }, null, true, 'America/New_York');
-
+    new CronJob('15,45 * * * *', async function() {
+        await streamHandler.bupdate(client, false)
+    }, null, true, 'America/New_York');
     memberRoles(client, prefix);
     messageHandler.notify(client);
     setInterval(messageHandler.notify.bind(null, client), 1000 * 30);

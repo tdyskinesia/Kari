@@ -33,70 +33,6 @@ const ex = async(talent)=>{
 } catch (e) {console.log(e)}
 }
 
-// const agent = new UserAgent(/Chrome/, {platform: 'Win32', deviceCategory: 'desktop'})
-
-// const build = async()=>{
-//     try{
-//     let np = p[Math.random()*(1 - 30) + 1]
-//     let newAgent = agent.random();
-//     //initialize build
-//     const opt = new chrome.Options()
-//     //.setChromeBinaryPath('C:/Program Files (x86)/Google/Chrome/Application/chrome.exe')
-//     .addArguments([
-//         '--disable-gpu', 
-//         '--no-sandbox',
-//         '--disable-dev-shm-usage',
-//         '--headless',
-//         //'--remote-debugging-port=5554',
-//         //'--whitelisted-ips',
-//         '--user-agent=' + newAgent.toString()])
-//         //'--proxy-server=http://'+ np])
-    
-//     //var driver = chrome.Driver.createSession(opt, new chrome.ServiceBuilder().build());
-//     let driver = await new webdriver.Builder()
-//     .withCapabilities({
-//         'goog:chromeOptions': {
-//             excludeSwitches: [
-//                 'enable-automation',
-//                 'useAutomationExtension',
-//             ],
-//         },
-//     })
-//     .forBrowser('chrome')
-//     .setChromeOptions(opt)
-//     .build();
-//     return driver
-//     } catch (e) {console.log(e)}
-// }
-// /**
-//  * @param  {webdriver.WebDriver} driver
-//  * @param  {String} url
-//  */
-// const getPage = async(driver, url)=>{
-//     try{
-//     //fetch page
-//     await driver.get(url)
-//     await driver.manage().deleteAllCookies()
-//     await driver.sleep(1000)
-//     //scrape
-//     let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text")), 8000)
-//     //el = await driver.wait(webdriver.until.elementLocated(webdriver.By.xpath(`/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/h1/yt-formatted-string`)), 8000)
-
-//     inner = await el.getText()
-//     if(inner.includes("Started streaming")){
-//         let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#container > h1 > yt-formatted-string")), 8000)
-//         console.log(await t.getText())
-//         //let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.xpath(`/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/h1/yt-formatted-string`)), 8000)
-//         //console.log(await t.getText())
-//         // let a = (await t.getText()).split('\n')[0]
-//         // if (a.includes("#")) a = (await t.getText()).split('\n')[1]
-//         return await t.getText()
-//     } else {
-//         return null;
-//     }
-// } catch(e) {console.log(e)}
-//     // "#info-contents>#container>h1>yt-formatted-string"
-// }
 
 /**
  * @param  {Array<Array<String>>} names
@@ -127,6 +63,8 @@ const vidInfo = async(names, url) => {
                         //console.log(name[0], str.snippet.title, str.id, str.snippet.thumbnails.maxres.url, str.snippet.description)
                     }
                 }
+            } else if (curStreamDetails.includes("scheduledStartTime")){
+                await stream.findOneAndUpdate({videoID: str.id}, {startTime: str.liveStreamingDetails.scheduledStartTime}).lean().exec()
             }
         }
         return finArr
