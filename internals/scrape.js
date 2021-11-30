@@ -100,7 +100,9 @@ const getPage = async(driver, url)=>{
 } catch(e) {console.log(e)}
     // "#info-contents>#container>h1>yt-formatted-string"
 }
+
 /**
+ * @param  {Array<Array<String>>} names
  * @param  {Array<String>} url
  */
 const vidInfo = async(names, url) => {
@@ -123,8 +125,8 @@ const vidInfo = async(names, url) => {
                 //titArr.push([str.snippet.title, str.id])
                 console.log(str.snippet.title + ": " + str.id)
                 for await(const name of names){
-                    console.log(name[1].substring(name.length-11))
-                    if(name[1].substring(name.length-11)==str.id){
+                    console.log(name[1].substring(name[1].length-11))
+                    if(name[1].substring(name[1].length-11)==str.id){
                         finArr.push([name[0], str.snippet.title, str.id])
                         console.log(name[0], str.snippet.title, str.id)
                     }
