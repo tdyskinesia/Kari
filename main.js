@@ -106,7 +106,7 @@ client.on('messageCreate', async(message) =>{
         messageHandler.clearNotifications()
     }
     else if(command === 'bupdate') {
-           streamHandler.bupdate(client, message, args)
+           streamHandler.bupdate(client, false, message, args)
     }
     else if(command === 'vchset') {
         memberHandler.subChannel(message, args)
