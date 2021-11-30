@@ -121,18 +121,17 @@ const getPage = async(driver, url)=>{
     await driver.manage().deleteAllCookies()
     await driver.sleep(1000)
     //scrape
-    let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text")), 8000)
+    let el = await driver.wait(webdriver.until.elementIsVisible(webdriver.By.css("#info-text")), 8000)
     //el = await driver.wait(webdriver.until.elementLocated(webdriver.By.xpath(`/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/h1/yt-formatted-string`)), 8000)
 
     inner = await el.getText()
     if(inner.includes("Started streaming")){
-        let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#container > h1 > yt-formatted-string")), 8000)
+        let t = await driver.wait(webdriver.until.elementIsVisible(webdriver.By.css("#container > h1 > yt-formatted-string")), 8000)
         console.log(await t.getText())
         //let t = await driver.wait(webdriver.until.elementLocated(webdriver.By.xpath(`/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/h1/yt-formatted-string`)), 8000)
         //console.log(await t.getText())
         // let a = (await t.getText()).split('\n')[0]
         // if (a.includes("#")) a = (await t.getText()).split('\n')[1]
-        await driver.close()
         return await t.getText()
     } else {
         return null;
