@@ -221,66 +221,6 @@ module.exports = {
             await channel.send({embeds: embedArray})
             }
         }
-        // } else if (args[0]==='-o'){
-        //     let embedArray = []
-        //     await message.channel.send("Updating Board without Calling API")
-        //     for await (const curTalent of models.talent.find({guildID: message.guild.id})){
-        //         let fieldArray = []
-        //         if(curTalent.streams.length>0){
-        //             curTalent.streams.forEach(async function(stream_id){
-        //                 let stream = await models.stream.findById(stream_id).exec()
-        //                 let curStart = moment(stream.startTime)
-        //                 fieldArray.push({
-        //                     name: stream.streamName,
-        //                     value: "In "+ (Math.round(Math.abs(new Date()-new Date(stream.startTime))/3600000)) + " Hours\n"+
-        //                     curStart.tz('America/Los_Angeles').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('America/New_York').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('Asia/Tokyo').format('MM/DD/YYYY HH:mm z') + "\n"+
-        //                     "[**Waiting Room**](https://www.youtube.com/watch?v=" + stream.videoID +")"
-        //                 })
-        //             });
-        //             embedArray.push(new Discord.MessageEmbed({
-        //                 type: "rich",
-        //                 title: "UPCOMING STREAMS",
-        //                 color: '2b7d14',
-        //                 fields: fieldArray,
-        //                 footer: {
-        //                     text: 'Updated at:'
-        //                 },
-        //                 //no thumbnail until they're stored in database
-        //                 author: {
-        //                     name: curTalent.name,
-        //                     url: `https://www.youtube.com/channel/${curTalent.youtubeID}`
-        //                 }
-        //             }).setTimestamp())
-        //     } else {
-        //             embedArray.push(new Discord.MessageEmbed({
-        //                 type: "rich",
-        //                 title: "UPCOMING STREAM",
-        //                 color: '911c1c',
-        //                 description: "NO UPCOMING STREAM FOUND",
-        //                 footer: {
-        //                     text: 'Updated at:'
-        //                 },
-
-        //                 author: {
-        //                     name: curTalent.name,
-        //                     url: `https://www.youtube.com/channel/${curTalent.youtubeID}`
-        //                 }
-        //             }).setTimestamp())
-        //     }
-            
-        //     }
-        //     if(embedArray.length>10){
-        //         for(let i = 0; i <= (embedArray.length/10)+1; i+=10){
-        //             if (i==(embedArray.length/10)+1){
-        //                 await message.channel.send({embeds: embedArray.slice(i)})
-        //             } else {
-        //             await message.channel.send({embeds: embedArray.slice(i, i+9)})
-        //             }
-        //         }
-        //     } else {
-        //     await message.channel.send({embeds: embedArray})
-        //     }
-        // }
     } catch(e) {console.log(e)}
         
     },

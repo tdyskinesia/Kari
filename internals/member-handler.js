@@ -253,7 +253,7 @@ module.exports = {
                         await talent.findOneAndUpdate({guildID: guildID, name: talentName}, {'$push': {"membership_IDs" : ObjectId(newMembership._id)}}, {upsert: true}).exec()
                         await models.guild.findOneAndUpdate({guildID: guildID}, {'$push' : {"membership_IDs" : ObjectId(newMembership._id), "user_IDs": newUser._id}, upsert: true}).exec()
                         await message.channel.send(`User created with their first membership to ${talentName}! Thanks ${message.author.username}! (Verified: ${message.guild.members.cache.get(staff)})`)
-                        if(memberRoleAssign(authorID, talentName, guildID, client)){
+                        if(await memberRoleAssign(authorID, talentName, guildID, client)){
                             await message.channel.send("Role assigned."); return
                         } else await message.channel.send("User already had role assigned."); return
                         
@@ -262,7 +262,7 @@ module.exports = {
                         let newUser = await user.findOneAndUpdate({userID: authorID },{'$push': {"membership_IDs" : ObjectId(newMembership._id), "guildIDs" : message.guild.id}},{new: true, upsert: true}).lean().exec()
                         await models.guild.findOneAndUpdate({guildID: guildID}, {'$push' : {"membership_IDs" : ObjectId(newMembership._id), "user_IDs": newUser._id}, upsert: true}).exec()
                         await message.channel.send(`Added a membership to ${talentName} for ${(message.guild.members.cache.get(authorID)).user.username}! (Verified: ${message.guild.members.cache.get(staff).user.username})`)
-                        if(memberRoleAssign(authorID, talentName, guildID, client)){
+                        if(await memberRoleAssign(authorID, talentName, guildID, client)){
                             await message.channel.send("Role assigned."); return
                         } else await message.channel.send("User already had role assigned."); return
                     }
