@@ -157,6 +157,9 @@ client.on('messageCreate', message =>{
     else if(command === 'ping') {
         client.commands.get('ping').execute(message, args);
     }
+    else if (command === 'live'){
+        
+    }
     else if(command === 'deeznuts'){
         message.channel.send("deez nuts")
         message.delete()

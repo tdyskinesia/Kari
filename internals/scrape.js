@@ -120,15 +120,14 @@ const vidInfo = async(names, url) => {
         for await(const str of response.data.items){
             let curStreamDetails = JSON.stringify(str.liveStreamingDetails)
             if(curStreamDetails.includes("actualStartTime")&&!curStreamDetails.includes("actualEndTime")){
-                titArr.push([str.snippet.title, str.id])
+                //titArr.push([str.snippet.title, str.id])
                 console.log(str.snippet.title + ": " + str.id)
-            }
-        }
-        for await(const stream of titArr){
-            for await(const name of names){
-                if(name[1].substring(name.length-11)==stream[1]){
-                    finArr.push([name[0], stream[0], stream[1]])
-                    console.log(name[0], stream[0], stream[1])
+                for await(const name of names){
+                    console.log(name[1].substring(name.length-11))
+                    if(name[1].substring(name.length-11)==str.id){
+                        finArr.push([name[0], str.snippet.title, str.id])
+                        console.log(name[0], str.snippet.title, str.id)
+                    }
                 }
             }
         }
