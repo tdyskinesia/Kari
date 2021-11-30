@@ -59,7 +59,7 @@ const vidInfo = async(names, url) => {
                 for await(const name of names){
                     //console.log(name[1].substring(name[1].length-11))
                     if(name[1].substring(name[1].length-11)==str.id){
-                        finArr.push([name[0], str.snippet.title, name[1], str.snippet.thumbnails.maxres.url, str.snippet.description])
+                        finArr.push([name[0], str.snippet.title, name[1], str.snippet.thumbnails.maxres.url, str.snippet.description.substring(0, 150)+ "..."])
                         //console.log(name[0], str.snippet.title, str.id, str.snippet.thumbnails.maxres.url, str.snippet.description)
                     }
                 }

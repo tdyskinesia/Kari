@@ -98,6 +98,7 @@ const channelInfo = async(talent)=>{
 
 module.exports = {
     async bupdate(client, bool, message, args){
+        try{
         if(args==null) args=[]
         const channel = await client.channels.cache.get('908671236895305760')
         let embedArray = []
@@ -106,16 +107,16 @@ module.exports = {
         for await (const talent of models.talent.find({guildID: '835723287714857031'})){
             let fieldArray = []
             if(bool==true){
-            talent.streams = await youtube(talent)
+            await youtube(talent)
             await talent.save();
             if(talent.profileURL==null){
             let profileURL = await channelInfo(talent)
             await models.talent.findByIdAndUpdate(talent._id, {"$set": {profileURL: profileURL}}, {upsert: true})
             }
         }
-            if(talent.streams.length>0){
-                for await (const i of talent.streams){
-                    let stream = await models.stream.findById(i).exec()
+            let streams = await models.stream.find({'$query': {talent_id: talent._id}, '$orderby': {date: -1}}).lean().exec()
+            if(streams.length>0){
+                for await (const stream of streams){
                     let curStart = moment(stream.startTime)
                     fieldArray.push({
                         name: stream.streamName,
@@ -182,66 +183,68 @@ module.exports = {
             } else {
             await channel.send({embeds: embedArray})
             }
-        } else if (args[0]==='-o'){
-            let embedArray = []
-            await message.channel.send("Updating Board without Calling API")
-            for await (const curTalent of models.talent.find({guildID: message.guild.id})){
-                let fieldArray = []
-                if(curTalent.streams.length>0){
-                    curTalent.streams.forEach(async function(stream_id){
-                        let stream = await models.stream.findById(stream_id).exec()
-                        let curStart = moment(stream.startTime)
-                        fieldArray.push({
-                            name: stream.streamName,
-                            value: "In "+ (Math.round(Math.abs(new Date()-new Date(stream.startTime))/3600000)) + " Hours\n"+
-                            curStart.tz('America/Los_Angeles').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('America/New_York').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('Asia/Tokyo').format('MM/DD/YYYY HH:mm z') + "\n"+
-                            "[**Waiting Room**](https://www.youtube.com/watch?v=" + stream.videoID +")"
-                        })
-                    });
-                    embedArray.push(new Discord.MessageEmbed({
-                        type: "rich",
-                        title: "UPCOMING STREAMS",
-                        color: '2b7d14',
-                        fields: fieldArray,
-                        footer: {
-                            text: 'Updated at:'
-                        },
-                        //no thumbnail until they're stored in database
-                        author: {
-                            name: curTalent.name,
-                            url: `https://www.youtube.com/channel/${curTalent.youtubeID}`
-                        }
-                    }).setTimestamp())
-            } else {
-                    embedArray.push(new Discord.MessageEmbed({
-                        type: "rich",
-                        title: "UPCOMING STREAM",
-                        color: '911c1c',
-                        description: "NO UPCOMING STREAM FOUND",
-                        footer: {
-                            text: 'Updated at:'
-                        },
-
-                        author: {
-                            name: curTalent.name,
-                            url: `https://www.youtube.com/channel/${curTalent.youtubeID}`
-                        }
-                    }).setTimestamp())
-            }
-            
-            }
-            if(embedArray.length>10){
-                for(let i = 0; i <= (embedArray.length/10)+1; i+=10){
-                    if (i==(embedArray.length/10)+1){
-                        await message.channel.send({embeds: embedArray.slice(i)})
-                    } else {
-                    await message.channel.send({embeds: embedArray.slice(i, i+9)})
-                    }
-                }
-            } else {
-            await message.channel.send({embeds: embedArray})
-            }
         }
+        // } else if (args[0]==='-o'){
+        //     let embedArray = []
+        //     await message.channel.send("Updating Board without Calling API")
+        //     for await (const curTalent of models.talent.find({guildID: message.guild.id})){
+        //         let fieldArray = []
+        //         if(curTalent.streams.length>0){
+        //             curTalent.streams.forEach(async function(stream_id){
+        //                 let stream = await models.stream.findById(stream_id).exec()
+        //                 let curStart = moment(stream.startTime)
+        //                 fieldArray.push({
+        //                     name: stream.streamName,
+        //                     value: "In "+ (Math.round(Math.abs(new Date()-new Date(stream.startTime))/3600000)) + " Hours\n"+
+        //                     curStart.tz('America/Los_Angeles').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('America/New_York').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('Asia/Tokyo').format('MM/DD/YYYY HH:mm z') + "\n"+
+        //                     "[**Waiting Room**](https://www.youtube.com/watch?v=" + stream.videoID +")"
+        //                 })
+        //             });
+        //             embedArray.push(new Discord.MessageEmbed({
+        //                 type: "rich",
+        //                 title: "UPCOMING STREAMS",
+        //                 color: '2b7d14',
+        //                 fields: fieldArray,
+        //                 footer: {
+        //                     text: 'Updated at:'
+        //                 },
+        //                 //no thumbnail until they're stored in database
+        //                 author: {
+        //                     name: curTalent.name,
+        //                     url: `https://www.youtube.com/channel/${curTalent.youtubeID}`
+        //                 }
+        //             }).setTimestamp())
+        //     } else {
+        //             embedArray.push(new Discord.MessageEmbed({
+        //                 type: "rich",
+        //                 title: "UPCOMING STREAM",
+        //                 color: '911c1c',
+        //                 description: "NO UPCOMING STREAM FOUND",
+        //                 footer: {
+        //                     text: 'Updated at:'
+        //                 },
+
+        //                 author: {
+        //                     name: curTalent.name,
+        //                     url: `https://www.youtube.com/channel/${curTalent.youtubeID}`
+        //                 }
+        //             }).setTimestamp())
+        //     }
+            
+        //     }
+        //     if(embedArray.length>10){
+        //         for(let i = 0; i <= (embedArray.length/10)+1; i+=10){
+        //             if (i==(embedArray.length/10)+1){
+        //                 await message.channel.send({embeds: embedArray.slice(i)})
+        //             } else {
+        //             await message.channel.send({embeds: embedArray.slice(i, i+9)})
+        //             }
+        //         }
+        //     } else {
+        //     await message.channel.send({embeds: embedArray})
+        //     }
+        // }
+    } catch(e) {console.log(e)}
         
     },
     async queryTalents(message, client) {
