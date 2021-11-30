@@ -2,45 +2,16 @@ const  { parse } = require('node-html-parser')
 const fetch = require ('node-fetch')
 const webdriver = require('selenium-webdriver')
 const chrome = require ('selenium-webdriver/chrome.js')
-//const DesiredCapabilities = require('selenium-webdriver/')
 const {talent, stream, user, membership, member_channel, guild} = require('../data/models');
 const mongoose = require('mongoose');
 const {Types: {ObjectId}} = mongoose;
 const UserAgent = require('user-agents')
-// const SeleniumStealth = require("selenium-stealth");
+const {google} = require('googleapis');
+const yt = google.youtube({
+    version: 'v3',
+    auth: process.env.YT_AUTH2
+})
 
-
-
-const p = ['129.205.200.89:47309',
-'111.231.86.149:7890',
-'110.50.85.162:4145',
-'176.114.228.40:44604',
-'85.29.147.90:5678',
-'77.242.28.123:4145',
-'192.140.42.83:59057',
-'95.80.182.76:5678',
-'94.153.209.22:3629',
-'14.63.228.239:80',
-'200.0.227.220:4153',
-'195.210.172.46:58350',
-'185.46.170.253:4145',
-'213.80.166.5:38442',
-'62.248.101.5:5678',
-'195.158.109.248:61531',
-'138.99.93.227:4145',
-'170.254.92.198:4153',
-'194.233.69.41:443',
-'222.252.21.100:5678',
-'119.10.177.90:4145',
-'195.168.91.238:4153',
-'80.79.66.82:3629',
-'131.108.60.22:3629',
-'210.245.51.15:4145',
-'148.251.0.157:9226',
-'103.12.160.85:61928',
-'189.52.165.134:1080',
-'183.88.240.53:4145',
-'185.51.92.84:51327']
 
 const ex = async(talent)=>{
     try{
@@ -97,16 +68,6 @@ const build = async()=>{
     .forBrowser('chrome')
     .setChromeOptions(opt)
     .build();
-
-//     const seleniumStealth = new SeleniumStealth(driver)
-//     await seleniumStealth.stealth({
-//     languages: ["en-US", "en"],
-//     vendor: "Google Inc.",
-//     platform: "Win32",
-//     webglVendor: "Intel Inc.",
-//     renderer: "Intel Iris OpenGL Engine",
-//     fixHairline: true
-// })
     return driver
     } catch (e) {console.log(e)}
 }
@@ -139,34 +100,73 @@ const getPage = async(driver, url)=>{
 } catch(e) {console.log(e)}
     // "#info-contents>#container>h1>yt-formatted-string"
 }
-
-const iterateTalents = async(driver)=>{
+/**
+ * @param  {Array<String>} url
+ */
+const vidInfo = async(names, url) => {
     try{
-        let strArr = []
+        let vidIDs = []
+        let titArr = []
+        let finArr = []
+        for await (const i of url){
+            vidIDs.push(i.substring(i.length-11))
+        }
+        vidIDs.join()
+        console.log(vidIDs)
+        var response = await yt.videos.list({
+            "part": ["snippet", "liveStreamingDetails"],
+            "id": vidIDs
+        })
+        for await(const str of response.data.items){
+            let curStreamDetails = JSON.stringify(str.liveStreamingDetails)
+            if(curStreamDetails.includes("actualStartTime")&&!curStreamDetails.includes("actualEndTime")){
+                titArr.push([str.snippet.title, str.id])
+                console.log(str.snippet.title + ": " + str.id)
+            }
+        }
+        for await(const stream of titArr){
+            for await(const name of names){
+                if(name[1].substring(name.length-11)==stream[1]){
+                    finArr.push([name[0], stream[0], stream[1]])
+                    console.log(name[0], stream[0], stream[1])
+                }
+            }
+        }
+        return finArr
+
+    } catch(e) {console.log(e)}
+}
+
+
+const iterateTalents = async()=>{
+    try{
+        let url = []
+        let names = []
+        let titArr = []
         // let driver = await build()
         for await(const t of talent.find({youtubeID: {$exists: true}})){
-            let url = await ex(t)
-            if(url!=null){
-                console.log(t.name + " in")
-                let title = await getPage(driver, url)
-                console.log(t.name + " out")
-                if(title!=null){
-                    console.log(t.name + " pushed")
-                    strArr.push([t.name, title, url])
-                }
-            } 
-            //else console.log("No upcoming or live stream for " + t.name)
+            let curUrl = await ex(t)
+            if(curUrl!=null){
+                url.push(curUrl)
+                names.push([t.name, curUrl])
+            } else console.log("No upcoming or live stream for " + t.name)
         }
+
+            // let title = await getPage(driver, url)
+        titArr = await vidInfo(names, url)
         
-        return [strArr, driver]
+        //else console.log("No upcoming or live stream for " + t.name)
+        
+        
+        return titArr
     } catch (e){console.log(e)}
 }
 // setInterval(iterateTalents, 1000 * 100)
 module.exports = {
     build: build,
 
-    async f(driver){
-        return await iterateTalents(driver)
+    async f(){
+        return await iterateTalents()
     }
 
     

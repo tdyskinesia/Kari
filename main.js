@@ -69,8 +69,8 @@ client.once('ready', async () =>{
         useNewUrlParser: true,
         keepAlive: true
     }).then(console.log("Connected to mongodb"));
-    let d = await sc.build()
-    statusChange(client, d);
+    //let d = await sc.build()
+    statusChange(client);
     // setInterval(statusChange.bind(null, client), 1000 * 2);
     var initialJob = new CronJob('0 */3 * * *', async function() {
         await streamHandler.bupdate(client)

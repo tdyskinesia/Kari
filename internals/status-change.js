@@ -5,14 +5,14 @@ const mongoose = require('mongoose');
 const {Types: {ObjectId}} = mongoose;
 
 
-const next = async(client, d)=>{
-it(client, d); return
+const next = async(client)=>{
+it(client); return
 }
 
 /**
  * @param  {Discord.Client} client
  */
-const it = async(client, d) => {
+const it = async(client) => {
 try{
 const sc = require('./scrape.js')
 
@@ -30,9 +30,7 @@ const statusOptions = [
 
 
 
-let out = await sc.f(d)
-let strArr = out[0]
-d = out[1]
+let strArr = await sc.f()
 let vidIDs = []
 if(strArr!=null&&strArr.length>0){
     for await(const str of strArr){
@@ -108,18 +106,18 @@ const updateStatus = async() => {
     if(strArr.length==1){
         if(++counter3>=3){
             counter = 0;
-            next(client, d); return
+            next(client); return
         }
 
     }
     else if(++counter >= strArr.length&&strArr.length>0){
         counter = 0;
-        next(client, d); return
+        next(client); return
 
     }
     else if (++counter2 >= statusOptions.length){
         counter = 0;
-        next(client, d); return
+        next(client); return
     }
     setTimeout(updateStatus, 1000 * 15)
 }
@@ -128,6 +126,6 @@ updateStatus()
 } catch (e) {console.log(e)}
 }
     
-module.exports = async(client, d)=>{ 
-it(client, d); return
+module.exports = async(client)=>{ 
+it(client); return
 }
