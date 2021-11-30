@@ -131,14 +131,16 @@ module.exports = {
                         }
                     }
                     for await (const stream of streams){  
+                        if(stream.startTime!=null){
                         let curStart = moment(stream.startTime)
-
+                        
                         fieldArray.push({
                             name: stream.streamName,
                             value: "In "+ (Math.round(Math.abs(new Date()-new Date(stream.startTime))/3600000)) + " Hours\n"+
                             curStart.tz('America/Los_Angeles').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('America/New_York').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('Asia/Tokyo').format('MM/DD/YYYY HH:mm z') + "\n"+
                             "[**Waiting Room**](https://www.youtube.com/watch?v=" + stream.videoID +")"
                         })
+                    }
                 
                     }
                 
