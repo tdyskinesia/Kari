@@ -117,10 +117,21 @@ module.exports = {
             let streams = await models.stream.find({talent_id: talent._id}).sort({streamTime: -1}).lean().exec()
             if(streams.length>0){
                 let counter = 0
-                for await (const stream of streams){
-                    if(++counter<5){
-                    if(stream.startTime!=null){
-                    let curStart = moment(stream.startTime)
+                let liveBool = false
+                    for await (const stream of streams){
+                        if(stream.dStart!=null){
+                            let curStart = moment(stream.dStart)
+                            livebool = true
+                            fieldArray.push({
+                                name: stream.streamName,
+                                value: "**Currently Live!**\n"+
+                                curStart.tz('America/Los_Angeles').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('America/New_York').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('Asia/Tokyo').format('MM/DD/YYYY HH:mm z') + "\n"+
+                                "[**Come Watch With Us!**](https://www.youtube.com/watch?v=" + stream.videoID +")"
+                            })
+                        }
+                    }
+                    for await (const stream of streams){  
+                        let curStart = moment(stream.startTime)
 
                         fieldArray.push({
                             name: stream.streamName,
@@ -128,18 +139,10 @@ module.exports = {
                             curStart.tz('America/Los_Angeles').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('America/New_York').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('Asia/Tokyo').format('MM/DD/YYYY HH:mm z') + "\n"+
                             "[**Waiting Room**](https://www.youtube.com/watch?v=" + stream.videoID +")"
                         })
-                    } else {
-                        let curStart = moment(stream.dStart)
-                        fieldArray.push({
-                            name: stream.streamName,
-                            value: "Currently Live!"+
-                            curStart.tz('America/Los_Angeles').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('America/New_York').format('MM/DD/YYYY HH:mm z') + " | " + curStart.tz('Asia/Tokyo').format('MM/DD/YYYY HH:mm z') + "\n"+
-                            "[**Come Watch With Us!**](https://www.youtube.com/watch?v=" + stream.videoID +")"
-                        })
+                
                     }
-                    }
-                }
-
+                
+                if(liveBool==false){
                 embedArray.push(new Discord.MessageEmbed({
                     type: "rich",
                     title: "UPCOMING STREAMS",
@@ -156,6 +159,24 @@ module.exports = {
                         url: `https://www.youtube.com/channel/${talent.youtubeID}`
                     }
                 }).setTimestamp())
+            } else {
+                embedArray.push(new Discord.MessageEmbed({
+                    type: "rich",
+                    title: "LIVE NOW",
+                    color: 'ff0074',
+                    fields: fieldArray,
+                    footer: {
+                        text: 'Updated at'
+                    },
+                    thumbnail:{
+                        url: talent.profileURL
+                    },
+                    author: {
+                        name: talent.name,
+                        url: `https://www.youtube.com/channel/${talent.youtubeID}`
+                    }
+                }).setTimestamp())
+            }
         } else {
                 embedArray.push(new Discord.MessageEmbed({
                     type: "rich",
