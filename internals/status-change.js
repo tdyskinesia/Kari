@@ -104,8 +104,11 @@ const updateStatus = async() => {
             ]
         })
     }
-    if(strArr.length==1){
-        if(++counter3>=3){
+    if(strArr.length<4){
+        if(++counter>=str.length){
+            counter=0
+        }
+        if(++counter3>=5){
             counter3 = 0;
             next(client); return
         }
