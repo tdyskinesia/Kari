@@ -420,7 +420,7 @@ module.exports = {
             let guild = await client.guilds.fetch(mship.guildID)
             
             await DM.send(`Hi! You have one more day to renew your membership to ${mship.talentName}! Please verify in ${guild.name}'s verification channel. Thank you!`)
-            await membership.findByIdAndUpdate(mship._id, {notifyFlag: false}).exec()
+            await membership.findByIdAndUpdate(mship._id, {'$set': {"notifyFlag": false}}).exec()
             return
         } catch (e) {
             console.log(e)
