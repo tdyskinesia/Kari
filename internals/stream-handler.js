@@ -121,7 +121,7 @@ module.exports = {
                     for await (const stream of streams){
                         if(stream.dStart!=null){
                             let curStart = moment(stream.dStart)
-                            livebool = true
+                            liveBool = true
                             fieldArray.push({
                                 name: stream.streamName,
                                 value: "**Currently Live!**\n"+
