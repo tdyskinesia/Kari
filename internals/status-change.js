@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const {talent, stream, user, membership, member_channel, guild} = require('../data/models');
 const mongoose = require('mongoose');
 const {Types: {ObjectId}} = mongoose;
+const sc = require('./scrape.js')
 
 
 const next = async(client)=>{
@@ -14,7 +15,7 @@ it(client); return
  */
 const it = async(client) => {
 try{
-const sc = require('./scrape.js')
+
 
 const statusOptions = [
     'Reina Sun',

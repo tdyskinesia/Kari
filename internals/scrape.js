@@ -159,7 +159,7 @@ const iterateTalents = async()=>{
     } catch (e){console.log(e)}
 }
 // setInterval(iterateTalents, 1000 * 100)
-module.exports = ()=>{
+module.exports = async()=>{
 
 return await iterateTalents()
     
