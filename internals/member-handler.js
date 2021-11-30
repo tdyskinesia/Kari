@@ -417,7 +417,7 @@ module.exports = {
         try{
             let userID = mship.userID
             let DM = await client.users.cache.get(userID).createDM()
-            let guild = await client.guilds.fetch(member.guildID)
+            let guild = await client.guilds.fetch(mship.guildID)
             
             await DM.send(`Hi! You have one more day to renew your membership to ${mship.talentName}! Please verify in ${guild.name}'s verification channel ${(await guild.channels.fetch((await member_channel.findOne({guildID: guild.id})).channelID)).toString()}. Thank you!`)
             mship.notifyFlag = false

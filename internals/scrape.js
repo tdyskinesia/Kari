@@ -119,8 +119,7 @@ const getPage = async(driver, url)=>{
     //fetch page
     await driver.get(url)
     await driver.manage().deleteAllCookies()
-    await driver.wait(300)
-
+    driver.sleep(1000)
     //scrape
     let el = await driver.wait(webdriver.until.elementLocated(webdriver.By.css("#info-text")), 8000)
     //el = await driver.wait(webdriver.until.elementLocated(webdriver.By.xpath(`/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/h1/yt-formatted-string`)), 8000)
