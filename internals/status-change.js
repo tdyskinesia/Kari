@@ -129,5 +129,5 @@ updateStatus()
 }
     
 module.exports = async(client, d)=>{ 
-it(client, d);
+it(client, d); return
 }
