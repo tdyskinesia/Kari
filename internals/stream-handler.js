@@ -114,7 +114,7 @@ module.exports = {
             await models.talent.findByIdAndUpdate(talent._id, {"$set": {profileURL: profileURL}}, {upsert: true})
             }
         }
-            let streams = await models.stream.find({'$query': {talent_id: talent._id}, '$orderby': {date: -1}}).lean().exec()
+            let streams = await models.stream.find({talent_id: talent._id}).sort({streamTime: -1}).lean().exec()
             if(streams.length>0){
                 let counter = 0
                 for await (const stream of streams){
