@@ -162,9 +162,9 @@ client.on('messageCreate', async(message) =>{
         let strArr = []
         for await(const stream of a){
             if(stream.thumbnailUrl!=null){
-                strArr.push((await models.talent.findById(stream.talent_id)).name+": "+stream.streamName + "<https://www.youtube.com/watch?v="+stream.videoID+">" +
+                strArr.push((await models.talent.findById(stream.talent_id)).name+": "+stream.streamName + " <https://www.youtube.com/watch?v="+stream.videoID+">" +
                 stream.thumbnailUrl)
-            } else strArr.push((await models.talent.findById(stream.talent_id)).name+": "+stream.streamName + "<https://www.youtube.com/watch?v="+stream.videoID+">")
+            } else strArr.push((await models.talent.findById(stream.talent_id)).name+": "+stream.streamName + " <https://www.youtube.com/watch?v="+stream.videoID+">")
         }
         message.channel.send(strArr.join("\n"))
     }
