@@ -114,7 +114,6 @@ const vidInfo = async(names, url) => {
             vidIDs.push(i.substring(i.length-11))
         }
         vidIDs.join()
-        console.log(vidIDs)
         var response = await yt.videos.list({
             "part": ["snippet", "liveStreamingDetails"],
             "id": vidIDs
@@ -127,8 +126,8 @@ const vidInfo = async(names, url) => {
                 for await(const name of names){
                     console.log(name[1].substring(name[1].length-11))
                     if(name[1].substring(name[1].length-11)==str.id){
-                        finArr.push([name[0], str.snippet.title, name[1]])
-                        console.log(name[0], str.snippet.title, str.id)
+                        finArr.push([name[0], str.snippet.title, name[1], str.snippet.thumbnails('maxres').url])
+                        console.log(name[0], str.snippet.title, str.id, str.snippet.thumbnails('maxres').url)
                     }
                 }
             }

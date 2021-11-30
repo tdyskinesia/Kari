@@ -42,6 +42,7 @@ if(strArr!=null&&strArr.length>0){
                         streamName: str[1],
                         dStart: new Date(),
                         videoID: vidID,
+                        thumbnailUrl: str[3],
                         talent_id: dupe._id
                     })
                     await dupe.streams.push(ObjectId(s._id))
@@ -105,7 +106,7 @@ const updateStatus = async() => {
     }
     if(strArr.length==1){
         if(++counter3>=3){
-            counter = 0;
+            counter3 = 0;
             next(client); return
         }
 

@@ -43,7 +43,7 @@ const memberHandler = require('./internals/member-handler.js')
 
 const guildHandler = require('./internals/guild-handler.js')
 
-const talentSchema  = require('./data/models.js')
+const models = require('./data/models.js')
 
 const memberRoles = require('./internals/member-roles.js')
 
@@ -82,7 +82,7 @@ client.once('ready', async () =>{
     
 });
 
-client.on('messageCreate', message =>{
+client.on('messageCreate', async(message) =>{
     if(!message.content.startsWith(prefix) || message.author.bot) return;
     const args = message.content.slice(prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
@@ -158,7 +158,11 @@ client.on('messageCreate', message =>{
         client.commands.get('ping').execute(message, args);
     }
     else if (command === 'live'){
-        
+        let a = models.stream.find({guildID: message.guild.id, dStart: {$exists: true}}).lean().exec()
+        let strArr = []
+        for await(const stream of a){
+            strArr.push((await models.talent.findById(stream._id)).name+": "+stream.streamName + "<https://www.youtube.com/watch?v="+stream.videoID+">")
+        }
     }
     else if(command === 'deeznuts'){
         message.channel.send("deez nuts")
