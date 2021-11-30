@@ -161,8 +161,12 @@ client.on('messageCreate', async(message) =>{
         let a = models.stream.find({guildID: message.guild.id, dStart: {$exists: true}}).lean().exec()
         let strArr = []
         for await(const stream of a){
-            strArr.push((await models.talent.findById(stream._id)).name+": "+stream.streamName + "<https://www.youtube.com/watch?v="+stream.videoID+">")
+            if(stream.thumbnailUrl!=null){
+                strArr.push((await models.talent.findById(stream._id)).name+": "+stream.streamName + "<https://www.youtube.com/watch?v="+stream.videoID+">" +
+                stream.thumbnailUrl)
+            } else strArr.push((await models.talent.findById(stream._id)).name+": "+stream.streamName + "<https://www.youtube.com/watch?v="+stream.videoID+">")
         }
+        message.channel.send(strArr.join("\n"))
     }
     else if(command === 'deeznuts'){
         message.channel.send("deez nuts")
