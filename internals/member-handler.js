@@ -417,7 +417,8 @@ module.exports = {
         try{
             let userID = mship.userID
             let DM = await client.users.cache.get(userID).createDM()
-            let guild = await client.guilds.fetch(mship.guildID)
+            await models.guild.findOne({membership_IDs: ObjectId(mship._id)})
+            let guild = await client.guilds.fetch((await models.guild.findOne({membership_IDs: ObjectId(mship._id)})).guildID)
             
             await DM.send(`Hi! You have one more day to renew your membership to ${mship.talentName}! Please verify in ${guild.name}'s verification channel. Thank you!`)
             await membership.findByIdAndUpdate(mship._id, {'$set': {"notifyFlag": false}}).exec()
