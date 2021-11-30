@@ -3,7 +3,7 @@ Discord youtube stream notification bot for small communities who like a heads u
   
 DM dyskinesia#5199 if interested in the Kari project and her capabilities.  
   
-Because of youtube api limits Kari currently works off of a selenium web scrape to determine stream info. It is an ongoing project.   
+Currently works off of youtupe api and node-fetch to determine upcoming stream times.   
   
 Current Features:  
 Upcoming Stream Bulletin w/ Timezones per Channel Sub  
