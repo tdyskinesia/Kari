@@ -158,7 +158,7 @@ client.on('messageCreate', async(message) =>{
         client.commands.get('ping').execute(message, args);
     }
     else if (command === 'live'){
-        let a = models.stream.find({guildID: message.guild.id, dStart: {$exists: true}}).lean().exec()
+        let a = await models.stream.find({guildID: message.guild.id, dStart: {$exists: true}}).lean().exec()
         let strArr = []
         for await(const stream of a){
             if(stream.thumbnailUrl!=null){
