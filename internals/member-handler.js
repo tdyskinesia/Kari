@@ -419,7 +419,7 @@ module.exports = {
             let DM = await client.users.cache.get(userID).createDM()
             let guild = await client.guilds.fetch(member.guildID)
             
-            await DM.send(`Hi! You have one more day to renew your membership to ${mship.talentName}! Please verify in ${guild.name}'s verification channel ${(guild.channels.cache.get((await member_channel.findOne({guildID: guild.id})).channelID)).toString()}. Thank you!`)
+            await DM.send(`Hi! You have one more day to renew your membership to ${mship.talentName}! Please verify in ${guild.name}'s verification channel ${(guild.channels.fetch((await member_channel.findOne({guildID: guild.id})).channelID)).toString()}. Thank you!`)
             mship.notifyFlag = false
             await mship.save();
             return
