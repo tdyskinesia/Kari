@@ -106,7 +106,7 @@ const updateStatus = async() => {
             ]
         })
     }
-    if(strArr.length<4){
+    if(strArr.length<4&&strArr.length>0){
         if(++counter>=strArr.length){
             counter=0
             counter3++
