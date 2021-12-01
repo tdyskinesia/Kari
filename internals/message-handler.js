@@ -9,11 +9,11 @@ const mongoose = require('mongoose');
 const iterate = async(client) => {
 try{
     for await(const guild of models.guild.find({notificationsFlag: true})){
-        for await(const talent of talent.find({guildID: guild.guildID})){
-            for await (const str of stream.find({talent_id: talent._id})){
+        for await(const tal of talent.find({guildID: guild.guildID})){
+            for await (const str of stream.find({talent_id: tal._id})){
                 let curDate = new Date(str.startTime) 
                 if(curDate.setMinutes(curDate.getMinutes()-15) < new Date()){
-                    await (await guild.channels.cache.get(talent.liveChannelID)).send(`Hey <@&${talent.roleID}>! ${talent.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${str.videoID}`)
+                    await (await guild.channels.cache.get(tal.liveChannelID)).send(`Hey <@&${tal.roleID}>! ${tal.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${str.videoID}`)
                     let tal = await talent.findById(str.talent_id)
                         if(tal.liveChannelID!=null){
                             let ch = await (await client.guilds.fetch(tal.guildID)).channels.fetch(tal.liveChannelID)
@@ -24,7 +24,7 @@ try{
                     await stream.deleteOne({_id: str._id}).exec()
                 }
             }
-            await talent.save();
+            await tal.save();
         }
     }
 } catch (e) {console.log(e)}
@@ -41,7 +41,7 @@ notify(client) {
 async clearNotifications(message){
     console.log("Clearing all notifications now")
     for await(const tal of talent.find({guildID: message.guild.id})){
-        await stream.deleteMany({talent_id: talent._id}).exec()
+        await stream.deleteMany({talent_id: tal._id}).exec()
     }
 }
 
