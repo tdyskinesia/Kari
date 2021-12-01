@@ -13,12 +13,12 @@ module.exports = (client, prefix) => {
         if(command === 'suggestion'){
             await message.channel.send('Your suggestion has been logged! Thank you!')
             let DM = await client.users.cache.get('201198863669919744').createDM()
-            DM.send("Suggestion from "+message.author.name + ": "+message.content)
+            DM.send("Suggestion from "+message.author.username + ": "+message.content)
         }
         else if(command === 'bugreport'){
             await message.channel.send('Your bug has been logged. Thank you!')
-            let DM = await client.users.fetch('201198863669919744').createDM()
-            DM.send("Bug Report from "+message.author.name + ": "+message.content)
+            let DM = await client.users.cache.get('201198863669919744').createDM()
+            DM.send("Bug Report from "+message.author.username + ": "+message.content)
         }
     })
 }
