@@ -270,41 +270,43 @@ module.exports = {
             let a = await models.stream.find({guildID: message.guild.id, dStart: {$exists: true}}).lean().exec()
             let embedArr = []
             for await(const stream of a){
-            let tal = await models.talent.findOne({_id: stream.talent_id, guildID: message.guild.id}).lean().exec()
-                if(stream.thumbnailUrl!=null&&stream.description!=null)
-                {
-                    embedArr.push(new Discord.MessageEmbed({
-                        type: "rich",
-                        title: stream.streamName,
-                        description: stream.description,
-                        color: "e6a595",
-                        image: {
-                            url: stream.thumbnailUrl
-                        },
-                        author: {
-                            name: tal.name,
-                            icon_url: tal.profileURL,
-                            url: "https://www.youtube.com/channel/"+tal.youtubeID
-                        },
-                        url: "https://www.youtube.com/watch?v="+stream.videoID
-                    }))
-                    // strArr.push((await models.talent.findById(stream.talent_id)).name+": "+stream.streamName + " <https://www.youtube.com/watch?v="+stream.videoID+">" +
-                    // stream.thumbnailUrl)
-                } 
-                else 
-                {
-                    embedArr.push(new Discord.MessageEmbed({
-                        type: "rich",
-                        title: stream.streamName,
-                        color: "e6a595",
-                        author: {
-                            name: tal.name,
-                            icon_url: tal.profileURL,
-                            url: "https://www.youtube.com/channel/"+tal.youtubeID
-                        },
-                        url: "https://www.youtube.com/watch?v="+stream.videoID
-                    }))
-                // strArr.push((await models.talent.findById(stream.talent_id)).name+": "+stream.streamName + " <https://www.youtube.com/watch?v="+stream.videoID+">")
+                if(tal!=null){
+                let tal = await models.talent.findOne({_id: stream.talent_id, guildID: message.guild.id}).lean().exec()
+                    if(stream.thumbnailUrl!=null&&stream.description!=null)
+                    {
+                        embedArr.push(new Discord.MessageEmbed({
+                            type: "rich",
+                            title: stream.streamName,
+                            description: stream.description,
+                            color: "e6a595",
+                            image: {
+                                url: stream.thumbnailUrl
+                            },
+                            author: {
+                                name: tal.name,
+                                icon_url: tal.profileURL,
+                                url: "https://www.youtube.com/channel/"+tal.youtubeID
+                            },
+                            url: "https://www.youtube.com/watch?v="+stream.videoID
+                        }))
+                        // strArr.push((await models.talent.findById(stream.talent_id)).name+": "+stream.streamName + " <https://www.youtube.com/watch?v="+stream.videoID+">" +
+                        // stream.thumbnailUrl)
+                    } 
+                    else 
+                    {
+                        embedArr.push(new Discord.MessageEmbed({
+                            type: "rich",
+                            title: stream.streamName,
+                            color: "e6a595",
+                            author: {
+                                name: tal.name,
+                                icon_url: tal.profileURL,
+                                url: "https://www.youtube.com/channel/"+tal.youtubeID
+                            },
+                            url: "https://www.youtube.com/watch?v="+stream.videoID
+                        }))
+                    // strArr.push((await models.talent.findById(stream.talent_id)).name+": "+stream.streamName + " <https://www.youtube.com/watch?v="+stream.videoID+">")
+                    }
                 }
             }
             message.channel.send({embeds: embedArr})
