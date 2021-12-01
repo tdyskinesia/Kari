@@ -119,8 +119,10 @@ client.on('messageCreate', async(message) =>{
         guildHandler.boardSet(message, args)
     }
     else if(command === 'board'){
-        let guild = await models.guild.findOne({guildID: message.guild.id})
-        streamHandler.publicBoard(client, guild)
+        if(message.guild.id!='835723287714857031'){
+            let guild = await models.guild.findOne({guildID: message.guild.id})
+            streamHandler.publicBoard(client, guild)
+        }
     }
     else if(command === 'vchset') {
         memberHandler.subChannel(message, args)
@@ -194,36 +196,37 @@ client.on('messageCreate', async(message) =>{
         color: 'fff0f5',
         description:
         "**Administrator Commands**\n"+
-        "*k!guildsetup <-n?>* - Initial command for setting up server. Use -n flag to disable notifications. (For later features.)\n\n"+
+        "*k!guildsetup* - Initial command for setting up server. Follow instructions and re-do if needed.\n\n"+
 
         "**Mod Commands**\n"+
-        "*k!setup <talent name> <YouTube channel ID> <live channel ID> <roleID>* - subs talent to automatic updates\n"+
-        "*k!clearmsgs* - clears all scheduled stream notifications\n"+
-        "*k!bupdate <-o?>* - forces an update to the bulletin. the -o flag outputs the last saved data to the current channel without using any api requests\n"+
-        "*k!clearsub <talent name>* - clears a talent from server database. BE CAREFUL WITH USE. MAY INVALIDATE MEMBERSHIP DATA.\n"+
-        "*k!mrclear <roleID?> (or k!mroleclear)* - if no arguments given, clears talent's member role. otherwise changes the member role to given role ID\n"+
-        "*k!mtlist <talent name>* - lists all members for given talent name\n"+
-        "*k!mremove <talent name> <userID>* - manually removes membership for given user from given talent\n"+
-        "*k!vchset <channelID>* - sets a verification channel\n"+
-        "*k!mrole <talent name> <role ID>* - sets a member role for a talent\n"+
-        "*k!mtalentsetup <talent name> <membership role ID> <alias_1> <alias_2> ...* - Sets up talent only for membership handling. Alias searching not yet implemented for other languages.\n"+
-        "*k!brole <roleID?>* - if roleID argument is found, sets roleID to the given value. otherwise clears booster role.\n\n"+
+        "*k!setup* - Initial command for setting up a talent. Follow instructions, answer with \"n\" on any field to skip it. Re-do if needed.\n"+
+        "*k!clearmsgs* - Clears all scheduled stream notifications.\n"+
+        "*k!board* - Forces an update to the bulletin.\n"+
+        "*k!clearsub <talent's first or last name>* - Clears a talent from server database. BE CAREFUL WITH USE. MAY INVALIDATE MEMBERSHIP DATA.\n"+
+        "*k!mrclear <roleID?> (or k!mroleclear)* - If no arguments given, clears talent's member role. Otherwise changes the member role to given role ID.\n"+
+        "*k!mtlist <talent's first or last name>* - Lists all members for given talent name.\n"+
+        "*k!mremove <talent's first or last name> <userID>* - Manually removes membership for given user from given talent.\n"+
+        "*k!vchset <channelID>* - Sets a verification channel.\n"+
+        "*k!mrole <talent's first or last name> <role ID>* - Sets a member role for a talent.\n"+
+        "*k!mtalentsetup <talent's full name> <membership role ID> <alias_1> <alias_2> ...* - Sets up talent only for membership handling. Alias searching not yet implemented for other languages.\n"+
+        "*k!brole <roleID?>* - If roleID argument is found, sets roleID to the given value. otherwise clears booster role.\n\n"+
         
         "**Tagger Commands**\n"+
-        "*k!timeset <video ID> <minutes>* - manually adds minutes to a previously scheduled notification (to use if a stream is manually rescheduled)\n"+
-        "*k!displaysubs* - displays current sub list\n"+
-        "*k!displaystreams* - displays current upcoming notifications for streams and their rowID for timeset\n\n"+
+        "*k!timeset <video ID> <minutes>* - Manually adds minutes to a previously scheduled notification (to use if a stream is manually rescheduled). (Deprecated, no reason for use.)\n"+
+        "*k!displaysubs* - Displays current sub list. (Deprecated, no reason for use.)\n"+
+        "*k!displaystreams* - Displays current upcoming notifications for streams and their rowID for timeset. (Deprecated, no reason for use.)\n\n"+
 
         "**Booster Commands**\n"+
-        "*k!seticon <role id> <attachment>* - changes role icon for your copa role id (find role id by right clicking your role if you have developer enabled)\n\n"+
+        "*k!seticon <role id> <attachment>* - Changes role icon for your copa role id (find role id by right clicking your role if you have developer enabled). Only works if the copa role is the highest on the user invoking it.\n\n"+
 
         "**General Commands**\n"+
-        "*k!help* - displays this\n"+
-        "*k!github* - displays kari github\n" +
-        "*k!mlist* - displays your current memberships and the staff who verified them\n"+
-        "*k!member <talent name> <MM/DD/YYYY> <attachment>* - adds you to the verification queue. one day before expiration you will recieve a DM notification to update your verification\n"+
-        "*k!ping* - pong\n"+
-        "*k!deeznuts* - what do you think this does?"}]})
+        "*k!help* - Displays this.\n"+
+        "*k!github* - Displays kari github.\n" +
+        "*k!live* - Displays all currently live streams in embeds.\n" +
+        "*k!mlist* - Displays your current memberships and the staff who verified them\n"+
+        "*k!member <talent's first or last name> <MM/DD/YYYY> <attachment>* - Adds you to the verification queue. One day before expiration you will recieve a DM notification to update your verification.\n"+
+        "*k!ping* - Pong!\n"+
+        "||*k!deeznuts*||"}]})
     }
     else if(command === 'github'){
         message.channel.send("https://github.com/tdyskinesia/Kari")

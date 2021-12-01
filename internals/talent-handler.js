@@ -23,28 +23,30 @@ module.exports = {
             await message.channel.send("Input Talent's Full Name **(Required)**")
             const filter = m => {return m.author.id==message.author.id}
             let talentName = (await message.channel.awaitMessages({filter, max: 1, time: 60_000, errors: ['time']})).first()
-            await message.channel.send("Input Talent's YoutubeID **(Required For Notifications or Board Updates)**")
+            await message.channel.send("Input Talent's YoutubeID **(Required For Notifications or Board Updates)**(n to skip)")
             let ytID = (await message.channel.awaitMessages({filter, max: 1, time: 60_000, errors: ['time']})).first()
-            if(ytID.content=='n'){ytID = undefined} else ytID = ytID.content
-            await message.channel.send("Input Talent's Discord Live Channel ID **(Required For Notifications)**")
+            if(ytID.content.toLowerCase()=='n'){ytID = undefined} else ytID = ytID.content
+            await message.channel.send("Input Talent's Discord Live Channel ID **(Required For Notifications)**(n to skip)")
             let liveID = (await message.channel.awaitMessages({filter, max: 1, time: 60_000, errors: ['time']})).first()
-            if(liveID.content=='n'){liveID = undefined} else liveID = liveID.content
-            await message.channel.send("Input Talent's Discord Live Notification Role ID **(Required For Notifications)**")
+            if(liveID.content.toLowerCase()=='n'){liveID = undefined} else liveID = liveID.content
+            await message.channel.send("Input Talent's Discord Live Notification Role ID **(Required For Notifications)**(n to skip)")
             let liveRoleID = (await message.channel.awaitMessages({filter, max: 1, time: 60_000, errors: ['time']})).first()
-            if(liveRoleID.content=='n'){liveRoleID = undefined} else liveRoleID = liveRoleID.content
-            await message.channel.send("Input Talent's Discord Membership Role ID **(Required For Membership Handling)**")
+            if(liveRoleID.content.toLowerCase()=='n'){liveRoleID = undefined} else liveRoleID = liveRoleID.content
+            await message.channel.send("Input Talent's Discord Membership Role ID **(Required For Membership Handling)**(n to skip)")
             let membershipRoleID = (await message.channel.awaitMessages({filter, max: 1, time: 60_000, errors: ['time']})).first()
-            if(membershipRoleID.content=='n'){membershipRoleID = undefined} else membershipRoleID = membershipRoleID.content
+            if(membershipRoleID.content.toLowerCase()=='n'){membershipRoleID = undefined} else membershipRoleID = membershipRoleID.content
         
-            let tal = await talent.create({
-                name: talentName,
-                youtubeID: ytID,
-                liveChannelID: liveID,
-                roleID: liveRoleID,
-                memberRoleID: membershipRoleID,
-                guildName: message.guild.name,
-                guildID: message.guild.id
-            })
+            let tal = await talent.findOneAndUpdate(
+                {name: talentName, guildID: message.guild.id},
+                {'$set':{
+                "name": talentName,
+                "youtubeID": ytID,
+                "liveChannelID": liveID,
+                "roleID": liveRoleID,
+                "memberRoleID": membershipRoleID,
+                "guildName": message.guild.name,
+                "guildID": message.guild.id
+            }}, {upsert: true}).exec()
 
             let liveChannel = message.guild.channels.cache.get(tal.liveChannelID)
             let role = message.guild.roles.cache.get(tal.roleID)
