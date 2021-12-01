@@ -14,7 +14,7 @@ try{
         for await(const tal of talent.find({guildID: guild.guildID})){
             for await (const str of stream.find({talent_id: tal._id})){
                 let curDate = new Date(str.startTime) 
-                let curGuild = client.guilds.fetch(guild.guildID)
+                let curGuild = await client.guilds.fetch(guild.guildID)
                 if(curDate.setMinutes(curDate.getMinutes()-15) < new Date()){
                     await (await curGuild.channels.cache.get(tal.liveChannelID)).send(`Hey <@&${tal.roleID}>! ${tal.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${str.videoID}`)
                     let tal = await talent.findById(str.talent_id)
