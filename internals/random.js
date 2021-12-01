@@ -33,6 +33,7 @@ module.exports = {
      */
     async kari(client) {
         client.on("messageCreate", async(message) =>{
+            if(message.guild==null) return;
             if(message.guild.id!='835723287714857031') return;
             if(message.partial) await message.fetch();
             if(message.author.bot) return;
