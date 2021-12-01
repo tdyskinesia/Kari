@@ -42,12 +42,12 @@ module.exports = {
                     message.channel.send("You guys talking about me?")
                 } 
             }
-            if(message.content.toLowerCase()==":arurupepekekshake:"){
+            if(message.content=="<a:AruruPepeKekShake:908620454338641920>"){
                 let bool = true
                 let messages = await message.channel.messages.fetch({limit: 3})
                 if(messages!=null){
                     messages.forEach(async(msg)=>{
-                        if(msg.content.toLowerCase()!=":arurupepekekshake:"){
+                        if(msg.content!="<a:AruruPepeKekShake:908620454338641920>"){
                             bool = false
                         }
                     })
