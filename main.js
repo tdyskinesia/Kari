@@ -79,7 +79,7 @@ client.once('ready', async () =>{
         await streamHandler.bupdate(client, false)
     }, null, true, 'America/New_York');
     new CronJob('0,30 * * * *', async function() {
-        for(const guild of models.guild.find({boardChannelID: {$exists: true}})){
+        for await(const guild of models.guild.find({boardChannelID: {$exists: true}})){
             await streamHandler.publicBoard(client, guild)
         }
     }, null, true, 'America/New_York');
