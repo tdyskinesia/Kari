@@ -285,12 +285,10 @@ module.exports = {
                     image: {
                         url: stream.thumbnailUrl
                     },
-                    thumbnail:{
-                        url: talent.profileURL
-                    },
                     author: {
                         name: talent.name,
-                        url: `https://www.youtube.com/channel/${talent.youtubeID}`
+                        url: `https://www.youtube.com/channel/${talent.youtubeID}`,
+                        icon_url: talent.profileURL
                     },
                     url: "https://www.youtube.com/watch?v="+stream.videoID
                 }).setTimestamp())
@@ -329,12 +327,10 @@ module.exports = {
                     image: {
                         url: stream.thumbnailUrl
                     },
-                    thumbnail:{
-                        url: talent.profileURL
-                    },
                     author: {
                         name: talent.name,
-                        url: `https://www.youtube.com/channel/${talent.youtubeID}`
+                        url: `https://www.youtube.com/channel/${talent.youtubeID}`,
+                        icon_url: talent.profileURL
                     },
                     url: "https://www.youtube.com/watch?v="+stream.videoID
                 }).setTimestamp())
@@ -347,12 +343,11 @@ module.exports = {
                     footer: {
                         text: 'Updated at'
                     },
-                    thumbnail:{
-                        url: talent.profileURL
-                    },
+                    
                     author: {
                         name: talent.name,
-                        url: `https://www.youtube.com/channel/${talent.youtubeID}`
+                        url: `https://www.youtube.com/channel/${talent.youtubeID}`,
+                        icon_url: talent.profileURL
                     }
                 }).setTimestamp())
         }
