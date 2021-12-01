@@ -100,6 +100,7 @@ module.exports = {
     async bupdate(client, bool, message, args){
         try{
         if(args==null) args=[]
+
         const channel = await client.channels.cache.get('908671236895305760')
         let embedArray = []
         if(args.length==0){
@@ -235,7 +236,8 @@ module.exports = {
     async publicBoard(client, guild, message, args){
         try{
         if(args==null) args=[]
-        const channel = await client.channels.fetch(guild.boardChannelID)
+        const curGuild = await client.guilds.fetch(guild.guildID)
+        const channel = curGuild.channels.resolve(guild.boardChannelID)
         let embedArray = []
         if(message!=null) await message.channel.send("Updating board now!")
         for await (const talent of models.talent.find({guildID: guild.guildID, youtubeID: {$exists: true}})){
