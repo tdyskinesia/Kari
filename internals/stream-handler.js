@@ -360,10 +360,11 @@ module.exports = {
         }
         const messages = await channel.messages.fetch({limit: 100})
         if(messages!=null){
-            for await (const message of messages){
-                if(message.author.id==client.user.id){
-                    await message.delete()
-                }
+                await msgs.forEach(async(msg)=>{
+                    if(msg.author.id===client.user.id){
+                        await msg.delete()
+                    }
+                })
             }
         }
         if(embedArray.length>10){
