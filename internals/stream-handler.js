@@ -144,7 +144,7 @@ module.exports = {
                 
                     }
                 
-                if(liveBool==false){
+            if(liveBool==false){
                 embedArray.push(new Discord.MessageEmbed({
                     type: "rich",
                     title: "UPCOMING STREAMS",
