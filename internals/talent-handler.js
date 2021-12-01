@@ -57,6 +57,7 @@ module.exports = {
             }
         }catch (e){
             await message.channel.send("Incorrect Input or Input Timeout")
+            console.log(e)
         }
     }
 
