@@ -201,11 +201,13 @@ module.exports = {
         }
         const messages = await channel.messages.fetch({limit: 100})
         .then(async(msgs)=> {
+            if(msgs!=null){
                 return await msgs.forEach(async(msg)=>{
                     if(msg.author.id===client.user.id){
                         await msg.delete()
                     }
                 })
+            }
             }).catch((e)=>{
                 console.log(e)
             })
@@ -355,9 +357,11 @@ module.exports = {
             await talent.save();
         }
         const messages = await channel.messages.fetch({limit: 100})
-        for await (const message of messages){
-            if(message.author.id==client.user.id){
-                await message.delete()
+        if(messages!=null){
+            for await (const message of messages){
+                if(message.author.id==client.user.id){
+                    await message.delete()
+                }
             }
         }
         if(embedArray.length>10){
