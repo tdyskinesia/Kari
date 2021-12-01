@@ -64,11 +64,15 @@ const vidInfo = async(names, url) => {
                     }
                 }
             } else if (curStreamDetails.includes("scheduledStartTime")){
-                for await(const name of names){
-                    if(name[1].substring(name[1].length-11)==str.id){
-                        for await(const dupe of talent.find({name: name[0]})){
-                            await stream.findOneAndUpdate({videoID: str.id}, {streamName: str.snippet.title, startTime: str.liveStreamingDetails.scheduledStartTime,
-                            thumbnailUrl: str.snippet.thumbnails.maxres.url, description: str.snippet.description.substring(0, 300)+ "...", talent_id: dupe._id}, {upsert: true}).lean().exec()
+                let now = new Date
+                let strDate = new Date(str.liveStreamingDetails.scheduledStartTime)
+                    if(strDate<now.setMinutes(now.getMinutes()-15)){
+                    for await(const name of names){
+                        if(name[1].substring(name[1].length-11)==str.id){
+                            for await(const dupe of talent.find({name: name[0]})){
+                                await stream.findOneAndUpdate({videoID: str.id}, {streamName: str.snippet.title, startTime: str.liveStreamingDetails.scheduledStartTime,
+                                thumbnailUrl: str.snippet.thumbnails.maxres.url, description: str.snippet.description.substring(0, 300)+ "...", talent_id: dupe._id}, {upsert: true}).lean().exec()
+                            }
                         }
                     }
                 }
