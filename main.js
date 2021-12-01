@@ -97,6 +97,7 @@ client.once('ready', async () =>{
 
 client.on('messageCreate', async(message) =>{
     if(!message.content.startsWith(prefix) || message.author.bot) return;
+    if(message.guild==null) return;
     const args = message.content.slice(prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
     if(message.member.permissions.has("ADMINISTRATOR")){
