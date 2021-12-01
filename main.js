@@ -43,6 +43,8 @@ const memberHandler = require('./internals/member-handler.js')
 
 const guildHandler = require('./internals/guild-handler.js')
 
+const random = require('./internals/random.js')
+
 const models = require('./data/models.js')
 
 const memberRoles = require('./internals/member-roles.js')
@@ -83,6 +85,7 @@ client.once('ready', async () =>{
             await streamHandler.publicBoard(client, guild)
         }
     }, null, true, 'America/New_York');
+    random.kari(client)
     memberRoles(client, prefix);
     messageHandler.notify(client);
     setInterval(messageHandler.notify.bind(null, client), 1000 * 30);
@@ -188,6 +191,9 @@ client.on('messageCreate', async(message) =>{
     }
     else if(command === 'mlist'){
         memberHandler.getMemberships(message)
+    }
+    else if (command === 'mood'){
+        random.mood(message)
     }
     else if(command === 'help'){
         message.channel.send({embeds:[{
