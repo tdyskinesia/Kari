@@ -13,12 +13,16 @@ module.exports = (client, prefix) => {
         if(command === 'suggestion'){
             await message.channel.send('Your suggestion has been logged! Thank you!')
             let DM = await client.users.cache.get('201198863669919744').createDM()
+            if(!message.content.includes('-anonymous')){
             DM.send("Suggestion from "+message.author.username + ": "+message.content)
+        } else DM.send("Suggestion from anonymous: "+message.content)
         }
         else if(command === 'bugreport'){
             await message.channel.send('Your bug has been logged. Thank you!')
             let DM = await client.users.cache.get('201198863669919744').createDM()
+            if(!message.content.includes('-anonymous')){
             DM.send("Bug Report from "+message.author.username + ": "+message.content)
+            } else DM.send("Bug Report from anonymous: "+message.content)
         }
     })
 }
