@@ -11,20 +11,48 @@ module.exports = {
 
     async setupGuild(message, args){
     try{
-            if((await guild.findOne({guildID: message.guild.id}).exec())==null){
-            await guild.create({
-                guildID: message.guild.id,
-                notificationsFlag: true,
-                membership_IDs: [],
-                user_IDs: [],
-                talent_IDs: []
-            })
-            if(args.includes("-n")){
-                await guild.findOneAndUpdate({guildID: message.guild.id}, {'$set': {"notificationsFlag": false}}).exec()
-                await message.channel.send("Notifications flag set to false.")
-            }
-            await message.channel.send("Guild set with " + args.length + " additional parameters.")
-        } else message.channel.send("Guild already set.")
+        let bool = true
+        const filter = m => {return m.author.id==message.author.id}
+        if((await guild.findOne({guildID: message.guild.id}).exec())!=null){
+        await message.channel.send("Guild Already Found. Do You Wish to Continue? **(Y/N)**")
+        boolCheck = (await message.channel.awaitMessages({filter, max: 1, time: 60_000, errors: ['time']})).first()
+        if(boolCheck.content=='Y'){bool = true} else bool = false
+        } 
+            if(bool){
+                await message.channel.send("Input Booster Role ID **(Required For Booster Role Icon Management)**")
+                let boosterRoleID = (await message.channel.awaitMessages({filter, max: 1, time: 60_000, errors: ['time']})).first()
+                if(boosterRoleID.content=='n'){boosterRoleID = undefined} else boosterRoleID = boosterRoleID.content
+                await message.channel.send("Input Board Channel ID **(Required For Upcoming/Live Stream Board)**")
+                let boardID = (await message.channel.awaitMessages({filter, max: 1, time: 60_000, errors: ['time']})).first()
+                if(boardID.content=='n'){boardID = undefined} else boardID = boardID.content
+                await message.channel.send("Option: Y or N for Upcoming Stream Pings **(15 Minutes Before Streams Start)**")
+                let flag = (await message.channel.awaitMessages({filter, max: 1, time: 60_000, errors: ['time']})).first()
+                if(flag.content=='Y'){flag = true} else flag = false
+
+                await guild.create({
+                    guildID: message.guild.id,
+                    notificationsFlag: flag,
+                    boosterRoleID: boosterRoleID,
+                    boardChannelID: boardID,
+                    membership_IDs: [],
+                    user_IDs: [],
+                    talent_IDs: []
+                })
+
+                message.channel.send("Guild set with " + args.length + " additional parameters.")
+            } else message.channel.send("Setup Cancelled Successfully.")
+    } catch (e) {
+        console.log(e)
+        message.channel.send("Failed input or canceled due to time out.")
+    }
+    },
+    async boardSet(message, args){
+        try{
+        if(args.length!=1){
+            await guild.findOneAndUpdate({guildID: message.guild.id}, {'$set':{"boardChannelID": args[0]}}, {upsert: true}).exec()
+            message.channel.send("Board Channel ID Set.")
+
+        } else message.channel.send("Insufficient or too many args")
     } catch (e) {console.log(e)}
     },
     async boosterRoleSet(message, args){

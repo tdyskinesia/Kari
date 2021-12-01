@@ -224,6 +224,157 @@ module.exports = {
     } catch(e) {console.log(e)}
         
     },
+    /**
+     * @param  {Discord.Client} client
+     * @param  {mongoose.Query} guild
+     * @param  {Discord.Message} message
+     * @param  {Array<String>} args
+     */
+    async publicBoard(client, guild, message, args){
+        try{
+        if(args==null) args=[]
+        const channel = await (await client.guilds.fetch(guild.guildID)).channels.fetch(guild.boardChannelID)
+        let embedArray = []
+        if(message!=null) await message.channel.send("Updating board now!")
+        for await (const talent of models.talent.find({guildID: guild.guildID, youtubeID: {$exists: true}})){
+            let fieldArray = []
+            if(talent.profileURL==null){
+            let profileURL = await channelInfo(talent)
+            await models.talent.findByIdAndUpdate(talent._id, {"$set": {profileURL: profileURL}}, {upsert: true})
+            }
+
+            let stream = await models.stream.findOne({talent_id: talent._id}).lean().exec()
+            if(stream!=null){
+                
+            if(stream.dStart==null){
+                let curStart = moment(stream.startTime)
+                //upcoming
+                embedArray.push(new Discord.MessageEmbed({
+                    type: "rich",
+                    title: stream.streamName,
+                    color: '2b7d14',
+                    description: "**In "+ (Math.round(Math.abs(new Date()-new Date(stream.startTime))/3600000)) + " Hours**\n",
+                    fields: [
+                        {
+                          name: "\u200B",
+                          value: "*["+curStart.tz('America/Los_Angeles').format('MM/DD/YYYY HH:mm z')+"]*",
+                          inline: true
+                        },
+                        {
+                          name: "\u200B",
+                          value: "*["+curStart.tz('America/New_York').format('MM/DD/YYYY HH:mm z')+"]*",
+                          inline: true
+                        },
+                        {
+                          name: "\u200B",
+                          value: "*["+curStart.tz('Asia/Tokyo').format('MM/DD/YYYY HH:mm z')+"]*",
+                          inline: true
+                        },
+                        {
+                          name: "\u200B",
+                          value: stream.description
+                        },
+                    ],
+                    footer: {
+                        text: 'Updated at'
+                    },
+                    image: {
+                        url: stream.thumbnailUrl
+                    },
+                    thumbnail:{
+                        url: talent.profileURL
+                    },
+                    author: {
+                        name: talent.name,
+                        url: `https://www.youtube.com/channel/${talent.youtubeID}`
+                    },
+                    url: "https://www.youtube.com/watch?v="+stream.videoID
+                }).setTimestamp())
+            } else {
+                let curStart = moment(stream.dStart)
+                //live now
+                embedArray.push(new Discord.MessageEmbed({
+                    type: "rich",
+                    title: stream.streamName,
+                    color: '2b7d14',
+                    description: "**In "+ (Math.round(Math.abs(new Date()-new Date(stream.dStart))/3600000)) + " Hours**\n",
+                    fields: [
+                        {
+                          name: "\u200B",
+                          value: "*["+curStart.tz('America/Los_Angeles').format('MM/DD/YYYY HH:mm z')+"]*",
+                          inline: true
+                        },
+                        {
+                          name: "\u200B",
+                          value: "*["+curStart.tz('America/New_York').format('MM/DD/YYYY HH:mm z')+"]*",
+                          inline: true
+                        },
+                        {
+                          name: "\u200B",
+                          value: "*["+curStart.tz('Asia/Tokyo').format('MM/DD/YYYY HH:mm z')+"]*",
+                          inline: true
+                        },
+                        {
+                          name: "\u200B",
+                          value: stream.description
+                        },
+                    ],
+                    footer: {
+                        text: 'Updated at'
+                    },
+                    image: {
+                        url: stream.thumbnailUrl
+                    },
+                    thumbnail:{
+                        url: talent.profileURL
+                    },
+                    author: {
+                        name: talent.name,
+                        url: `https://www.youtube.com/channel/${talent.youtubeID}`
+                    },
+                    url: "https://www.youtube.com/watch?v="+stream.videoID
+                }).setTimestamp())
+            }
+        } else {
+                embedArray.push(new Discord.MessageEmbed({
+                    type: "rich",
+                    title: "No Upcoming Stream Found",
+                    color: '911c1c',
+                    footer: {
+                        text: 'Updated at'
+                    },
+                    thumbnail:{
+                        url: talent.profileURL
+                    },
+                    author: {
+                        name: talent.name,
+                        url: `https://www.youtube.com/channel/${talent.youtubeID}`
+                    }
+                }).setTimestamp())
+        }
+            await talent.save();
+        }
+        const messages = await channel.messages.fetch({limit: 100})
+        for await (const message of messages){
+            if(message.author.id==client.user.id){
+                await message.delete()
+            }
+        }
+        if(embedArray.length>10){
+            for(let i = 0; i <= (embedArray.length/10)+1; i+=10){
+                if (i==(embedArray.length/10)+1){
+                    await channel.send({embeds: embedArray.slice(i)})
+                } else {
+                await channel.send({embeds: embedArray.slice(i, i+9)})
+                }
+            }
+        } else {
+        await channel.send({embeds: embedArray})
+        }
+        
+    } catch(e) {console.log(e)}
+        
+    },
     async queryTalents(message, client) {
         let guild = await client.guilds.cache.get(message.guild.id)
             for await (const talent of models.talent.find({guildID: message.guild.id})){
@@ -309,10 +460,11 @@ module.exports = {
                     }
                 }
             }
+            
             message.channel.send({embeds: embedArr})
         } catch (e) {console.log(e)}
     
-        }
+    }     
 
 }
 

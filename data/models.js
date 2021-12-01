@@ -174,6 +174,9 @@ const guild = new mongoose.Schema({
     boosterRoleID:{
         type: String
     },
+    boardChannelID:{
+        type: String
+    },
     membership_IDs: [{type: ObjectId, ref: 'membership'}],
     user_IDs: [{type: ObjectId, ref: 'user'}],
     talent_IDs: [{type: ObjectId, ref: 'talent'}],

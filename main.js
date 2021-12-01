@@ -43,7 +43,7 @@ const memberHandler = require('./internals/member-handler.js')
 
 const guildHandler = require('./internals/guild-handler.js')
 
-// const models = require('./data/models.js')
+const models = require('./data/models.js')
 
 const memberRoles = require('./internals/member-roles.js')
 
@@ -78,6 +78,11 @@ client.once('ready', async () =>{
     new CronJob('15,45 * * * *', async function() {
         await streamHandler.bupdate(client, false)
     }, null, true, 'America/New_York');
+    new CronJob('0,30 * * * *', async function() {
+        for(const guild of models.guild.find({boardChannelID: {$exists: true}})){
+            await streamHandler.publicBoard(client, guild)
+        }
+    }, null, true, 'America/New_York');
     memberRoles(client, prefix);
     messageHandler.notify(client);
     setInterval(messageHandler.notify.bind(null, client), 1000 * 30);
@@ -106,7 +111,13 @@ client.on('messageCreate', async(message) =>{
         messageHandler.clearNotifications()
     }
     else if(command === 'bupdate') {
+        if(message.guild.id=='835723287714857031'){
            streamHandler.bupdate(client, false, message, args)
+        }
+    }
+    else if(command === 'board'){
+        let guild = await models.guild.findOne({guildID: message.guild.id})
+        streamHandler.publicBoard(client, guild)
     }
     else if(command === 'vchset') {
         memberHandler.subChannel(message, args)
