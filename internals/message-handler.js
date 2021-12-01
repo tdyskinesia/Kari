@@ -17,7 +17,6 @@ try{
                 let curGuild = await client.guilds.fetch(guild.guildID)
                 if(curDate.setMinutes(curDate.getMinutes()-15) < new Date()){
                     await (curGuild.channels.fetch(tal.liveChannelID)).send(`Hey <@&${tal.roleID}>! ${tal.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${str.videoID}`)
-                    let tal = await talent.findById(str.talent_id)
                         if(tal.liveChannelID!=null){
                             let ch = await curGuild.channels.fetch(tal.liveChannelID)
                             if(ch.name.includes('🔊')||ch.name.includes('🛑')){
