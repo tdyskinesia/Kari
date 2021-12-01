@@ -29,17 +29,18 @@ module.exports = {
                 let flag = (await message.channel.awaitMessages({filter, max: 1, time: 60_000, errors: ['time']})).first()
                 if(flag.content=='Y'){flag = true} else flag = false
 
-                await guild.create({
-                    guildID: message.guild.id,
-                    notificationsFlag: flag,
-                    boosterRoleID: boosterRoleID,
-                    boardChannelID: boardID,
-                    membership_IDs: [],
-                    user_IDs: [],
-                    talent_IDs: []
-                })
+                await guild.findOneAndUpdate(
+                    {guildID: message.guild.id},
+                    {'$set': {
+                    "notificationsFlag": flag,
+                    "boosterRoleID": boosterRoleID,
+                    "boardChannelID": boardID,
+                    "membership_IDs": [],
+                    "user_IDs": [],
+                    "talent_IDs": []
+                    }}, {upsert: true}).exec()
 
-                message.channel.send("Guild set with " + args.length + " additional parameters.")
+                message.channel.send("Guild set.)
             } else message.channel.send("Setup Cancelled Successfully.")
     } catch (e) {
         console.log(e)
