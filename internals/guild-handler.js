@@ -40,7 +40,7 @@ module.exports = {
                     "talent_IDs": []
                     }}, {upsert: true}).exec()
 
-                message.channel.send("Guild set.)
+                message.channel.send("Guild set.")
             } else message.channel.send("Setup Cancelled Successfully.")
     } catch (e) {
         console.log(e)
