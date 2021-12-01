@@ -7,7 +7,6 @@ module.exports = (client, prefix) => {
         if(message.guild!=null) return;
         if(message.partial) await message.fetch();
         if(message.author.bot) return;
-        if(!message.guild) return;
         if(!message.content.startsWith(prefix)) return;
         const args = message.content.slice(prefix.length).split(/ +/);
         const command = args.shift().toLowerCase();
@@ -18,7 +17,7 @@ module.exports = (client, prefix) => {
         }
         else if(command === 'bugreport'){
             await message.channel.send('Your bug has been logged. Thank you!')
-            let DM = await client.users.cache.get('201198863669919744').createDM()
+            let DM = await client.users.fetch('201198863669919744').createDM()
             DM.send("Bug Report from "+message.author.name + ": "+message.content)
         }
     })
