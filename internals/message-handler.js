@@ -42,10 +42,12 @@ notify(client) {
 },
 
 async clearNotifications(message){
+    try{
     console.log("Clearing all notifications now")
     for await(const tal of talent.find({guildID: message.guild.id})){
         await stream.deleteMany({talent_id: tal._id}).exec()
     }
+} catch (e) {console.log(e)}
 }
 
 }

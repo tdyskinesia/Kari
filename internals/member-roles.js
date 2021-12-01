@@ -74,6 +74,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
     if (user.partial) await user.fetch();
     if (user.bot) return;
     if (!reaction.message.guild) return;
+    try{
     var mChannel = await member_channel.findOne({guildID: reaction.message.guild.id}).lean().exec()
         if(mChannel.channelID==reaction.message.channel.id){
             if(mChannel.verificationIDs.includes(reaction.message.id)){
@@ -96,6 +97,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
         }
     }
 }
+    } catch (e) {console.log(e)}
 })
 
 }

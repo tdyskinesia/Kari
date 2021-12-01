@@ -79,34 +79,38 @@ module.exports = {
      * @param  {Array<String>} args
      */
     async setIcon(message, args){
-    if(message.member.roles.cache.has((await guild.findOne({guildID: message.guild.id}).exec()).boosterRoleID)||message.member.permissions.has("BAN_MEMBERS")){
-        var image = message.attachments
-        if(image.first()!=null){
-        var link = image.first().url
+    try{
+        if(message.member.roles.cache.has((await guild.findOne({guildID: message.guild.id}).exec()).boosterRoleID)||message.member.permissions.has("BAN_MEMBERS")){
+            var image = message.attachments
+            if(image.first()!=null){
+            var link = image.first().url
 
-            if(image.first().size<256000){
+                if(image.first().size<256000){
 
-                if(message.member.roles.cache.has(args[0])&&message.member.roles.highest===message.member.roles.cache.get(args[0])){
+                    if(message.member.roles.cache.has(args[0])&&message.member.roles.highest===message.member.roles.cache.get(args[0])){
 
-                    if(message.guild.me.roles.highest.comparePositionTo(message.member.roles.cache.get(args[0]))>0){
+                        if(message.guild.me.roles.highest.comparePositionTo(message.member.roles.cache.get(args[0]))>0){
 
-                const role = await message.guild.roles.fetch(args[0])
-                await role.setIcon(link)
-                message.channel.send("Role Icon Set")
+                    const role = await message.guild.roles.fetch(args[0])
+                    await role.setIcon(link)
+                    message.channel.send("Role Icon Set")
+
+                        } else {
+                            message.channel.send("Role is out of Kari's permission range.")
+                        }
 
                     } else {
-                        message.channel.send("Role is out of Kari's permission range.")
+                        message.channel.send("You do not have that role ID, or it was not your highest role.")
                     }
 
                 } else {
-                    message.channel.send("You do not have that role ID, or it was not your highest role.")
+                    message.channel.send("Image file size error (over 256kb).")
                 }
-
-            } else {
-                message.channel.send("Image file size error (over 256kb).")
-            }
-        } else { message.channel.send("No file found.") }
-    } else message.channel.send("You are not boosting the server, are not a mod, or a booster role was not set for this server.")
+            } else { message.channel.send("No file found.") }
+        }
+        else message.channel.send("You are not boosting the server, are not a mod, or a booster role was not set for this server.")
+    } catch(e) {console.log(e)}
 
     }
+
 }

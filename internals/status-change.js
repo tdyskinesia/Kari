@@ -6,33 +6,40 @@ const {Types: {ObjectId}} = mongoose;
 const sc = require('./scrape.js')
 
 
-const next = async(client)=>{
+const next = async(client, arr)=>{
     
-it(client); return
+it(client, arr); return
 }
 
 /**
  * @param  {Discord.Client} client
  */
-const it = async(client) => {
+const it = async(client, arr) => {
 try{
 
 
-const statusOptions = [
-    'Reina Sun',
-    'Nene Amano',
-    'Isla Coleman',
-    'Charlotte Suzu',
-    'Aruru Gray',
-    'Shee Icho',
-    'Namiji Freesia',
-    'Lua Asuka',
-    'Neena Makurano'
-]
+// const statusOptions = [
+//     'Reina Sun',
+//     'Nene Amano',
+//     'Isla Coleman',
+//     'Charlotte Suzu',
+//     'Aruru Gray',
+//     'Shee Icho',
+//     'Namiji Freesia',
+//     'Lua Asuka',
+//     'Neena Makurano'
+// ]
+
+const statusOptions = []
+
+for await (const tal of talent.find()){
+    statusOptions.push(tal.name)
+}
 
 
-
+if(arr==null){
 let strArr = await sc()
+} else strArr = arr
 let vidIDs = []
 if(strArr!=null&&strArr.length>0){
     for await(const str of strArr){
@@ -119,8 +126,15 @@ const updateStatus = async() => {
 
     }
     else if (++counter2 >= statusOptions.length){
-        counter = 0;
+        counter2 = 0;
         next(client); return
+    }
+    if(counter2%5==0){
+        let arr = await sc()
+        if(arr!=null){
+            counter2=0
+            next(client, arr); return
+        }
     }
     setTimeout(updateStatus, 1000 * 15)
 }
