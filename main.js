@@ -49,6 +49,8 @@ const models = require('./data/models.js')
 
 const memberRoles = require('./internals/member-roles.js')
 
+const dm = require('./internals/dm-handler.js')
+
 const prefix = 'k!';
 
 const fs = require('fs');
@@ -85,6 +87,7 @@ client.once('ready', async () =>{
             await streamHandler.publicBoard(client, guild)
         }
     }, null, true, 'America/New_York');
+    dm(client, prefix)
     random.kari(client)
     memberRoles(client, prefix);
     messageHandler.notify(client);
