@@ -129,7 +129,7 @@ const updateStatus = async() => {
         counter2 = 0;
         next(client); return
     }
-    if(counter2%5==0){
+    if(counter2!=0 && counter2%5==0){
         let arr = await sc()
         if(arr!=null){
             counter2=0
