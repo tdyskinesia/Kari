@@ -270,8 +270,8 @@ module.exports = {
             let a = await models.stream.find({guildID: message.guild.id, dStart: {$exists: true}}).lean().exec()
             let embedArr = []
             for await(const stream of a){
-                if(tal!=null){
                 let tal = await models.talent.findOne({_id: stream.talent_id, guildID: message.guild.id}).lean().exec()
+                if(tal!=null){
                     if(stream.thumbnailUrl!=null&&stream.description!=null)
                     {
                         embedArr.push(new Discord.MessageEmbed({
