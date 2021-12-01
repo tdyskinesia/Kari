@@ -36,9 +36,9 @@ for await (const tal of talent.find()){
     statusOptions.push(tal.name)
 }
 
-
+let strArr = []
 if(arr==null){
-let strArr = await sc()
+strArr = await sc()
 } else strArr = arr
 let vidIDs = []
 if(strArr!=null&&strArr.length>0){
