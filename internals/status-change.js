@@ -117,7 +117,7 @@ const updateStatus = async() => {
         }
 
     }
-    else if(++counter >= strArr.length&&strArr.length>0){
+    else if(counter >= strArr.length&&strArr.length>0){
         counter = 0;
         next(client); return
 

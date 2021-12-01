@@ -97,7 +97,7 @@ client.on('messageCreate', async(message) =>{
     if(message.member.permissions.has("BAN_MEMBERS")){
 
     if(command === 'setup') {
-        client.commands.get('new setup').execute(message, args)  
+        talentHandler.mainSetup(message, args)
     }
     else if(command === 'clearsub') {
         talentHandler.deleteTalent(message, args)
