@@ -360,7 +360,7 @@ module.exports = {
         }
         const messages = await channel.messages.fetch({limit: 100})
         if(messages!=null){
-                await msgs.forEach(async(msg)=>{
+                await messages.forEach(async(msg)=>{
                     if(msg.author.id===client.user.id){
                         await msg.delete()
                     }
