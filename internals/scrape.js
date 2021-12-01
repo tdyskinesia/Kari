@@ -64,7 +64,7 @@ const vidInfo = async(names, url) => {
                     }
                 }
             } else if (curStreamDetails.includes("scheduledStartTime")){
-                await stream.findOneAndUpdate({videoID: str.id}, {startTime: str.liveStreamingDetails.scheduledStartTime}).lean().exec()
+                await stream.findOneAndUpdate({videoID: str.id}, {startTime: str.liveStreamingDetails.scheduledStartTime}, {upsert: true}).lean().exec()
             }
         }
         return finArr

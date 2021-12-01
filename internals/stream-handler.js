@@ -298,8 +298,8 @@ module.exports = {
                 embedArray.push(new Discord.MessageEmbed({
                     type: "rich",
                     title: stream.streamName,
-                    color: '2b7d14',
-                    description: "**In "+ (Math.round(Math.abs(new Date()-new Date(stream.dStart))/3600000)) + " Hours**\n",
+                    color: 'ff0074',
+                    description: "Live Now!",
                     fields: [
                         {
                           name: "PST",
