@@ -7,6 +7,7 @@ const sc = require('./scrape.js')
 
 
 const next = async(client)=>{
+    
 it(client); return
 }
 
@@ -106,21 +107,15 @@ const updateStatus = async() => {
             ]
         })
     }
-    counter++
-    if(strArr.length<4&&strArr.length>0){
-        if(counter>=strArr.length){
-            counter=0
-            counter3++
-        }
-        if(++counter3>=5){
+    if(strArr.length>0){
+        if(counter3==1){
             counter3 = 0;
             next(client); return
+        } 
+        else if(++counter>=strArr.length){
+            counter=strArr.length-1
+            counter3=1
         }
-
-    }
-    else if(counter >= strArr.length&&strArr.length>0){
-        counter = 0;
-        next(client); return
 
     }
     else if (++counter2 >= statusOptions.length){
