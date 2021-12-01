@@ -366,7 +366,7 @@ module.exports = {
                     }
                 })
             }
-        }
+        
         if(embedArray.length>10){
             for(let i = 0; i <= (embedArray.length/10)+1; i+=10){
                 if (i==(embedArray.length/10)+1){
