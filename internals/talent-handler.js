@@ -37,11 +37,11 @@ module.exports = {
             if(membershipRoleID.first().content=='n'){membershipRoleID = undefined}
         
             let tal = await talent.create({
-                name: talentName,
-                youtubeID: ytID,
-                liveChannelID: liveID,
-                roleID: liveRoleID,
-                memberRoleID: membershipRoleID,
+                name: talentName.first().content,
+                youtubeID: ytID.first().content,
+                liveChannelID: liveID.first().content,
+                roleID: liveRoleID.first().content,
+                memberRoleID: membershipRoleID.first().content,
                 guildName: message.guild.name,
                 guildID: message.guild.id
             })
