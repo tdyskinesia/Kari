@@ -21,7 +21,7 @@ Currently works off of youtupe api and node-fetch to determine upcoming stream t
 ### Administrator Commands
 + k!guildsetup - Initial command for setting up server. Follow instructions and re-do if needed.
 
-###Mod Commands
+### Mod Commands
 + k!setup - Initial command for setting up a talent. Follow instructions, answer with "n" on any field to skip it. Re-do if needed.
 + k!clearmsgs - Clears all scheduled stream notifications.
 + k!board - Forces an update to the bulletin.
