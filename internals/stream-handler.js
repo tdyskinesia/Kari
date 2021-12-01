@@ -302,18 +302,18 @@ module.exports = {
                     description: "**In "+ (Math.round(Math.abs(new Date()-new Date(stream.dStart))/3600000)) + " Hours**\n",
                     fields: [
                         {
-                          name: "\u200B",
-                          value: "*["+curStart.tz('America/Los_Angeles').format('MM/DD/YYYY HH:mm z')+"]*",
+                          name: "PST",
+                          value: "*["+curStart.tz('America/Los_Angeles').format('MM/DD/YYYY hh:mm')+"]*",
                           inline: true
                         },
                         {
-                          name: "\u200B",
-                          value: "*["+curStart.tz('America/New_York').format('MM/DD/YYYY HH:mm z')+"]*",
+                          name: "EST",
+                          value: "*["+curStart.tz('America/New_York').format('MM/DD/YYYY hh:mm')+"]*",
                           inline: true
                         },
                         {
-                          name: "\u200B",
-                          value: "*["+curStart.tz('Asia/Tokyo').format('MM/DD/YYYY HH:mm z')+"]*",
+                          name: "JST",
+                          value: "*["+curStart.tz('Asia/Tokyo').format('MM/DD/YYYY HH:mm')+"]*",
                           inline: true
                         },
                         {
