@@ -51,7 +51,7 @@ module.exports = {
             let memRole = message.guild.roles.cache.get(tal.memberRoleID)
             await message.channel.send(`New sub entered! {Name: ${tal.name} YTID: ${tal.youtubeID} Live Channel: ${liveChannel.toString()} Live Role Name: ${role.name} Membership Role Name: ${memRole.name}}`)
             await message.channel.send(`If any info for your channel sub is incorrect, use k!subclear <talent name> and restart the sub process.`)
-            if(tal.liveID!=null){
+            if(tal.liveChannelID!=null){
                 let ch = await message.guild.channels.fetch(tal.liveID)
                 await ch.setName('🛑'.concat(ch.name))
             }
