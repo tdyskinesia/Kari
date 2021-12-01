@@ -102,7 +102,7 @@ client.on('messageCreate', async(message) =>{
     if(message.member.permissions.has("BAN_MEMBERS")){
 
     if(command === 'setup') {
-        talentHandler.mainSetup(message, args)
+        talentHandler.mainSetup(message, args, client)
     }
     else if(command === 'clearsub') {
         talentHandler.deleteTalent(message, args)
@@ -114,6 +114,9 @@ client.on('messageCreate', async(message) =>{
         if(message.guild.id=='835723287714857031'){
            streamHandler.bupdate(client, false, message, args)
         }
+    }
+    else if(command === 'boardset'){
+        guildHandler.boardSet(message, args)
     }
     else if(command === 'board'){
         let guild = await models.guild.findOne({guildID: message.guild.id})

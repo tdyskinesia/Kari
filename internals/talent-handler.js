@@ -18,7 +18,7 @@ module.exports = {
      * @param  {Discord.Message} message
      * @param  {Array<String>} args
      */
-    async mainSetup(message, args){
+    async mainSetup(message, args, client){
         try{
             await message.channel.send("Input Talent's Full Name **(Required)**")
             const filter = m => {return m.author.id==message.author.id}
