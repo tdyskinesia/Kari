@@ -44,7 +44,7 @@ module.exports = {
                 "roleID": liveRoleID,
                 "memberRoleID": membershipRoleID,
                 "guildName": message.guild.name,
-            }}, {upsert: true}).exec()
+            }}, {new: true, upsert: true}).exec()
 
 
             let liveChannel = ""; let role = ""; let memRole = "";

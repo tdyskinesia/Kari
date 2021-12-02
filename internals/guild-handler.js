@@ -38,7 +38,7 @@ module.exports = {
                     "membership_IDs": [],
                     "user_IDs": [],
                     "talent_IDs": []
-                    }}, {upsert: true}).exec()
+                    }}, {new: true, upsert: true}).exec()
 
                 message.channel.send("Guild set.")
             } else message.channel.send("Setup Cancelled Successfully.")
