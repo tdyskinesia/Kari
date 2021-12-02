@@ -51,6 +51,7 @@ const vidInfo = async(names, url) => {
             "part": ["snippet", "liveStreamingDetails"],
             "id": vidIDs
         })
+        console.log(response)
         for await(const str of response.data.items){
             let curStreamDetails = JSON.stringify(str.liveStreamingDetails)
             if(curStreamDetails.includes("actualStartTime")&&!curStreamDetails.includes("actualEndTime")){
