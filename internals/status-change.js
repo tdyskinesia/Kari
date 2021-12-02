@@ -43,6 +43,7 @@ strArr = await sc()
 let vidIDs = []
 if(strArr!=null&&strArr.length>0){
     for await(const str of strArr){
+        console.log(str)
         let vidID = str[2].substring(str[2].length-11)
         await stream.deleteMany({videoID: vidID, startTime: {$exists: true}}).exec()
             if((await stream.find({videoID: vidID, dStart: {$exists: true}}).exec()).length==0){
