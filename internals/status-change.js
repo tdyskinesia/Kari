@@ -89,6 +89,7 @@ if(strArr!=null&&strArr.length>0){
 let counter = 0
 let counter2 = 0
 let counter3 = 0
+let finalBool = false
 
 const updateStatus = async() => {
     if(strArr.length!=0){
@@ -122,6 +123,11 @@ const updateStatus = async() => {
         else if(++counter>=strArr.length){
             counter=strArr.length-1
             counter3=1
+            if(strArr.length<=2&&!finalBool){
+            counter3=0
+            counter=0
+            finalBool = true
+            }
         }
 
     }
