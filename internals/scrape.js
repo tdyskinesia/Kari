@@ -79,7 +79,7 @@ const vidInfo = async(names, url) => {
                     }
                 }
             } else if (curStreamDetails.includes("scheduledStartTime")){
-                let now = new Date
+                let now = new Date()
                 let strDate = new Date(str.liveStreamingDetails.scheduledStartTime)
                 console.log(str.snippet.title)
                     if(strDate<now.setMinutes(now.getMinutes()-15)){
