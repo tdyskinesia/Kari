@@ -49,7 +49,8 @@ const vidInfo = async(names, url) => {
         vidIDs.join()
         var response = await yt.videos.list({
             "part": ["snippet", "liveStreamingDetails"],
-            "id": vidIDs
+            "id": vidIDs,
+            "maxResults": 50
         })
         console.log(response)
         for await(const str of response.data.items){
