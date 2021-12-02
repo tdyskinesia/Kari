@@ -40,7 +40,7 @@ module.exports = {
             if(!message.guild) return;
             if(message.content.toLowerCase().includes("kari")){
                 
-                if((Math.random() * (Math.floor(35) - Math.ceil(1)) + Math.ceil(1))==15){
+                if(Math.floor(Math.random() * (Math.floor(35) - Math.ceil(1)) + Math.ceil(1))==15){
                     message.channel.send("You guys talking about me?")
                 } 
             }
