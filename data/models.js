@@ -125,18 +125,18 @@ const talent = new mongoose.Schema({
     streams: [{type: ObjectId, ref: 'stream'}],
 
     //to remove
-    upcomingStreams: {
-        type: [stream],
-        // required: false
-    },
-    liveStream: {
-        type: stream,
-        // required: false
-    },
-    pastStreams: {
-        type: [stream],
-        // required: false
-    }
+    // upcomingStreams: {
+    //     type: [stream],
+    //     // required: false
+    // },
+    // liveStream: {
+    //     type: stream,
+    //     // required: false
+    // },
+    // pastStreams: {
+    //     type: [stream],
+    //     // required: false
+    // }
 })
 
 
