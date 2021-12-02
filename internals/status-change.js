@@ -139,6 +139,7 @@ const updateStatus = async() => {
     if(counter2!=0 && counter2%5==0){
         let arr = await sc()
         if(arr!=null){
+            console.log(arr)
             counter2=0
             next(client, arr); return
         }
