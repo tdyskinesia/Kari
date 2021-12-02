@@ -48,9 +48,11 @@ module.exports = {
                 "guildID": message.guild.id
             }}, {upsert: true}).exec()
 
-            if(tal.liveChannelID!=null) {let liveChannel = message.guild.channels.cache.get(tal.liveChannelID).toString()} else let liveChannel = "NULL"
-            if(tal.roleID!=null) {let role = message.guild.roles.cache.get(tal.roleID).name} else let role = "NULL"
-            if(tal.memberRoleID!=null) {let memRole = message.guild.roles.cache.get(tal.memberRoleID).name} else let memRole = "NULL"
+
+            let liveChannel = ""; let role = ""; let memRole = "";
+            if(tal.liveChannelID!=null) {liveChannel = message.guild.channels.cache.get(tal.liveChannelID).toString()} else liveChannel = "NULL"
+            if(tal.roleID!=null) {role = message.guild.roles.cache.get(tal.roleID).name} else role = "NULL"
+            if(tal.memberRoleID!=null) {memRole = message.guild.roles.cache.get(tal.memberRoleID).name} else memRole = "NULL"
             await message.channel.send(`New sub entered! {Name: ${tal.name} YTID: ${tal.youtubeID} Live Channel: ${liveChannel} Live Role Name: ${role} Membership Role Name: ${memRole}}`)
             await message.channel.send(`If any info for your channel sub is incorrect, use k!subclear <talent name> and restart the sub process.`)
             if(tal.liveChannelID!=null){
