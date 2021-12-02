@@ -47,14 +47,20 @@ const vidInfo = async(names, url) => {
             vidIDs.push(i.substring(i.length-11))
         }
         vidIDs.join()
-        let fullLength = vidIDs.length
         let results = null
         let itemArr = []
-        for(var i = 0; i < vidIDs.length; i+10){
+        for(var i = 0; i < vidIDs.length; i+=10){
+            if(i<=vidIDs.length){
             results = await yt.videos.list({
                 "part": ["snippet", "liveStreamingDetails"],
                 "id": vidIDs.slice(i, i+9)
             })
+            } else {
+                results = await yt.videos.list({
+                    "part": ["snippet", "liveStreamingDetails"],
+                    "id": vidIDs.slice(i)
+                })
+            }
             for await (const item of results.data.items){
                 itemArr.push(item)
                 console.log(item.snippet.title)
