@@ -50,7 +50,8 @@ const vidInfo = async(names, url) => {
         console.log(vidIDs)
         let results = null
         let itemArr = []
-        for await(var i = 0; i < vidIDs.length; i+=9){
+        const arrFill = async()=>{
+        for(var i = 0; i < vidIDs.length; i+=9){
             if(i+8<vidIDs.length){
             results = await yt.videos.list({
                 "part": ["snippet", "liveStreamingDetails"],
@@ -65,7 +66,13 @@ const vidInfo = async(names, url) => {
             for await (const item of results.data.items){
                 itemArr.push(item)
             }
+            if(i+9>=vidIDs.length){
+                return itemArr
+            }
         }
+    }
+        itemArr = await arrFill()
+        
         for await(const str of itemArr){
             let curStreamDetails = JSON.stringify(str.liveStreamingDetails)
             console.log(curStreamDetails)
