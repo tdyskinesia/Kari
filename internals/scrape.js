@@ -47,13 +47,32 @@ const vidInfo = async(names, url) => {
             vidIDs.push(i.substring(i.length-11))
         }
         vidIDs.join()
-        var response = await yt.videos.list({
-            "part": ["snippet", "liveStreamingDetails"],
-            "id": vidIDs,
-            "maxResults": 50
-        })
-        console.log(response)
-        for await(const str of response.data.items){
+        let itemArr = []
+        const getResponse = async(nextPageToken)=>{
+        if(nextPageToken==null){
+            return await yt.videos.list({
+                "part": ["snippet", "liveStreamingDetails"],
+                "id": vidIDs,
+                "maxResults": 50
+            })
+        } else {
+            return await yt.videos.list({
+                "part": ["snippet", "liveStreamingDetails"],
+                "id": vidIDs,
+                "maxResults": 50,
+                "pageToken": nextPageToken
+            })
+        }
+        }
+        var response = await getResponse()
+        while(response.data.nextPageToken!=null){
+            for(const item of response.data.items){
+                itemArr.push(item)
+            }
+            response = await getResponse(response.data.nextPageToken)
+        }
+        
+        for await(const str of itemArr){
             let curStreamDetails = JSON.stringify(str.liveStreamingDetails)
             if(curStreamDetails.includes("actualStartTime")&&!curStreamDetails.includes("actualEndTime")){
                 //titArr.push([str.snippet.title, str.id])
