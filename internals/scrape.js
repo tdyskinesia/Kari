@@ -47,31 +47,19 @@ const vidInfo = async(names, url) => {
             vidIDs.push(i.substring(i.length-11))
         }
         vidIDs.join()
+        let fullLength = vidIDs.length
+        let results = null
         let itemArr = []
-        const getResponse = async(nextPageToken)=>{
-        if(nextPageToken==null){
-            return await yt.videos.list({
+        for(var i = 0; i < vidIDs.length; i+10){
+            results = await yt.videos.list({
                 "part": ["snippet", "liveStreamingDetails"],
-                "id": vidIDs,
-                "maxResults": 50
+                "id": vidIDs.slice(i, i+9)
             })
-        } else {
-            return await yt.videos.list({
-                "part": ["snippet", "liveStreamingDetails"],
-                "id": vidIDs,
-                "maxResults": 50,
-                "pageToken": nextPageToken
-            })
-        }
-        }
-        var response = await getResponse()
-        while(response.data.nextPageToken!=null){
-            for(const item of response.data.items){
+            for await (const item of results.data.items){
                 itemArr.push(item)
+                console.log(item.snippet.title)
             }
-            response = await getResponse(response.data.nextPageToken)
         }
-        
         for await(const str of itemArr){
             let curStreamDetails = JSON.stringify(str.liveStreamingDetails)
             if(curStreamDetails.includes("actualStartTime")&&!curStreamDetails.includes("actualEndTime")){
@@ -90,7 +78,6 @@ const vidInfo = async(names, url) => {
                     if(strDate<now.setMinutes(now.getMinutes()-15)){
                     for await(const name of names){
                         if(name[1].substring(name[1].length-11)==str.id){
-                            console.log(name[0])
                             for await(const dupe of talent.find({name: name[0]})){
                                 await stream.findOneAndUpdate({videoID: str.id}, {streamName: str.snippet.title, startTime: str.liveStreamingDetails.scheduledStartTime,
                                 thumbnailUrl: str.snippet.thumbnails.maxres.url, description: str.snippet.description.substring(0, 300)+ "...", talent_id: dupe._id}, {upsert: true}).lean().exec()
