@@ -52,10 +52,10 @@ const vidInfo = async(names, url) => {
         let itemArr = []
         const arrFill = async()=>{
         for(var i = 0; i < vidIDs.length; i+=9){
-            if(i+8<vidIDs.length){
+            if(i+9<vidIDs.length){
             results = await yt.videos.list({
                 "part": ["snippet", "liveStreamingDetails"],
-                "id": vidIDs.slice(i, i+8)
+                "id": vidIDs.slice(i, i+9)
             })
             } else {
                 results = await yt.videos.list({
