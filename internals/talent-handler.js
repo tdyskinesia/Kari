@@ -39,13 +39,11 @@ module.exports = {
             let tal = await talent.findOneAndUpdate(
                 {name: talentName, guildID: message.guild.id},
                 {'$set':{
-                "name": talentName,
                 "youtubeID": ytID,
                 "liveChannelID": liveID,
                 "roleID": liveRoleID,
                 "memberRoleID": membershipRoleID,
                 "guildName": message.guild.name,
-                "guildID": message.guild.id
             }}, {upsert: true}).exec()
 
 
