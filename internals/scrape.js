@@ -47,6 +47,7 @@ const vidInfo = async(names, url) => {
             vidIDs.push(i.substring(i.length-11))
         }
         vidIDs.join()
+        console.log(vidIDs)
         let results = null
         let itemArr = []
         for(var i = 0; i < vidIDs.length; i+=10){
