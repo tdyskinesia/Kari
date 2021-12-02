@@ -64,7 +64,6 @@ const vidInfo = async(names, url) => {
             }
             for await (const item of results.data.items){
                 itemArr.push(item)
-                console.log(item.snippet.title)
             }
         }
         for await(const str of itemArr){
@@ -82,10 +81,12 @@ const vidInfo = async(names, url) => {
             } else if (curStreamDetails.includes("scheduledStartTime")){
                 let now = new Date
                 let strDate = new Date(str.liveStreamingDetails.scheduledStartTime)
+                console.log(str.snippet.title)
                     if(strDate<now.setMinutes(now.getMinutes()-15)){
                     for await(const name of names){
                         if(name[1].substring(name[1].length-11)==str.id){
                             for await(const dupe of talent.find({name: name[0]})){
+                                console.log(name[0])
                                 await stream.findOneAndUpdate({videoID: str.id}, {streamName: str.snippet.title, startTime: str.liveStreamingDetails.scheduledStartTime,
                                 thumbnailUrl: str.snippet.thumbnails.maxres.url, description: str.snippet.description.substring(0, 300)+ "...", talent_id: dupe._id}, {upsert: true}).lean().exec()
                             }
