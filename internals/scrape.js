@@ -50,7 +50,7 @@ const vidInfo = async(names, url) => {
         console.log(vidIDs)
         let results = null
         let itemArr = []
-        for(var i = 0; i < vidIDs.length; i+=9){
+        for await(var i = 0; i < vidIDs.length; i+=9){
             if(i+8<vidIDs.length){
             results = await yt.videos.list({
                 "part": ["snippet", "liveStreamingDetails"],
@@ -82,7 +82,7 @@ const vidInfo = async(names, url) => {
             } else if (curStreamDetails.includes("scheduledStartTime")){
                 let now = new Date()
                 let strDate = new Date(str.liveStreamingDetails.scheduledStartTime)
-                console.log(str.snippet.title)
+                console.log(str.liveStreamingDetails.scheduledStartTime)
                     if(strDate<now.setMinutes(now.getMinutes()-15)){
                     for await(const name of names){
                         if(name[1].substring(name[1].length-11)==str.id){
