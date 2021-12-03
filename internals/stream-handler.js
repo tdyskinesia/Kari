@@ -241,13 +241,10 @@ module.exports = {
         let embedArray = []
         if(message!=null) await message.channel.send("Updating board now!")
         for await (const talent of models.talent.find({guildID: guild.guildID, youtubeID: {$exists: true}})){
-            let fieldArray = []
             if(talent.profileURL==null){
             let profileURL = await channelInfo(talent)
             await models.talent.findByIdAndUpdate(talent._id, {"$set": {profileURL: profileURL}}, {upsert: true})
             }
-
-
             let stream = await models.stream.findOne({talent_id: talent._id, dStart: {$exists: true}})
             if(stream==null) 
             {
