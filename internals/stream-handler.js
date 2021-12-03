@@ -247,52 +247,75 @@ module.exports = {
             await models.talent.findByIdAndUpdate(talent._id, {"$set": {profileURL: profileURL}}, {upsert: true})
             }
 
-            for await (const stream of models.stream.find({talent_id: talent._id})){
-            if(stream!=null){
-                
-            if(stream.dStart==null){
-                let curStart = moment(stream.startTime)
-                //upcoming
-                embedArray.push(new Discord.MessageEmbed({
-                    type: "rich",
-                    title: stream.streamName,
-                    color: '2b7d14',
-                    description: "**In "+ (Math.round(Math.abs(new Date()-new Date(stream.startTime))/3600000)) + " Hours**\n",
-                    fields: [
-                        {
-                            name: "PST",
-                            value: "*["+curStart.tz('America/Los_Angeles').format('MM/DD/YYYY hh:mm')+"]*",
-                            inline: true
-                          },
-                          {
-                            name: "EST",
-                            value: "*["+curStart.tz('America/New_York').format('MM/DD/YYYY hh:mm')+"]*",
-                            inline: true
-                          },
-                          {
-                            name: "JST",
-                            value: "*["+curStart.tz('Asia/Tokyo').format('MM/DD/YYYY HH:mm')+"]*",
-                            inline: true
-                          },
-                          {
-                            name: "\u200B",
-                            value: stream.description
-                          },
-                    ],
-                    footer: {
-                        text: 'Updated at'
-                    },
-                    image: {
-                        url: stream.thumbnailUrl
-                    },
-                    author: {
-                        name: talent.name,
-                        url: `https://www.youtube.com/channel/${talent.youtubeID}`,
-                        icon_url: talent.profileURL
-                    },
-                    url: "https://www.youtube.com/watch?v="+stream.videoID
-                }).setTimestamp())
-            } else {
+
+            let stream = await models.stream.findOne({talent_id: talent._id, dStart: {$exists: true}})
+            if(stream==null) 
+            {
+                stream = await models.stream.findOne({talent_id: talent._id}).sort({startTime: -1})
+                if(stream.startTime==null)
+                {
+                    embedArray.push(new Discord.MessageEmbed({
+                        type: "rich",
+                        title: "No Upcoming Stream Found",
+                        color: '911c1c',
+                        footer: {
+                            text: 'Updated at'
+                        },
+                        
+                        author: {
+                            name: talent.name,
+                            url: `https://www.youtube.com/channel/${talent.youtubeID}`,
+                            icon_url: talent.profileURL
+                        }
+                    }).setTimestamp())
+                }
+                else
+                {
+                    let curStart = moment(stream.startTime)
+                    //upcoming
+                    embedArray.push(new Discord.MessageEmbed({
+                        type: "rich",
+                        title: stream.streamName,
+                        color: '2b7d14',
+                        description: "**In "+ (Math.round(Math.abs(new Date()-new Date(stream.startTime))/3600000)) + " Hours**\n",
+                        fields: [
+                            {
+                                name: "PST",
+                                value: "*["+curStart.tz('America/Los_Angeles').format('MM/DD/YYYY hh:mm')+"]*",
+                                inline: true
+                              },
+                              {
+                                name: "EST",
+                                value: "*["+curStart.tz('America/New_York').format('MM/DD/YYYY hh:mm')+"]*",
+                                inline: true
+                              },
+                              {
+                                name: "JST",
+                                value: "*["+curStart.tz('Asia/Tokyo').format('MM/DD/YYYY HH:mm')+"]*",
+                                inline: true
+                              },
+                              {
+                                name: "\u200B",
+                                value: stream.description
+                              },
+                        ],
+                        footer: {
+                            text: 'Updated at'
+                        },
+                        image: {
+                            url: stream.thumbnailUrl
+                        },
+                        author: {
+                            name: talent.name,
+                            url: `https://www.youtube.com/channel/${talent.youtubeID}`,
+                            icon_url: talent.profileURL
+                        },
+                        url: "https://www.youtube.com/watch?v="+stream.videoID
+                    }).setTimestamp())
+                }
+            }
+            else
+            {
                 let curStart = moment(stream.dStart)
                 //live now
                 embedArray.push(new Discord.MessageEmbed({
@@ -335,23 +358,7 @@ module.exports = {
                     url: "https://www.youtube.com/watch?v="+stream.videoID
                 }).setTimestamp())
             }
-        } else {
-                embedArray.push(new Discord.MessageEmbed({
-                    type: "rich",
-                    title: "No Upcoming Stream Found",
-                    color: '911c1c',
-                    footer: {
-                        text: 'Updated at'
-                    },
-                    
-                    author: {
-                        name: talent.name,
-                        url: `https://www.youtube.com/channel/${talent.youtubeID}`,
-                        icon_url: talent.profileURL
-                    }
-                }).setTimestamp())
-        }
-        }
+                
             await talent.save();
         }
         const messages = await channel.messages.fetch({limit: 100})
