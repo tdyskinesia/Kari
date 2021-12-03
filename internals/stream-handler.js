@@ -275,7 +275,9 @@ module.exports = {
                         title: stream.streamName,
                         color: '2b7d14',
                         description: "**In "+ (Math.round(Math.abs(new Date()-new Date(stream.startTime))/3600000)) + " Hours**\n",
-                        thumbnail: "https://www.youtube.com/watch?v="+stream.videoID,
+                        thumbnail: {
+                            url: "https://www.youtube.com/watch?v="+stream.videoID,
+                        },
                         fields: [
                             {
                                 name: "PST",
