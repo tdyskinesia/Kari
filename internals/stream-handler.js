@@ -299,7 +299,7 @@ module.exports = {
                         footer: {
                             text: 'Updated at'
                         },
-                        thumbnail: {
+                        image: {
                             url: stream.thumbnailUrl
                         },
                         author: {
