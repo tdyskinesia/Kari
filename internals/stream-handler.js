@@ -247,7 +247,7 @@ module.exports = {
             await models.talent.findByIdAndUpdate(talent._id, {"$set": {profileURL: profileURL}}, {upsert: true})
             }
 
-            let stream = await models.stream.findOne({talent_id: talent._id}).lean().exec()
+            for await (const stream of models.stream.find({talent_id: talent._id})){
             if(stream!=null){
                 
             if(stream.dStart==null){
@@ -350,6 +350,7 @@ module.exports = {
                         icon_url: talent.profileURL
                     }
                 }).setTimestamp())
+        }
         }
             await talent.save();
         }
