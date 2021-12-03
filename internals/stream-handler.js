@@ -275,9 +275,6 @@ module.exports = {
                         title: stream.streamName,
                         color: '2b7d14',
                         description: "**In "+ (Math.round(Math.abs(new Date()-new Date(stream.startTime))/3600000)) + " Hours**\n",
-                        thumbnail: {
-                            url: "https://www.youtube.com/watch?v="+stream.videoID,
-                        },
                         fields: [
                             {
                                 name: "PST",
@@ -302,7 +299,7 @@ module.exports = {
                         footer: {
                             text: 'Updated at'
                         },
-                        image: {
+                        thumbnail: {
                             url: stream.thumbnailUrl
                         },
                         author: {
@@ -310,7 +307,7 @@ module.exports = {
                             url: `https://www.youtube.com/channel/${talent.youtubeID}`,
                             icon_url: talent.profileURL
                         },
-                        
+                        url: "https://www.youtube.com/watch?v="+stream.videoID
                     }).setTimestamp())
                 }
             }
