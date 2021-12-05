@@ -267,7 +267,7 @@ module.exports = {
                         } else await message.channel.send("User already had role assigned."); return
                     }
             } else {
-                await membership.findByIdAndUpdate(foundMembership._id, {'$set': {"expiration" : exDate}}).exec()
+                await membership.findByIdAndUpdate(foundMembership._id, {'$set': {"expiration" : exDate, "notifyFlag" : false}}).exec()
                 await message.channel.send(message.author.username + " is already verified for " + talentName +". Changed expiration to " + exDate.toDateString()); return;
             }
         
