@@ -20,7 +20,7 @@ module.exports = async(client, prefix) => {
             let data = channel.verificationIDs
                 for(var i in data){
                     let ch = client.channels.cache.get(channel.channelID)
-                    let m = await ch.messages.fetch((data[i]), false)
+                    let m = await ch.messages.fetch(data[i])
                     let d = new Date()
                     if(m.createdAt < d.setDate(d.getDate()-3)){
                         await member_channel.findOneAndUpdate({guildID: channel.guildID}, 
