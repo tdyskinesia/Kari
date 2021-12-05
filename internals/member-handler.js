@@ -197,12 +197,12 @@ module.exports = {
     async subMemberRole(message, args){
         try{
             if(args.length==2){
-                let res = await talent.findOneAndUpdate({guildID: message.guildId, name:{ $regex: args[0], $options: 'i' }},
+                let res = await talent.findOneAndUpdate({guildID: message.guild.id, name:{ $regex: args[0], $options: 'i' }},
                 {
                     '$set': {
                         "memberRoleID" : args[1]
                     }
-                })
+                }, {upsert: true}).lean().exec()
                 
                 await message.channel.send(res.name + " member role set to " + message.guild.roles.cache.get(res.memberRoleID).name); return
                 
