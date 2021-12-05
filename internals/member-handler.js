@@ -202,7 +202,7 @@ module.exports = {
                     '$set': {
                         "memberRoleID" : args[1]
                     }
-                }, {upsert: true}).lean().exec()
+                }, {new: true, upsert: true}).lean().exec()
                 
                 await message.channel.send(res.name + " member role set to " + message.guild.roles.cache.get(res.memberRoleID).name); return
                 
