@@ -204,7 +204,7 @@ module.exports = {
                     }
                 }, {new: true, upsert: true}).lean().exec()
                 
-                await message.channel.send(res.name + " member role set to " + message.guild.roles.cache.get(res.memberRoleID).name); return
+                await message.channel.send(res.name + " member role set to " + message.guild.roles.fetch(args[1]).name); return
                 
 
             } else message.channel.send("Too many or no arguments"); return
