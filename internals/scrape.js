@@ -98,6 +98,7 @@ const vidInfo = async(names, url) => {
                             }
                         }
                     }
+                }
             }
         }
         return finArr
