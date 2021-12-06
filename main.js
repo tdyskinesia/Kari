@@ -79,7 +79,7 @@ client.once('ready', async () =>{
     new CronJob('0 */3 * * *', async function() {
         await streamHandler.bupdate(client, true)
     }, null, true, 'America/New_York');
-    new CronJob('*/15 * * * *', async function() {
+    new CronJob('*/5 * * * *', async function() {
         await streamHandler.bupdate(client, false)
     }, null, true, 'America/New_York');
     new CronJob('*/5 * * * *', async function() {
