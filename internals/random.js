@@ -17,7 +17,12 @@ const links = ['https://cdn.discordapp.com/attachments/838711689125822477/915727
 'https://cdn.discordapp.com/attachments/838711689125822477/915727678894661681/gPLf1V8zc0OYuA4jzQAAAABJRU5ErkJggg.png',
 'https://cdn.discordapp.com/attachments/838711689125822477/915727896256073738/5KU6rgU1b0AAAAASUVORK5CYII.png',
 'https://cdn.discordapp.com/attachments/838711689125822477/915727988153253918/HsKWfKD7LZcF6QdTuHyaBmiq0gAAAABJRU5ErkJggg.png',
-'https://cdn.discordapp.com/attachments/838711689125822477/915728268169187378/ImWfwSnPRnfhtcAAAAAElFTkSuQmCC.png']
+'https://cdn.discordapp.com/attachments/838711689125822477/915728268169187378/ImWfwSnPRnfhtcAAAAAElFTkSuQmCC.png',
+'p(╬ Ò ‸ Ó)q',
+'(´･_･`)',
+'(⁙˘꒫˘⁙)',
+'✖‿✖',
+'(╯︵╰)']
 
 /**
  * @param  {Discord.Client} client
@@ -50,7 +55,7 @@ module.exports = {
                 let messages = await message.channel.messages.fetch({limit: 3})
                 if(messages!=null){
                     messages.forEach(async(msg)=>{
-                        if(msg.content!="<a:AruruPepeKekShake:908620454338641920>"){
+                        if(!msg.content.includes("<a:AruruPepeKekShake:908620454338641920>")){
                             bool = false
                         }
                     })

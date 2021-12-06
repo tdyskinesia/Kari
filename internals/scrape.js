@@ -88,7 +88,7 @@ const vidInfo = async(names, url) => {
             } else if (curStreamDetails.includes("scheduledStartTime")){
                 let now = new Date()
                 let strDate = new Date(str.liveStreamingDetails.scheduledStartTime)
-                console.log(str.liveStreamingDetails.scheduledStartTime)
+                //console.log(str.liveStreamingDetails.scheduledStartTime)
                     if(strDate>now.setMinutes(now.getMinutes()+15)){
                     for await(const name of names){
                         if(name[1].substring(name[1].length-11)==str.id){
@@ -98,7 +98,6 @@ const vidInfo = async(names, url) => {
                             }
                         }
                     }
-                }
             }
         }
         return finArr

@@ -74,6 +74,10 @@ const stream = new mongoose.Schema({
     description: {
         type: String
     },
+    notify: {
+        type: Boolean,
+        default: false
+    },
     talent_id: {type: ObjectId, ref: 'talent'},
 
 })
@@ -176,6 +180,9 @@ const guild = new mongoose.Schema({
     },
     boardChannelID:{
         type: String
+    },
+    boardMessage:{
+        type: [String]
     },
     membership_IDs: [{type: ObjectId, ref: 'membership'}],
     user_IDs: [{type: ObjectId, ref: 'user'}],
