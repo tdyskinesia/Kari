@@ -380,7 +380,7 @@ module.exports = {
         {
             let bool = true
             for await (const b of guild.boardMessage){
-                if(!channel.messages.has(b)){
+                if(!channel.messages.cache.has(b)){
                     bool=false
                 }
             }
