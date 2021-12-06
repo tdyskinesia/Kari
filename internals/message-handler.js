@@ -16,8 +16,8 @@ try{
                 let curDate = new Date(str.startTime) 
                 let curGuild = await client.guilds.fetch(guild.guildID)
                 let ch = await curGuild.channels.fetch(tal.liveChannelID)
-                if(curDate.setMinutes(curDate.getMinutes()-15) < new Date()){
-                if(tal.roleID!=null && str.notify==false) {await ch.send(`Hey <@&${tal.roleID}>! ${tal.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${str.videoID}`)
+                if(curDate.setMinutes(curDate.getMinutes()-15) < new Date() && str.notify==false){
+                if(tal.roleID!=null) {await ch.send(`Hey <@&${tal.roleID}>! ${tal.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${str.videoID}`)
                 } else {await ch.send(`Hey NULL ROLE ${tal.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${str.videoID}`)}
                         if(tal.liveChannelID!=null){
                             let ch = await curGuild.channels.fetch(tal.liveChannelID)

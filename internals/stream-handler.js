@@ -358,14 +358,7 @@ module.exports = {
                 
             await talent.save();
         }
-        // const messages = await channel.messages.fetch({limit: 100})
-        // if(messages!=null){
-        //         await messages.forEach(async(msg)=>{
-        //             if(msg.author.id===client.user.id){
-        //                 await msg.delete()
-        //             }
-        //         })
-        //     }
+        //check if we can edit the previous message(s). if not, resets.
         let bm = []
         if(guild.boardMessage==null||guild.boardMessage.length==0)
         {
@@ -383,28 +376,57 @@ module.exports = {
             }
             await models.guild.findByIdAndUpdate(guild._id, {"$set" : {'boardMessage' : bm}}, {upsert: true}).exec()       
         } 
-        else if(guild.boardMessage.length==1)
+        else 
         {
-            let m = await channel.messages.fetch(guild.boardMessage[0])
-            await m.edit({embeds: embedArray})
+            let bool = true
+            for(const b of guild.boardMessage){
+                if((await channel.messages.fetch(b.id))==null){
+                    bool=false
+                }
+            }
+            if(bool)
+            {
+                if(guild.boardMessage.length==1)
+                {
+                    let m = await channel.messages.fetch(guild.boardMessage[0])
+                    await m.edit({embeds: embedArray})
 
-        }
-        else if(guild.boardMessage.length>1)
-        {
-            if(embedArray.length>10){
-                if(Math.ceil(embedArray.length/10)==guild.boardMessage.length){
-                    let c = 0
-                    for(let i = 0; i <= embedArray.length; i+=10){
-                        if (embedArray.length-i<10){
-                            await (await channel.messages.fetch(guild.boardMessage[c])).edit({embeds: embedArray.slice(i)})
-                            c++
+                }
+                else if(guild.boardMessage.length>1)
+                {
+                    if(embedArray.length>10){
+                        if(Math.ceil(embedArray.length/10)==guild.boardMessage.length){
+                            let c = 0
+                            for(let i = 0; i <= embedArray.length; i+=10){
+                                if (embedArray.length-i<10){
+                                    await (await channel.messages.fetch(guild.boardMessage[c])).edit({embeds: embedArray.slice(i)})
+                                    c++
 
+                                } else {
+                                await (await channel.messages.fetch(guild.boardMessage[c])).edit({embeds: embedArray.slice(i, i+9)})
+                                c++
+                                }
+                            }
                         } else {
-                        await (await channel.messages.fetch(guild.boardMessage[c])).edit({embeds: embedArray.slice(i, i+9)})
-                        c++
+                            const messages = await channel.messages.fetch({limit: guild.boardMessage.length})
+                            if(messages!=null){
+                                    await messages.forEach(async(msg)=>{
+                                        if(msg.author.id===client.user.id){
+                                            await msg.delete()
+                                        }
+                                    })
+                                }
+                            for(let i = 0; i <= embedArray.length; i+=10){
+                                if (embedArray.length-i<10){
+                                bm.push((await channel.send({embeds: embedArray.slice(i)})).id)
+
+                                } else {
+                                bm.push((await channel.send({embeds: embedArray.slice(i, i+9)})).id)
+                                }
+                            }
+                            await models.guild.findByIdAndUpdate(guild._id, {"$set" : {'boardMessage' : bm}}, {upsert: true}).exec()  
                         }
-                    }
-                } else {
+                    } else {
                     const messages = await channel.messages.fetch({limit: guild.boardMessage.length})
                     if(messages!=null){
                             await messages.forEach(async(msg)=>{
@@ -413,28 +435,37 @@ module.exports = {
                                 }
                             })
                         }
-                    for(let i = 0; i <= embedArray.length; i+=10){
-                        if (embedArray.length-i<10){
-                        bm.push((await channel.send({embeds: embedArray.slice(i)})).id)
-
-                        } else {
-                        bm.push((await channel.send({embeds: embedArray.slice(i, i+9)})).id)
-                        }
-                    }
+                    bm.push((await channel.send({embeds: embedArray})).id)
                     await models.guild.findByIdAndUpdate(guild._id, {"$set" : {'boardMessage' : bm}}, {upsert: true}).exec()  
+                    }          
                 }
-            } else {
-            const messages = await channel.messages.fetch({limit: guild.boardMessage.length})
-            if(messages!=null){
-                    await messages.forEach(async(msg)=>{
-                        if(msg.author.id===client.user.id){
-                            await msg.delete()
-                        }
-                    })
+            }
+            else
+            {
+                const messages = await channel.messages.fetch({limit: 100})
+                if(messages!=null){
+                        await messages.forEach(async(msg)=>{
+                            if(msg.author.id===client.user.id){
+                                await msg.delete()
+                            }
+                        })
+                    } 
+
+                if(embedArray.length>10){
+                for(let i = 0; i <= embedArray.length; i+=10){
+                    if (embedArray.length-i<10){
+                    bm.push((await channel.send({embeds: embedArray.slice(i)})).id)
+
+                    } else {
+                    bm.push((await channel.send({embeds: embedArray.slice(i, i+9)})).id)
+                    }
                 }
-            bm.push((await channel.send({embeds: embedArray})).id)
-            await models.guild.findByIdAndUpdate(guild._id, {"$set" : {'boardMessage' : bm}}, {upsert: true}).exec()  
-            }          
+                await models.guild.findByIdAndUpdate(guild._id, {"$set" : {'boardMessage' : bm}}, {upsert: true}).exec()  
+                } else {
+                bm.push((await channel.send({embeds: embedArray})).id)
+                await models.guild.findByIdAndUpdate(guild._id, {"$set" : {'boardMessage' : bm}}, {upsert: true}).exec()  
+                }
+            }
         }
         
     } catch(e) {console.log(e)}
