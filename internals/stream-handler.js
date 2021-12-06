@@ -102,7 +102,7 @@ module.exports = {
         if(args==null) args=[]
 
         const channel = await client.channels.cache.get('908671236895305760')
-        const guild = await guild.findOne({guildID: '835723287714857031'})
+        const guild = await models.guild.findOne({guildID: '835723287714857031'})
         let embedArray = []
         if(args.length==0){
         if(message!=null) await message.channel.send("Updating board now!")
