@@ -366,7 +366,7 @@ module.exports = {
         //             }
         //         })
         //     }
-        let bm = [""]
+        let bm = []
         if(guild.boardMessage==null||guild.boardMessage.length==0)
         {
             if(embedArray.length>10){
