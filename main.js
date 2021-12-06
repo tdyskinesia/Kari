@@ -119,11 +119,6 @@ client.on('messageCreate', async(message) =>{
     else if(command === 'clearmsgs') {
         messageHandler.clearNotifications()
     }
-    else if(command === 'bupdate') {
-        if(message.guild.id=='835723287714857031'){
-           streamHandler.bupdate(client, false, message, args)
-        }
-    }
     else if(command === 'boardset'){
         guildHandler.boardSet(message, args)
     }
@@ -201,6 +196,17 @@ client.on('messageCreate', async(message) =>{
     else if (command === 'mood'){
         random.mood(message)
     }
+    else if(command === 'bupdate') {
+        if(message.guild.id=='835723287714857031'){
+           streamHandler.bupdate(client, false, message, args)
+        }
+    }
+    else if(command === 'board'){
+        if(message.guild.id!='835723287714857031'){
+            let guild = await models.guild.findOne({guildID: message.guild.id})
+            streamHandler.publicBoard(client, guild)
+        }
+    }
     else if(command === 'help'){
         message.channel.send({embeds:[{
         type: "rich",
@@ -233,6 +239,8 @@ client.on('messageCreate', async(message) =>{
 
         "**General Commands**\n"+
         "*k!help* - Displays this.\n"+
+        "*k!bupdate* - Forces an update to the bulletin (Kawaii only)\n"+
+        "*k!board* - Forces an update to the bulletin (Non-kawaii boards)\n"+
         "*k!github* - Displays kari github.\n" +
         "*k!live* - Displays all currently live streams in embeds.\n" +
         "*k!mlist* - Displays your current memberships and the staff who verified them\n"+
