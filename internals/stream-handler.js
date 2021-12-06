@@ -247,8 +247,16 @@ module.exports = {
         {
             let bool = true
             for await (const b of guild.boardMessage){
-                if(!channel.messages.cache.has(b)){
-                    bool=false
+                try
+                {
+                    if(await channel.messages.fetch(b)==null){
+                        bool=false
+                    }
+                }
+                catch (e)
+                {
+                    console.log(e)
+                    bool = false
                 }
             }
             if(bool)
@@ -491,8 +499,16 @@ module.exports = {
         {
             let bool = true
             for await (const b of guild.boardMessage){
-                if(!channel.messages.cache.has(b)){
-                    bool=false
+                try
+                {
+                    if(await channel.messages.fetch(b)==null){
+                        bool=false
+                    }
+                }
+                catch (e)
+                {
+                    console.log(e)
+                    bool = false
                 }
             }
             if(bool)
