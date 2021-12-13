@@ -11,7 +11,7 @@ const mongoose = require('mongoose');
 const iterate = async(client) => {
 try{
     for await(const guild of models.guild.find({notificationsFlag: true})){
-        for await(const tal of talent.find({guildID: guild.guildID})){
+        for await(const tal of talent.find({guildID: guild.guildID, liveChannelID: {$exists: true}})){
             for await (const str of stream.find({talent_id: tal._id})){
                 let curDate = new Date(str.startTime) 
                 let curGuild = await client.guilds.fetch(guild.guildID)
