@@ -93,7 +93,7 @@ const vidInfo = async(names, url) => {
                     for await(const name of names){
                         if(name[1].substring(name[1].length-11)==str.id){
                             for await(const dupe of talent.find({name: name[0]})){
-                                if(str.snippet.thumbnails!=null){
+                                if(str.snippet.thumbnails.maxres!=null){
                                     await stream.findOneAndUpdate({videoID: str.id}, {streamName: str.snippet.title, startTime: str.liveStreamingDetails.scheduledStartTime,
                                     thumbnailUrl: str.snippet.thumbnails.maxres.url, description: str.snippet.description.substring(0, 300)+ "...", talent_id: dupe._id}, {upsert: true}).lean().exec()
                                 } else {
