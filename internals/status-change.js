@@ -39,6 +39,9 @@ for await (const tal of talent.find()){
 let strArr = []
 if(arr==null){
 strArr = await sc()
+if(strArr==null){
+    strArr = []
+}
 } else strArr = arr
 let vidIDs = []
 if(strArr!=null&&strArr.length>0){
