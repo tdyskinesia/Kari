@@ -81,7 +81,7 @@ const vidInfo = async(names, url) => {
                 for await(const name of names){
                     //console.log(name[1].substring(name[1].length-11))
                     if(name[1].substring(name[1].length-11)==str.id){
-                        if(str.snippet.thumnails.maxres!=null){
+                        if(str.snippet.thumnails!=null){
                             finArr.push([name[0], str.snippet.title, name[1], str.snippet.thumbnails.maxres.url, str.snippet.description.substring(0, 300)+ "..."])
                         } else finArr.push([name[0], str.snippet.title, name[1], undefined, str.snippet.description.substring(0, 300)+ "..."])
                         //console.log(name[0], str.snippet.title, str.id, str.snippet.thumbnails.maxres.url, str.snippet.description)
@@ -95,7 +95,7 @@ const vidInfo = async(names, url) => {
                     for await(const name of names){
                         if(name[1].substring(name[1].length-11)==str.id){
                             for await(const dupe of talent.find({name: name[0]})){
-                                if(str.snippet.thumbnails.maxres!=null){
+                                if(str.snippet.thumbnails!=null){
                                     await stream.findOneAndUpdate({videoID: str.id}, {streamName: str.snippet.title, startTime: str.liveStreamingDetails.scheduledStartTime,
                                     thumbnailUrl: str.snippet.thumbnails.maxres.url, description: str.snippet.description.substring(0, 300)+ "...", talent_id: dupe._id}, {upsert: true}).lean().exec()
                                 } else {
