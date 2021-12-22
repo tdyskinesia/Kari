@@ -111,10 +111,9 @@ module.exports = {
             if(bool==true){
             await youtube(talent)
             await talent.save();
-            if(talent.profileURL==null){
             let profileURL = await channelInfo(talent)
             await models.talent.findByIdAndUpdate(talent._id, {"$set": {profileURL: profileURL}}, {upsert: true})
-            }
+            
         }
             let streams = await models.stream.find({talent_id: talent._id}).sort({streamTime: -1}).lean().exec()
             if(streams.length>0){
