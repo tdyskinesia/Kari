@@ -89,9 +89,11 @@ const vidInfo = async(names, url) => {
                 }
             } else if (curStreamDetails.includes("scheduledStartTime")){
                 let now = new Date()
+                let maxD = new Date()
+                maxD.setMonth(maxD.getMonth()+6)
                 let strDate = new Date(str.liveStreamingDetails.scheduledStartTime)
                 //console.log(str.liveStreamingDetails.scheduledStartTime)
-                    if(strDate>now.setMinutes(now.getMinutes()+15)){
+                    if(strDate>now.setMinutes(now.getMinutes()+15) && strDate < maxD){
                     for await(const name of names){
                         if(name[1].substring(name[1].length-11)==str.id){
                             for await(const dupe of talent.find({name: name[0]})){
