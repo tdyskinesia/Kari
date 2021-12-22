@@ -83,10 +83,17 @@ client.once('ready', async () =>{
     new CronJob('*/5 * * * *', async function() {
         await streamHandler.bupdate(client, false)
     }, null, true, 'America/New_York');
+    new CronJob('* */3 * * *', async function() {
+        for await(const guild of models.guild.find({boardChannelID: {$exists: true}})){
+            if(guild.guildID!='835723287714857031'){
+                streamHandler.publicBoard(client, guild, true)
+            }
+        }
+    }, null, true, 'America/New_York');
     new CronJob('*/5 * * * *', async function() {
         for await(const guild of models.guild.find({boardChannelID: {$exists: true}})){
             if(guild.guildID!='835723287714857031'){
-                streamHandler.publicBoard(client, guild)
+                streamHandler.publicBoard(client, guild, false)
             }
         }
     }, null, true, 'America/New_York');

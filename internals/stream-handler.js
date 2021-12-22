@@ -106,7 +106,7 @@ module.exports = {
         let embedArray = []
         if(args.length==0){
         if(message!=null) await message.channel.send("Updating board now!")
-        for await (const talent of models.talent.find({guildID: '835723287714857031'})){
+        for await (const talent of models.talent.find({guildID: '835723287714857031'}).sort({order: -1})){
             let fieldArray = []
             if(bool==true){
             await youtube(talent)
@@ -115,7 +115,7 @@ module.exports = {
             await models.talent.findByIdAndUpdate(talent._id, {"$set": {profileURL: profileURL}}, {upsert: true})
             
         }
-            let streams = await models.stream.find({talent_id: talent._id}).sort({streamTime: -1}).lean().exec()
+            let streams = await models.stream.find({talent_id: talent._id}).sort({startTime: -1}).lean().exec()
             if(streams.length>0){
                 let counter = 0
                 let liveBool = false
@@ -348,10 +348,11 @@ module.exports = {
     /**
      * @param  {Discord.Client} client
      * @param  {mongoose.Query} guild
+     * @param  {Boolean} bool
      * @param  {Discord.Message} message
      * @param  {Array<String>} args
      */
-    async publicBoard(client, guild, message, args){
+    async publicBoard(client, guild, bool, message, args){
         try{
         if(args==null) args=[]
         const curGuild = await client.guilds.fetch(guild.guildID)
@@ -359,7 +360,7 @@ module.exports = {
         let embedArray = []
         if(message!=null) await message.channel.send("Updating board now!")
         for await (const talent of models.talent.find({guildID: guild.guildID, youtubeID: {$exists: true}})){
-            if(talent.profileURL==null){
+            if(bool){
             let profileURL = await channelInfo(talent)
             await models.talent.findByIdAndUpdate(talent._id, {"$set": {profileURL: profileURL}}, {upsert: true})
             }

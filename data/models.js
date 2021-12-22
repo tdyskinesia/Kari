@@ -128,6 +128,11 @@ const talent = new mongoose.Schema({
     },
     streams: [{type: ObjectId, ref: 'stream'}],
 
+    order: {
+        type: Number,
+        required: false
+    }
+
     //to remove
     // upcomingStreams: {
     //     type: [stream],
