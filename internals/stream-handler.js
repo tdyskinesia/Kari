@@ -115,7 +115,7 @@ module.exports = {
             await models.talent.findByIdAndUpdate(talent._id, {"$set": {profileURL: profileURL}}, {upsert: true})
             
         }
-            let streams = await models.stream.find({talent_id: talent._id}).sort({startTime: -1}).lean().exec()
+            let streams = await models.stream.find({talent_id: talent._id}).sort({startTime: 1}).lean().exec()
             if(streams.length>0){
                 let counter = 0
                 let liveBool = false
