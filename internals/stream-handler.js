@@ -59,12 +59,15 @@ const youtube = async(talent) => {
           });
 
         
-        for (var i in results){console.log(results[i].data.items[0].liveStreamingDetails.scheduledStartTime) }
-        now = new Date()
+        //for (var i in results){console.log(results[i].data.items[0].liveStreamingDetails.scheduledStartTime) }
+        let now = new Date()
+        let maxD = new Date()
+        maxD.setMonth(maxD.getMonth()+6)
         let strArr = models.stream.find()
         for await (const index of results){
+        let strD = new Date(index.data.items[0].liveStreamingDetails.scheduledStartTime)
                 //return([results[index].data.items[0].liveStreamingDetails.scheduledStartTime, results[index].data.items[0].snippet.title, results[index].data.items[0].id, results[index].data.items[0].snippet.thumbnails.default.url])
-            if(new Date(index.data.items[0].liveStreamingDetails.scheduledStartTime) > now){
+            if(strD > now&& strD < maxD){
             await models.stream.deleteMany({videoID: index.data.items[0].id}).exec()
             let newStream = await models.stream.create({
                     streamName: index.data.items[0].snippet.title,
