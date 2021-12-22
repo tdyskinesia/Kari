@@ -87,7 +87,7 @@ if(strArr!=null&&strArr.length>0){
             }
         }
     }
-    for await(const str of stream.find({startTime: {exists: true}})){
+    for await(const str of stream.find({startTime: {$exists: true}})){
         let d = new Date()
         if(str.startTime < d.setMinutes(d.getMinutes()-30)){
             await stream.findByIdAndDelete(str._id).exec()
