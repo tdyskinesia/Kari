@@ -63,7 +63,7 @@ const prefix = 'k!';
 
 const fs = require('fs');
 const { id } = require('date-fns/locale');
-
+let startArr = []
 client.commands = new Discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -82,7 +82,7 @@ client.once('ready', async () =>{
         keepAlive: true
     }).then(console.log("Connected to mongodb"));
     //let d = await sc.build()
-    statusChange(client, twitterClient);
+    statusChange(client, startArr, twitterClient);
     // setInterval(statusChange.bind(null, client), 1000 * 2);
     new CronJob('0 */3 * * *', async function() {
         await streamHandler.bupdate(client, true)

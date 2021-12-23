@@ -167,6 +167,6 @@ updateStatus()
 } catch (e) {console.log(e)}
 }
     
-module.exports = async(client, twitterClient)=>{ 
-it(client, twitterClient); return
+module.exports = async(client, arr, twitterClient)=>{ 
+it(client, arr, twitterClient); return
 }
