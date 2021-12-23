@@ -240,7 +240,8 @@ client.on('messageCreate', async(message) =>{
         "*k!vchset <channelID>* - Sets a verification channel.\n"+
         "*k!mrole <talent's first or last name> <role ID>* - Sets a member role for a talent.\n"+
         "*k!mtalentsetup <talent's full name> <membership role ID> <alias_1> <alias_2> ...* - Sets up talent only for membership handling. Alias searching not yet implemented for other languages.\n"+
-        "*k!brole <roleID?>* - If roleID argument is found, sets roleID to the given value. otherwise clears booster role.\n\n"+
+        "*k!brole <roleID?>* - If roleID argument is found, sets roleID to the given value. otherwise clears booster role.\n"+
+        "*k!tset <talent's first or last name> <twitter handle>* - Sets up talent for twitter space detection and notifications.\n\n"+
         
         "**Tagger Commands**\n"+
         "*k!timeset <video ID> <minutes>* - Manually adds minutes to a previously scheduled notification (to use if a stream is manually rescheduled). (Deprecated, no reason for use.)\n"+
