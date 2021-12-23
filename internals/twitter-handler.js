@@ -67,9 +67,8 @@ module.exports = {
             let curGuild = await client.guilds.fetch(guild.guildID)
             for await (const t of tals){
                 for await (const foundSpace of space.find({id: {$nin: liveArr}, talent_id: t._id})){
-                    let tal = await talent.findById(foundSpace.talent_id).lean().exec()
-                    if(tal.liveChannelID!=null){
-                        let ch = await curGuild.channels.fetch(tal.liveChannelID)
+                    if(t.liveChannelID!=null){
+                        let ch = await curGuild.channels.fetch(t.liveChannelID)
                         if(ch.name.includes('🔊')){
                             await ch.setName('🛑'.concat(ch.name.substring(1)))
                         }
