@@ -12,8 +12,10 @@ Currently works off of youtupe api and node-fetch to determine upcoming stream t
 + Role Icon Set for Copa Roles  
 + Membership Verification via Staff Reaction  
 + Live Channel Automatic Name Changes  
++ Twitter Space Detection and Notifications
   
 ### Planned Features:    
++ Twitter Space Auto-Archiving
 + Analytics Data for Past Streams 
 + And more 
   
