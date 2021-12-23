@@ -44,8 +44,8 @@ module.exports = {
             // let {data} = await twitterClient.get('spaces/by/creator_ids', {user_ids: query})
             let {data} = await twitterClient.get('spaces/by/creator_ids', {user_ids: query, 'space.fields': 'title,creator_id'})
             console.log(data)
-            
             let liveArr = []
+            if(data!=null){
             for await (const foundSpace of data){
                 if(foundSpace.state=="live"){
                     liveArr.push(foundSpace.id)
@@ -64,7 +64,7 @@ module.exports = {
                 }
             }
             let curGuild = await client.guilds.fetch(guild.guildID)
-
+            }
             for await (const foundSpace of space.find({id: {$nin: liveArr}})){
                 let tal = await talent.findById(foundSpace.talent_id).lean().exec()
                 if(tal.liveChannelID!=null){
