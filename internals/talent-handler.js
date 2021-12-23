@@ -4,7 +4,7 @@ const {talent, stream, user, membership, member_channel, guild} = require('../da
 
 const mongoose = require('mongoose');
 
-const twitterHandler = require('./internals/twitter-handler.js')
+const twitterHandler = require('/twitter-handler.js')
 
 
 module.exports = {

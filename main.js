@@ -56,7 +56,7 @@ const twitterHandler = require('./internals/twitter-handler.js')
 const Twitter = require('twitter-v2');
 
 const twitterClient = new Twitter({
-    bearer_token: process.env.bearer_token,
+    bearer_token: process.env.BEARER_TOKEN,
 });
 
 const prefix = 'k!';
