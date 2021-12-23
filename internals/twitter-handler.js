@@ -46,25 +46,25 @@ module.exports = {
             console.log(data)
             let liveArr = []
             if(data!=null){
-            for await (const foundSpace of data){
-                if(foundSpace.state=="live"){
-                    liveArr.push(foundSpace.id)
-                    for await(const tal of tals){
-                        if(tal.twitterID!=null&&space.creator_id==tal.twitterID){
-                            if(await space.findOne({talent_id: tal._id}).exec()==null){
-                                s = await space.create({
-                                    title: foundSpace.title,
-                                    creator_id: foundSpace.creator_id,
-                                    id: foundSpace.id,
-                                    talent_id: tal._id
-                                })
+                for await (const foundSpace of data){
+                    if(foundSpace.state=="live"){
+                        liveArr.push(foundSpace.id)
+                        for await(const tal of tals){
+                            if(tal.twitterID!=null&&space.creator_id==tal.twitterID){
+                                if(await space.findOne({talent_id: tal._id}).exec()==null){
+                                    s = await space.create({
+                                        title: foundSpace.title,
+                                        creator_id: foundSpace.creator_id,
+                                        id: foundSpace.id,
+                                        talent_id: tal._id
+                                    })
+                                }
                             }
                         }
                     }
                 }
             }
             let curGuild = await client.guilds.fetch(guild.guildID)
-            }
             for await (const foundSpace of space.find({id: {$nin: liveArr}})){
                 let tal = await talent.findById(foundSpace.talent_id).lean().exec()
                 if(tal.liveChannelID!=null){
