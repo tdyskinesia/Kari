@@ -78,8 +78,28 @@ const stream = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    talent_id: {type: ObjectId, ref: 'talent'},
+    talent_id: {type: ObjectId, ref: 'talent'}
 
+})
+
+const space = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    creator_id: {
+        type: String,
+        required: true
+    },
+    notify: {
+        type: Boolean,
+        default: false
+    },
+    id: {
+        type: String,
+        required: true
+    },
+    talent_id: {type: ObjectId, ref: 'talent'}
 })
 
 const talent = new mongoose.Schema({
@@ -127,6 +147,11 @@ const talent = new mongoose.Schema({
         // required: false
     },
     streams: [{type: ObjectId, ref: 'stream'}],
+
+    twitterID: {
+        type: String,
+        required: false
+    },
 
     order: {
         type: Number,
@@ -202,6 +227,7 @@ const guild = new mongoose.Schema({
 module.exports = {
 talent: mongoose.model('talent', talent),
 stream: mongoose.model('stream', stream),
+space: mongoose.model('space', space),
 user: mongoose.model('user', user),
 membership: mongoose.model('membership', membership),
 member_channel: mongoose.model('member_channel', member_channel),

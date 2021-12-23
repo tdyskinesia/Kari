@@ -67,7 +67,7 @@ const youtube = async(talent) => {
         for await (const index of results){
         let strD = new Date(index.data.items[0].liveStreamingDetails.scheduledStartTime)
                 //return([results[index].data.items[0].liveStreamingDetails.scheduledStartTime, results[index].data.items[0].snippet.title, results[index].data.items[0].id, results[index].data.items[0].snippet.thumbnails.default.url])
-            if(strD > now&& strD < maxD){
+            if(strD > now && strD < maxD){
             await models.stream.deleteMany({videoID: index.data.items[0].id}).exec()
             let newStream = await models.stream.create({
                     streamName: index.data.items[0].snippet.title,

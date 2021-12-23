@@ -26,6 +26,7 @@
     "mongoose": "^6.0.13",
     "node-fetch": "^2.6.1",
     "node-html-parser": "^5.1.0",
+    "twitter-v2": "^1.1.0",
     "website-scraper": "^4.2.3"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 const Discord = require('discord.js'); 
 
-const {talent, stream, user, membership, member_channel, guild} = require('../data/models');
+const {talent, space, stream, user, membership, member_channel, guild} = require('../data/models');
 const mongoose = require('mongoose');
 const {Types: {ObjectId}} = mongoose;
 const sc = require('./scrape.js')
@@ -94,6 +94,11 @@ if(strArr!=null&&strArr.length>0){
         }
     }
 
+    for await(const curSpace of space.find()){
+        let tal = await talent.findById(talent_id).lean().exec()
+        strArr.push([tal.name, curSpace.title, "https://twitter.com/i/spaces" + curSpace.id])
+    }
+
 
 let counter = 0
 let counter2 = 0
@@ -107,7 +112,7 @@ const updateStatus = async() => {
         activities: [
             {
                 name: strArr[counter][0] + ": " + strArr[counter][1],
-                type: 'WATCHING',
+                type: 'PLAYING',
                 url: strArr[counter][2]
             }
         ]

@@ -51,6 +51,13 @@ const memberRoles = require('./internals/member-roles.js')
 
 const dm = require('./internals/dm-handler.js')
 
+const twitterHandler = require('./internals/twitter-handler.js')
+
+const Twitter = require('twitter-v2');
+
+const twitterClient = new Twitter({
+    bearer_token: process.env.bearer_token,
+});
 
 const prefix = 'k!';
 
@@ -119,7 +126,7 @@ client.on('messageCreate', async(message) =>{
     if(message.member.permissions.has("BAN_MEMBERS")){
 
     if(command === 'setup') {
-        talentHandler.mainSetup(message, args, client)
+        talentHandler.mainSetup(message, twitterClient)
     }
     else if(command === 'clearsub') {
         talentHandler.deleteTalent(message, args)
@@ -151,18 +158,16 @@ client.on('messageCreate', async(message) =>{
     else if(command === 'mtlist'){
         memberHandler.talentMembers(message, args)
     }
-    // else if(command === 'migrate'){
-    //     memberHandler.migrateData(message)
-    // }
     else if(command === 'mtalentsetup'){
         memberHandler.subMembershipTalent(message, args)
     }
     else if(command === 'brole'){
         guildHandler.boosterRoleSet(message, args)
     }
-    // else if (command === 'fix'){
-    //     memberHandler.fix(message, args)
-    // }
+    else if(command === 'tset'){
+        twitterHandler.addTwitter(twitterClient, message, args)
+    }
+
 }
     if (message.member.permissions.has("MENTION_EVERYONE")){
         if(command === 'timeset'){
