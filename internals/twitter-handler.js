@@ -39,9 +39,9 @@ module.exports = {
                 }
             }
             let query = idArr.join()
-            
-            let {data} = await twitterClient.get('spaces/by/creator_ids', {user_ids: query})
-            // let {data} = await twitterClient.get('spaces/by/creator_ids', {user_ids: query, 'space.fields': 'title', expansions: 'creator_id'})
+            console.log(query)
+            // let {data} = await twitterClient.get('spaces/by/creator_ids', {user_ids: query})
+            let {data} = await twitterClient.get('spaces/by/creator_ids', {user_ids: query, 'space.fields': 'title,creator_id'})
             console.log(data)
             
             let liveArr = []
