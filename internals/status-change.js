@@ -94,8 +94,8 @@ if(strArr!=null&&strArr.length>0){
             await stream.findByIdAndDelete(str._id).exec()
         }
     }
-    for await (const guild of guild.find()){
-        await twitterHandler.iterateTalents(client, twitterClient, guild)
+    for await (const g of guild.find({notificationsFlag: true})){
+        await twitterHandler.iterateTalents(client, twitterClient, g)
     }
 
     for await(const curSpace of space.find()){
