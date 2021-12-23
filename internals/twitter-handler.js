@@ -17,7 +17,7 @@ module.exports = {
                     args[1] = args[1].substring(1)
                 }
                 let { data } = await twitterClient.get('users/by', {usernames: args[1]})
-                let tal = talent.findOneAndUpdate({name:{ $regex: '.*'+ args[0] + '.*', $options: 'i' }}, {"$set": {"twitterID" : data[0].id}}, {upsert: true}).lean().exec()
+                let tal = await talent.findOneAndUpdate({name:{ $regex: '.*'+ args[0] + '.*', $options: 'i' }}, {"$set": {"twitterID" : data[0].id}}, {upsert: true}).lean().exec()
                 if(tal==null) {await message.channel.send("Talent not found."); return}
                 else
                 {
