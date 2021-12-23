@@ -38,6 +38,7 @@ module.exports = {
                     idArr.push(tal.twitterID)
                 }
             }
+            if(idArr.length==0) return;
             let query = idArr.join()
             console.log(query)
             // let {data} = await twitterClient.get('spaces/by/creator_ids', {user_ids: query})
