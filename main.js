@@ -82,7 +82,7 @@ client.once('ready', async () =>{
         keepAlive: true
     }).then(console.log("Connected to mongodb"));
     //let d = await sc.build()
-    statusChange(client);
+    statusChange(client, twitterClient);
     // setInterval(statusChange.bind(null, client), 1000 * 2);
     new CronJob('0 */3 * * *', async function() {
         await streamHandler.bupdate(client, true)

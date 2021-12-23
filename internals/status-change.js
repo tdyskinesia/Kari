@@ -4,17 +4,18 @@ const {talent, space, stream, user, membership, member_channel, guild} = require
 const mongoose = require('mongoose');
 const {Types: {ObjectId}} = mongoose;
 const sc = require('./scrape.js')
+const twitterHandler = require('./twitter-handler.js')
 
 
-const next = async(client, arr)=>{
+const next = async(client, arr, twitterClient)=>{
     
-it(client, arr); return
+it(client, arr, twitterClient); return
 }
 
 /**
  * @param  {Discord.Client} client
  */
-const it = async(client, arr) => {
+const it = async(client, arr, twitterClient) => {
 try{
 
 
@@ -93,6 +94,9 @@ if(strArr!=null&&strArr.length>0){
             await stream.findByIdAndDelete(str._id).exec()
         }
     }
+    for await (const guild of guild.find()){
+        await twitterHandler.iterateTalents(client, twitterClient, guild)
+    }
 
     for await(const curSpace of space.find()){
         let tal = await talent.findById(talent_id).lean().exec()
@@ -163,6 +167,6 @@ updateStatus()
 } catch (e) {console.log(e)}
 }
     
-module.exports = async(client)=>{ 
-it(client); return
+module.exports = async(client, twitterClient)=>{ 
+it(client, twitterClient); return
 }
