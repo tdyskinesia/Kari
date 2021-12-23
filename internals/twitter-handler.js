@@ -30,7 +30,8 @@ module.exports = {
     {   
         try{
             let idArr = []
-            let tals = talent.find({guildID: guild.guildID}).lean().exec()
+            let tals = await talent.find({guildID: guild.guildID}).lean().exec()
+            if(tals==null) return;
             for await(const tal of tals){
                 if(tal.twitterID!=null)
                 {
