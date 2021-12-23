@@ -65,16 +65,18 @@ module.exports = {
                 }
             }
             let curGuild = await client.guilds.fetch(guild.guildID)
-            for await (const foundSpace of space.find({id: {$nin: liveArr}})){
-                let tal = await talent.findById(foundSpace.talent_id).lean().exec()
-                if(tal.liveChannelID!=null){
-                    let ch = await curGuild.channels.fetch(tal.liveChannelID)
-                    if(ch.name.includes('🔊')){
-                        await ch.setName('🛑'.concat(ch.name.substring(1)))
+            for await (const tal of tals){
+                for await (const foundSpace of space.find({id: {$nin: liveArr}, talent_id: tal._id})){
+                    let tal = await talent.findById(foundSpace.talent_id).lean().exec()
+                    if(tal.liveChannelID!=null){
+                        let ch = await curGuild.channels.fetch(tal.liveChannelID)
+                        if(ch.name.includes('🔊')){
+                            await ch.setName('🛑'.concat(ch.name.substring(1)))
+                        }
                     }
                 }
-            }
-            await space.deleteMany({id: {$nin: liveArr}}).exec()
+                await space.deleteMany({id: {$nin: liveArr}, talent_id: tal._id}).exec()
+            } 
 
        
         } catch (e) {console.log(e)}
