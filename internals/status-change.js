@@ -151,13 +151,13 @@ const updateStatus = async() => {
     }
     else if (++counter2 >= statusOptions.length){
         counter2 = 0;
-        next(client); return
+        next(client, null, twitterClient); return
     }
     if(counter2!=0 && counter2%5==0){
         let arr = await sc()
         if(arr.length>0){
             counter2=0
-            next(client, arr); return
+            next(client, arr, twitterClient); return
         }
     }
     setTimeout(updateStatus, 1000 * 15)
