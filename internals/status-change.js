@@ -136,7 +136,7 @@ const updateStatus = async() => {
     if(strArr.length>0){
         if(counter3==1){
             counter3 = 0;
-            next(client); return
+            next(client, null, twitterClient); return
         } 
         else if(++counter>=strArr.length){
             counter=strArr.length-1
