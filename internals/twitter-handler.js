@@ -30,7 +30,7 @@ module.exports = {
     {   
         try{
             let idArr = []
-            let tals = await talent.find({guildID: guild.guildID}).lean().exec()
+            let tals = await talent.find({guildID: guild.guildID, twitterID: {$exists: true}}).lean().exec()
             if(tals==null) return;
             for await(const tal of tals){
                 if(tal.twitterID!=null)
@@ -50,7 +50,7 @@ module.exports = {
                     if(foundSpace.state=="live"){
                         liveArr.push(foundSpace.id)
                         for await(const tal of tals){
-                            if(tal.twitterID!=null&&space.creator_id==tal.twitterID){
+                            if(foundSpace.creator_id==tal.twitterID){
                                 if(await space.findOne({talent_id: tal._id}).exec()==null){
                                     s = await space.create({
                                         title: foundSpace.title,

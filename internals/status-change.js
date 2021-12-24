@@ -99,7 +99,7 @@ if(strArr!=null&&strArr.length>0){
     }
 
     for await(const curSpace of space.find()){
-        let tal = await talent.findById(talent_id).lean().exec()
+        let tal = await talent.findById(curSpace.talent_id).lean().exec()
         strArr.push([tal.name, "Twitter Space - "+curSpace.title, "https://twitter.com/i/spaces" + curSpace.id])
     }
 
