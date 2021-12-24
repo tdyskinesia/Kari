@@ -423,7 +423,8 @@ module.exports = {
             await membership.findByIdAndUpdate(mship._id, {'$set': {"notifyFlag": true}}).exec()
             return
         } catch (e) {
-            console.log(e)
+            console.log(e+"\nUser most likely has DMs closed.")
+            await membership.findByIdAndUpdate(mship._id, {'$set': {"notifyFlag": true}}).exec()
         }
     },
 
