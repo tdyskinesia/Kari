@@ -54,7 +54,7 @@ const insertTalentMembership = async(guildID, talentName, inputMembership) => {
  * @param  {Discord.Client} client
  * @returns {Boolean} if role was assigned properly
  */
-const memberRoleAssign = async(userID, talentName, guildID, client) => {
+const memberRoleAssign = async(userID, talentName, guildID, client, message) => {
     try{
         let tal = await talent.findOne({guildID: guildID, name:{ $regex: '.*'+ talentName + '.*', $options: 'i' }}).lean().exec()
         if(tal.memberRoleID==null) return false;
@@ -78,7 +78,7 @@ const memberRoleAssign = async(userID, talentName, guildID, client) => {
         }
     catch (e) {
         console.log(e)
-        if (e) return false
+        if (e) message.channel.send("ERROR: Could not assign role."); return false
     }
     
 }
@@ -253,7 +253,7 @@ module.exports = {
                         await talent.findOneAndUpdate({guildID: guildID, name: talentName}, {'$push': {"membership_IDs" : ObjectId(newMembership._id)}}, {upsert: true}).exec()
                         await models.guild.findOneAndUpdate({guildID: guildID}, {'$push' : {"membership_IDs" : ObjectId(newMembership._id), "user_IDs": newUser._id}, upsert: true}).exec()
                         await message.channel.send(`User created with their first membership to ${talentName}! Thanks ${message.author.username}! (Verified: ${message.guild.members.cache.get(staff)})`)
-                        if(await memberRoleAssign(authorID, talentName, guildID, client)){
+                        if(await memberRoleAssign(authorID, talentName, guildID, client, message)){
                             await message.channel.send("Role assigned."); return
                         } else await message.channel.send("User already had role assigned."); return
                         
@@ -262,11 +262,12 @@ module.exports = {
                         let newUser = await user.findOneAndUpdate({userID: authorID },{'$push': {"membership_IDs" : ObjectId(newMembership._id), "guildIDs" : message.guild.id}},{new: true, upsert: true}).lean().exec()
                         await models.guild.findOneAndUpdate({guildID: guildID}, {'$push' : {"membership_IDs" : ObjectId(newMembership._id), "user_IDs": newUser._id}, upsert: true}).exec()
                         await message.channel.send(`Added a membership to ${talentName} for ${(message.guild.members.cache.get(authorID)).user.username}! (Verified: ${message.guild.members.cache.get(staff).user.username})`)
-                        if(await memberRoleAssign(authorID, talentName, guildID, client)){
+                        if(await memberRoleAssign(authorID, talentName, guildID, client, message)){
                             await message.channel.send("Role assigned."); return
                         } else await message.channel.send("User already had role assigned."); return
                     }
             } else {
+                await memberRoleAssign(authorID, talentName, guildID, client, message)
                 await membership.findByIdAndUpdate(foundMembership._id, {'$set': {"expiration" : exDate, "notifyFlag" : false}}).exec()
                 await message.channel.send(message.author.username + " is already verified for " + talentName +". Changed expiration to " + exDate.toDateString()); return;
             }
