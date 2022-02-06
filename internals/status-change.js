@@ -33,7 +33,7 @@ try{
 
 const statusOptions = []
 
-for await (const tal of talent.find()){
+for await (const tal of talent.find({youtubeID: {$exists: true}})){
     statusOptions.push(tal.name)
 }
 
