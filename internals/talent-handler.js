@@ -37,7 +37,7 @@ module.exports = {
             await message.channel.send("Input Talent's Twitter Handle **(Required For Twitter Space Detection / Notifications)**(n to skip)")
             let handle = (await message.channel.awaitMessages({filter, max: 1, time: 60_000, errors: ['time']})).first()
             let twitterID = undefined;
-            if(liveRoleID.content.toLowerCase()=='n'){handle = undefined} 
+            if(handle.content.toLowerCase()=='n'){handle = undefined} 
             else 
             {
                 handle = handle.content
