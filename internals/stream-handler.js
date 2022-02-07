@@ -109,7 +109,7 @@ module.exports = {
         let embedArray = []
         if(args.length==0){
         if(message!=null) await message.channel.send("Updating board now!")
-        for await (const talent of models.talent.find({guildID: '835723287714857031'}).sort({order: 1})){
+        for await (const talent of models.talent.find({guildID: '835723287714857031', youtubeID: {$exists: true}}).sort({order: 1})){
             let fieldArray = []
             if(bool==true){
             await youtube(talent)
