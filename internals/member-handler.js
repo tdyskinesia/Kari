@@ -404,7 +404,19 @@ module.exports = {
             await membership.deleteOne({_id: mship._id}).exec()
             await models.guild.findOneAndUpdate({guildID: guildID}, {'$pull':{"membership_IDs": ObjectId(mship._id)}}).exec()
             return;
-        } catch (e) {console.log(e)}  
+        } catch (e) {console.log(e)
+            await user.findOneAndUpdate({userID: userID},
+                {
+                    "$pull" : {
+                        "membership_IDs" : ObjectId(mship._id)
+                    }
+                }).exec()
+                await talent.findOneAndUpdate({guildID: guildID, name: mship.talentName},
+                {
+                    "$pull" :{
+                        "membership_IDs" : ObjectId(mship._id)
+                        }
+                }).exec()}  
     },
 
     /**
