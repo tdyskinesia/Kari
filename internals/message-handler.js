@@ -26,12 +26,10 @@ try{
                         else {await ch.send(`Hey NULL ROLE! ${tal.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${str.videoID}`)}
                     } else if(tal.roleID!=null) {await ch.send(`Hey <@&${tal.roleID}>! ${tal.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${str.videoID}`)
                     } else {await ch.send(`Hey NULL ROLE! ${tal.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${str.videoID}`)}
-
+                    await stream.findOneAndUpdate({_id: str._id}, {"$set" : {'notify' : true}}, {upsert: true}).exec()
                     if((ch.name.includes('🔊')||ch.name.includes('🛑'))&&!memberBool){
                         await ch.setName('🔔'.concat(ch.name.substring(1)))
                     }
-                            
-                    await stream.findOneAndUpdate({_id: str._id}, {"$set" : {'notify' : true}}, {upsert: true}).exec()
                 }
             }
             await tal.save();
