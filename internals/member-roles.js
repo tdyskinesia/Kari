@@ -52,7 +52,12 @@ const automatedMembershipIteration = async(client) => {
                 await notifyUser(await user.findOne({userID: mship.userID}), mship, client);
             }
             else if(date>d.setDate(d.getDate()+1)){
-                await automatedMembershipRemove(mship, client);
+                try{
+                    await automatedMembershipRemove(mship, client);
+                } catch (e) {
+                    console.log(e)
+                }
+            
             }
         }
     } catch (e){
