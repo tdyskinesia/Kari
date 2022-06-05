@@ -385,27 +385,12 @@ module.exports = {
             let guildID = mCh.guildID
             let userID = mship.userID
             let guild = await client.guilds.fetch(guildID)
-            let gMember = await guild.members.fetch(userID)
-            let tal = await talent.findOne({guildID: guildID, name: mship.talentName}).lean().exec()
-            let role = await guild.roles.fetch(tal.memberRoleID)
-            await gMember.roles.remove(role)
-            await user.findOneAndUpdate({userID: userID},
-            {
-                "$pull" : {
-                    "membership_IDs" : ObjectId(mship._id)
-                }
-            }).exec()
-            await talent.findOneAndUpdate({guildID: guildID, name: mship.talentName},
-            {
-                "$pull" :{
-                    "membership_IDs" : ObjectId(mship._id)
-                    }
-            }).exec()
-            await membership.deleteOne({_id: mship._id}).exec()
-            await models.guild.findOneAndUpdate({guildID: guildID}, {'$pull':{"membership_IDs": ObjectId(mship._id)}}).exec()
-            return;
-        } catch (e) {console.log(e)
-            await user.findOneAndUpdate({userID: userID},
+            try{
+                let gMember = await guild.members.fetch(userID)
+                let tal = await talent.findOne({guildID: guildID, name: mship.talentName}).lean().exec()
+                let role = await guild.roles.fetch(tal.memberRoleID)
+                await gMember.roles.remove(role)
+                await user.findOneAndUpdate({userID: userID},
                 {
                     "$pull" : {
                         "membership_IDs" : ObjectId(mship._id)
@@ -416,7 +401,26 @@ module.exports = {
                     "$pull" :{
                         "membership_IDs" : ObjectId(mship._id)
                         }
-                }).exec()}  
+                }).exec()
+                await membership.deleteOne({_id: mship._id}).exec()
+                await models.guild.findOneAndUpdate({guildID: guildID}, {'$pull':{"membership_IDs": ObjectId(mship._id)}}).exec()
+                return;
+            } catch (e) {console.log(e)}
+
+        } catch (e) {console.log(e)
+            // await user.findOneAndUpdate({userID: mship.userID},
+            //     {
+            //         "$pull" : {
+            //             "membership_IDs" : ObjectId(mship._id)
+            //         }
+            //     }).exec()
+            //     await talent.findOneAndUpdate({guildID: guildID, name: mship.talentName},
+            //     {
+            //         "$pull" :{
+            //             "membership_IDs" : ObjectId(mship._id)
+            //             }
+            //     }).exec()
+        }  
     },
 
     /**
