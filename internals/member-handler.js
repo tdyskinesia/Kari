@@ -408,18 +408,6 @@ module.exports = {
             } catch (e) {console.log(e)}
 
         } catch (e) {console.log(e)
-            // await user.findOneAndUpdate({userID: mship.userID},
-            //     {
-            //         "$pull" : {
-            //             "membership_IDs" : ObjectId(mship._id)
-            //         }
-            //     }).exec()
-            //     await talent.findOneAndUpdate({guildID: guildID, name: mship.talentName},
-            //     {
-            //         "$pull" :{
-            //             "membership_IDs" : ObjectId(mship._id)
-            //             }
-            //     }).exec()
         }  
     },
 
