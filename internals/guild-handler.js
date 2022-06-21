@@ -27,7 +27,7 @@ module.exports = {
                 if(boardID.content=='n'){boardID = undefined} else boardID = boardID.content
                 await message.channel.send("Option: Y or N for Upcoming Stream Pings **(15 Minutes Before Streams Start)**")
                 let flag = (await message.channel.awaitMessages({filter, max: 1, time: 60_000, errors: ['time']})).first()
-                if(flag.content=='Y'){flag = true} else flag = false
+                if(flag.content=='Y'||flag.content=='y'){flag = true} else flag = false
 
                 await guild.findOneAndUpdate(
                     {guildID: message.guild.id},

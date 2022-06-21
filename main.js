@@ -234,9 +234,8 @@ client.on('messageCreate', async(message) =>{
         "**Mod Commands**\n"+
         "*k!setup* - Initial command for setting up a talent. Follow instructions, answer with \"n\" on any field to skip it. Re-do if needed.\n"+
         "*k!clearmsgs* - Clears all scheduled stream notifications.\n"+
-        "*k!board* - Forces an update to the bulletin.\n"+
         "*k!clearsub <talent's first or last name>* - Clears a talent from server database. BE CAREFUL WITH USE. MAY INVALIDATE MEMBERSHIP DATA.\n"+
-        "*k!mrclear <roleID?> (or k!mroleclear)* - If no arguments given, clears talent's member role. Otherwise changes the member role to given role ID.\n"+
+        "*k!mrclear <talent's first or last name> <roleID?> (or k!mroleclear)* - If no arguments given, clears talent's member role. Otherwise changes the member role to given role ID.\n"+
         "*k!mtlist <talent's first or last name>* - Lists all members for given talent name.\n"+
         "*k!mremove <talent's first or last name> <userID>* - Manually removes membership for given user from given talent.\n"+
         "*k!vchset <channelID>* - Sets a verification channel.\n"+
@@ -244,11 +243,6 @@ client.on('messageCreate', async(message) =>{
         "*k!mtalentsetup <talent's full name> <membership role ID> <alias_1> <alias_2> ...* - Sets up talent only for membership handling. Alias searching not yet implemented for other languages.\n"+
         "*k!brole <roleID?>* - If roleID argument is found, sets roleID to the given value. otherwise clears booster role.\n"+
         "*k!tset <talent's first or last name> <twitter handle>* - Sets up talent for twitter space detection and notifications.\n\n"+
-        
-        "**Tagger Commands**\n"+
-        "*k!timeset <video ID> <minutes>* - Manually adds minutes to a previously scheduled notification (to use if a stream is manually rescheduled). (Deprecated, no reason for use.)\n"+
-        "*k!displaysubs* - Displays current sub list. (Deprecated, no reason for use.)\n"+
-        "*k!displaystreams* - Displays current upcoming notifications for streams and their rowID for timeset. (Deprecated, no reason for use.)\n\n"+
 
         "**Booster Commands**\n"+
         "*k!seticon <role id> <attachment>* - Changes role icon for your copa role id (find role id by right clicking your role if you have developer enabled). Only works if the copa role is the highest on the user invoking it.\n\n"+
