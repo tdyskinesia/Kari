@@ -169,22 +169,22 @@ client.on('messageCreate', async(message) =>{
     else if(command === 'tset'){
         twitterHandler.addTwitter(twitterClient, message, args)
     }
+    else if (command === 'displaysubs'){
+        streamHandler.queryTalents(message, client)
+    }
 
 }
     if (message.member.permissions.has("MENTION_EVERYONE")){
-        if(command === 'timeset'){
-            if(args.length==2){
-                streamHandler.timeChange(message, args)
-            } else {
-                message.channel.send("ERR: Too many arguments")
-            }
-        }
-        else if (command === 'displaysubs'){
-            streamHandler.queryTalents(message, client)
-        }
-        else if (command === 'displaystreams'){
-            streamHandler.displayStreams(message)
-        }
+        // if(command === 'timeset'){
+        //     if(args.length==2){
+        //         streamHandler.timeChange(message, args)
+        //     } else {
+        //         message.channel.send("ERR: Too many arguments")
+        //     }
+        // }
+        // else if (command === 'displaystreams'){
+        //     streamHandler.displayStreams(message)
+        // }
     }
 
 
@@ -242,7 +242,8 @@ client.on('messageCreate', async(message) =>{
         "*k!mrole <talent's first or last name> <role ID>* - Sets a member role for a talent.\n"+
         "*k!mtalentsetup <talent's full name> <membership role ID> <alias_1> <alias_2> ...* - Sets up talent only for membership handling. Alias searching not yet implemented for other languages.\n"+
         "*k!brole <roleID?>* - If roleID argument is found, sets roleID to the given value. otherwise clears booster role.\n"+
-        "*k!tset <talent's first or last name> <twitter handle>* - Sets up talent for twitter space detection and notifications.\n\n"+
+        "*k!tset <talent's first or last name> <twitter handle>* - Sets up talent for twitter space detection and notifications.\n"+
+        "*k!displaysubs* - Displays all current talent subscriptions and their current info. Use k!setup to edit their info.\n\n"+
 
         "**Booster Commands**\n"+
         "*k!seticon <role id> <attachment>* - Changes role icon for your copa role id (find role id by right clicking your role if you have developer enabled). Only works if the copa role is the highest on the user invoking it.\n\n"+

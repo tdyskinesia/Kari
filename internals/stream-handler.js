@@ -612,13 +612,30 @@ module.exports = {
     async queryTalents(message, client) {
         let guild = await client.guilds.cache.get(message.guild.id)
             for await (const talent of models.talent.find({guildID: message.guild.id})){
-                if(talent.memberRoleID){
-                await message.channel.send(
-               `NAME: ${talent.name} YTID: ${talent.youtubeID} LIVE CHANNEL: ${(await client.channels.cache.get(talent.liveChannelID)).toString()} ROLE: ${(await guild.roles.cache.get(talent.roleID)).name} MEMBER ROLE: ${(await guild.roles.cache.get(talent.memberRoleID)).name}`)
-                } else {
-                    await message.channel.send(
-                        `NAME: ${talent.name} YTID: ${talent.youtubeID} LIVE CHANNEL: ${(await client.channels.cache.get(talent.liveChannelID)).toString()} ROLE: ${(await guild.roles.cache.get(talent.roleID)).name}`)
+                let str = "Name: "+talent.name+ " "
+                if(talent.youtubeID){
+                    str+="YoutubeID: " + talent.youtubeID+" "
                 }
+                if(talent.liveChannelID){   
+                    str+="Live Channel: " + (await client.channels.cache.get(talent.liveChannelID)).toString()+ " "
+                }
+                if(talent.role){
+                    str+="Notification Role: " + (await guild.roles.cache.get(talent.roleID)).name + " "
+                }
+                if(talent.memberRoleID){
+                    str+="Member Role: " + (await guild.roles.cache.get(talent.memberRoleID)).name + " "
+                }
+                if(talent.twitterID){
+                    str+="Twitter ID: " + talent.twitterID+ " "
+                }
+                await message.channel.send(str)
+            //     if(talent.memberRoleID){
+            //     await message.channel.send(
+            //    `NAME: ${talent.name} YTID: ${talent.youtubeID} LIVE CHANNEL: ${(await client.channels.cache.get(talent.liveChannelID)).toString()} ROLE: ${(await guild.roles.cache.get(talent.roleID)).name} MEMBER ROLE: ${(await guild.roles.cache.get(talent.memberRoleID)).name}`)
+            //     } else {
+            //         await message.channel.send(
+            //             `*Name:* ${talent.name} YTID: ${talent.youtubeID} LIVE CHANNEL: ${(await client.channels.cache.get(talent.liveChannelID)).toString()} ROLE: ${(await guild.roles.cache.get(talent.roleID)).name}`)
+            //     }
             }
     },
     async displayStreams(message){
