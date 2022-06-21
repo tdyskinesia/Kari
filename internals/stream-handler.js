@@ -619,7 +619,7 @@ module.exports = {
                 if(talent.liveChannelID){   
                     str+="Live Channel: " + (await client.channels.cache.get(talent.liveChannelID)).toString()+ " "
                 }
-                if(talent.role){
+                if(talent.roleID){
                     str+="Notification Role: " + (await guild.roles.cache.get(talent.roleID)).name + " "
                 }
                 if(talent.memberRoleID){
