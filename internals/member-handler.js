@@ -448,7 +448,7 @@ module.exports = {
             let s = ""
             for await (const m of mships){
                 try{
-                    s += message.guild.members.cache.get(m.userID).user.username + " "+ m.expiration+",\n"
+                    s += message.guild.members.cache.get(m.userID).user.username + " "+ new Date(m.expiration).toISOString().substring(0,10)+",\n"
                 } catch (e) {
                     console.log("Could not find user. " +e)
                 }
