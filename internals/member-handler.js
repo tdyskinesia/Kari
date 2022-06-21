@@ -447,7 +447,11 @@ module.exports = {
             if(mships!=null){
             let s = ""
             for await (const m of mships){
-                s += message.guild.members.cache.get(m.userID).user.username + " "+ m.expiration+",\n"
+                try{
+                    s += message.guild.members.cache.get(m.userID).user.username + " "+ m.expiration+",\n"
+                } catch (e) {
+                    console.log("Could not find user. " +e)
+                }
             }
             s = s.substring(0, s.length-1)
             await message.channel.send(mships[0].talentName+" Memberships: \n"+s); return
