@@ -96,14 +96,14 @@ const vidInfo = async(names, url) => {
                     if(strDate>now.setMinutes(now.getMinutes()+15) && strDate < maxD){
                     for await(const name of names){
                         if(name[1].substring(name[1].length-11)==str.id){
-                            for await(const dupe of talent.find({name: name[0]})){
+                            for await(const dupe of talent.find({youtubeID: name[2]})){
                                 //let tUrl = str.snippet.thumbnails.maxres.url
                                 if(str.snippet.thumbnails.maxres){
-                                    await stream.findOneAndUpdate({videoID: str.id}, {streamName: str.snippet.title, startTime: str.liveStreamingDetails.scheduledStartTime,
-                                    thumbnailUrl: str.snippet.thumbnails.maxres.url, description: str.snippet.description.substring(0, 300)+ "...", talent_id: dupe._id}, {upsert: true}).lean().exec()
+                                    await stream.findOneAndUpdate({videoID: str.id, talent_id: dupe._id}, {streamName: str.snippet.title, startTime: str.liveStreamingDetails.scheduledStartTime,
+                                    thumbnailUrl: str.snippet.thumbnails.maxres.url, description: str.snippet.description.substring(0, 300)+ "..."}, {upsert: true}).lean().exec()
                                 } else {
-                                    await stream.findOneAndUpdate({videoID: str.id}, {streamName: str.snippet.title, startTime: str.liveStreamingDetails.scheduledStartTime,
-                                    thumbnailUrl: undefined, description: str.snippet.description.substring(0, 300)+ "...", talent_id: dupe._id}, {upsert: true}).lean().exec()
+                                    await stream.findOneAndUpdate({videoID: str.id, talent_id: dupe._id}, {streamName: str.snippet.title, startTime: str.liveStreamingDetails.scheduledStartTime,
+                                    thumbnailUrl: undefined, description: str.snippet.description.substring(0, 300)+ "..."}, {upsert: true}).lean().exec()
                                 }
                             }
                         }
@@ -122,12 +122,14 @@ const iterateTalents = async()=>{
         let url = []
         let names = []
         let titArr = []
+        let ids = []
         // let driver = await build()
         for await(const t of talent.find({youtubeID: {$exists: true}})){
             let curUrl = await ex(t)
-            if(curUrl!=null){
+            if(curUrl!=null&&ids.includes(t.youtubeID)==false){
+                ids.push(t.youtubeID)
                 url.push(curUrl)
-                names.push([t.name, curUrl])
+                names.push([t.name, curUrl, t.youtubeID])
             } else console.log("No upcoming or live stream for " + t.name)
         }
 
