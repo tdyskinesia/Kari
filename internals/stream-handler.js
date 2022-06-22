@@ -370,7 +370,7 @@ module.exports = {
             let stream = await models.stream.findOne({talent_id: talent._id, dStart: {$exists: true}})
             if(stream==null) 
             {
-                stream = await models.stream.findOne({talent_id: talent._id}).sort({startTime: -1})
+                stream = await models.stream.findOne({talent_id: talent._id}).sort({startTime: 1})
                 if(stream==null) 
                 {
                     embedArray.push(new Discord.MessageEmbed({
