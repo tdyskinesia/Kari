@@ -15,7 +15,12 @@ try{
             let curGuild = await client.guilds.fetch(guild.guildID)
             let ch = await curGuild.channels.fetch(tal.liveChannelID)
             for await (const str of stream.find({talent_id: tal._id})){
-                let curDate = new Date(str.startTime) 
+                let curDate = null
+                if(str.dStart !== undefined){
+                   curDate = str.dStart
+                } else {
+                    curDate = new Date(str.startTime) 
+                }
                 if(curDate.setMinutes(curDate.getMinutes()-15) < new Date() && str.notify==false){
                     await stream.findOneAndUpdate({_id: str._id}, {"$set" : {'notify' : true}}).exec()
                     let memberBool = false
