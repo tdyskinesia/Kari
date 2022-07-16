@@ -17,6 +17,7 @@ try{
             for await (const str of stream.find({talent_id: tal._id})){
                 let curDate = new Date(str.startTime) 
                 if(curDate.setMinutes(curDate.getMinutes()-15) < new Date() && str.notify==false){
+                    await stream.findOneAndUpdate({_id: str._id}, {"$set" : {'notify' : true}}).exec()
                     let memberBool = false
                     if(str.streamName.toLowerCase().includes("member")&&!(str.streamName.toLowerCase().includes("membership")&&str.setreamName.toLowerCase().includes("open"))){
                         memberBool = true
@@ -26,7 +27,7 @@ try{
                         else {await ch.send(`Hey NULL ROLE! ${tal.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${str.videoID}`)}
                     } else if(tal.roleID!=null) {await ch.send(`Hey <@&${tal.roleID}>! ${tal.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${str.videoID}`)
                     } else {await ch.send(`Hey NULL ROLE! ${tal.name} is streaming in 15 minutes! Feel free to join us at https://www.youtube.com/watch?v=${str.videoID}`)}
-                    await stream.findOneAndUpdate({_id: str._id}, {"$set" : {'notify' : true}}, {upsert: true}).exec()
+                    
                     if((ch.name.includes('🔊')||ch.name.includes('🛑'))&&!memberBool){
                         await ch.setName('🔔'.concat(ch.name.substring(1)))
                     }
