@@ -57,7 +57,8 @@ if(strArr!=null&&strArr.length>0){
                         videoID: vidID,
                         thumbnailUrl: str[3],
                         description: str[4],
-                        talent_id: dupe._id
+                        talent_id: dupe._id,
+                        notify: true
                     })
                     await dupe.streams.push(ObjectId(s._id))
                     await dupe.save()
