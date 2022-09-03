@@ -198,7 +198,7 @@ client.on('messageCreate', async(message) =>{
         guildHandler.setIcon(message, args)
     }
     else if(command === 'ping') {
-        client.commands.get('ping').execute(message, args);
+        await message.channel.send("pong")
     }
     else if (command === 'live'){
         
