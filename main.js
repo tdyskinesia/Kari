@@ -35,7 +35,7 @@ const { Client, GatewayIntentBits } = require('discord.js');
 
  const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, 
      GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildPresences, 
-     GatewayIntentBits,GuildMessages, GatewayIntentBits.DirectMessages, GatewayIntentBits.MessageContent],
+     GatewayIntentBits.GuildMessages, GatewayIntentBits.DirectMessages, GatewayIntentBits.MessageContent],
  partials: ['MESSAGE', 'GUILD_MEMBER', 'CHANNEL', 'USER', 'REACTION'] });
 const statusChange = require('./internals/status-change.js');
 
