@@ -227,6 +227,7 @@ module.exports = {
     
     async inputMember(message, authorID, staff, prefix, client) {
         try{
+            console.log(message.content.toString())
             let args = message.content.slice(prefix.length).split(/ +/)
             let guildID = message.guild.id
             let foundMembership = null
