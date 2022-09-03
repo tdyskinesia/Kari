@@ -22,6 +22,7 @@
     "endb": "^1.3.0",
     "gapi": "^0.0.3",
     "googleapis": "^89.0.0",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.33",
     "mongoose": "^6.0.13",
     "node-fetch": "^2.6.1",

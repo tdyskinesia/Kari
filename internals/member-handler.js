@@ -231,7 +231,7 @@ module.exports = {
             console.log(guildID +  " "  + args[1])
             let talentName = await findTalentName(args[1], guildID)
             //let exDate = new Date(args[2])
-            let exDate = moment(new Date()).format('YYYY-MM-DD[T00:00:00.000Z]')
+            let exDate = moment(new Date(args[2])).format('YYYY-MM-DD[T00:00:00.000Z]')
             let member = await user.findOne({userID: authorID}).lean().exec()
             if(member!=null){
             foundMembership = await iterateMemberships(member.membership_IDs, talentName)}
