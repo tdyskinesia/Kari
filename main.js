@@ -26,7 +26,7 @@ const {talent, stream, user, membership, member_channel} = require('./data/model
 
 // const sc = require('./internals/scrape.js')
 
-const { Client, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits, PermissionsBitField } = require('discord.js');
 
 //  const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, 
 //      Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, 
@@ -125,13 +125,13 @@ client.on('messageCreate', async(message) =>{
     if(message.author.bot) return;
     const args = message.content.slice(prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
-    if(message.member.permissions.has("ADMINISTRATOR")){
+    if(message.member.permissions.has(PermissionsBitField.Flags.Administrator)){
 
     if(command === 'guildsetup'){
         guildHandler.setupGuild(message, args)
     }
     }
-    if(message.member.permissions.has("BAN_MEMBERS")){
+    if(message.member.permissions.has(PermissionsBitField.Flags.BanMembers)){
 
     if(command === 'setup') {
         talentHandler.mainSetup(message, twitterClient)
@@ -180,7 +180,7 @@ client.on('messageCreate', async(message) =>{
     }
 
 }
-    if (message.member.permissions.has("MENTION_EVERYONE")){
+    if (message.member.permissions.has(PermissionsBitField.Flags.MentionEveryone)){
         // if(command === 'timeset'){
         //     if(args.length==2){
         //         streamHandler.timeChange(message, args)

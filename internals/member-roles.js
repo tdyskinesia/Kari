@@ -1,5 +1,7 @@
 const Discord = require('discord.js');
 
+const {PermissionsBitField} = require('discord.js')
+
 const {talent, stream, user, membership, member_channel, guild} = require('../data/models');
 
 const models = require('../data/models');
@@ -84,7 +86,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
         if(mChannel.channelID==reaction.message.channel.id){
             if(mChannel.verificationIDs.includes(reaction.message.id)){
                 let member = reaction.message.guild.members.cache.get(user.id)
-                if(member.permissions.has("BAN_MEMBERS")){
+                if(member.permissions.has(PermissionsBitField.Flags.BanMembers)){
                     if (reaction.emoji.name === '❌') {
                         await reaction.message.channel.send(`${reaction.message.author.username}, ${user.username} has marked your membership application as invalid. Please review and resubmit.`)
                         // let member = await models.user.findOne({userID: reaction.message.author.id}).exec()
