@@ -4,6 +4,8 @@ const {talent, stream, user, membership, member_channel, guild} = require('../da
 
 const models = require('../data/models');
 
+const moment = require('moment');
+
 const mongoose = require('mongoose');
 const {Types: {ObjectId}} = mongoose;
 
