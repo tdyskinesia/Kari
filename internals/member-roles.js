@@ -94,10 +94,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
                             }
                     } else if (reaction.emoji.name === '✅'){
                         await reaction.message.channel.send(`${reaction.message.author.username}, ${user.username} has marked your membership as valid.`)
-                        await inputMember(await reaction.message.content(), reaction.message.author.id, user.id, prefix, client)
-                        
-                        
-
+                        await inputMember(await reaction.message.content.toString(), reaction.message.author.id, user.id, prefix, client)
                 }
             
         }
